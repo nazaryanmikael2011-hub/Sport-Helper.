@@ -105,15 +105,20 @@ export const MotivationBanner = () => {
         </div>
 
         {/* Quick status pill */}
-        <div className="hidden sm:flex flex-col items-end shrink-0 p-3 rounded-2xl bg-white/5 border border-white/5">
-          <span className="text-[11px] text-neutral-400 font-semibold uppercase">
+        <div className="flex flex-col flex-wrap items-start sm:items-end justify-center p-3 rounded-2xl bg-white/5 border border-white/5 w-full sm:w-auto h-auto gap-1">
+          <span className="text-[10px] sm:text-[11px] text-neutral-400 font-semibold uppercase tracking-wider">
             Целевой показатель
           </span>
-          <span className="text-xl font-black text-white mt-0.5">
-            {profile.weight} <span className="text-xs text-neutral-400">→</span>{' '}
-            <span style={{ color: motivationalMessage.accent }}>{profile.targetWeight} кг</span>
-          </span>
-          <span className="text-[11px] text-neutral-400 mt-1">
+          <div className="flex flex-wrap items-baseline gap-2 mt-0.5">
+            <span className="text-lg sm:text-xl font-black text-white">
+              {profile.weight} кг
+            </span>
+            <span className="text-xs text-neutral-400">→</span>
+            <span className="text-lg sm:text-xl font-black" style={{ color: motivationalMessage.accent }}>
+              {profile.targetWeight} кг
+            </span>
+          </div>
+          <span className="text-[10px] sm:text-[11px] text-neutral-400">
             {profile.goal === 'gain_muscle' ? 'Набор мышечной массы' : 'Снижение жировой массы'}
           </span>
         </div>

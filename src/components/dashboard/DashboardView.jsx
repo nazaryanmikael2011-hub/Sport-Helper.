@@ -89,22 +89,28 @@ export const DashboardView = ({ setActiveTab }) => {
         </div>
 
         {/* Right side target summary & Edit Profile button */}
-        <div className="flex flex-col sm:flex-row items-center gap-3 w-full md:w-auto justify-center md:justify-end">
-          <div className="p-3 rounded-2xl bg-white/[0.03] border border-white/5 text-center sm:text-right min-w-[140px]">
-            <span className="text-[10px] text-neutral-400 uppercase font-bold block">
+        <div className="flex flex-col md:flex-row flex-wrap items-center gap-3 w-full md:w-auto justify-center md:justify-end h-auto">
+          <div className="p-3 sm:p-3.5 rounded-2xl bg-white/[0.03] border border-white/5 text-center md:text-right w-full sm:w-auto min-w-[170px] h-auto flex flex-col items-center md:items-end justify-center gap-1.5 flex-wrap">
+            <span className="text-[10px] text-neutral-400 uppercase font-bold tracking-wider block">
               Текущая цель
             </span>
-            <span className="text-sm font-black text-white mt-0.5 block">
+            <span className="text-sm font-black text-white block">
               {profile.goal === 'gain_muscle' ? 'Набор массы' : profile.goal === 'calisthenics_strength' ? 'Калистеника & Сила' : 'Похудение & Рельеф'}
             </span>
-            <span className="text-[11px] text-[#00FF85] font-semibold">
-              Целевой вес: {profile.targetWeight} кг
-            </span>
+            <div className="flex flex-wrap items-center justify-center md:justify-end gap-2 text-xs pt-0.5">
+              <span className="text-neutral-300">
+                Вес: <strong className="text-white font-bold">{profile.weight} кг</strong>
+              </span>
+              <span className="text-neutral-600 hidden sm:inline">•</span>
+              <span className="text-[#00FF85] font-black">
+                Цель: {profile.targetWeight} кг
+              </span>
+            </div>
           </div>
 
           <button
             onClick={() => setActiveTab('profile')}
-            className="w-full sm:w-auto px-4 py-2.5 rounded-xl bg-white/5 hover:bg-white/10 text-neutral-200 border border-white/10 text-xs font-bold transition-all flex items-center justify-center gap-1.5"
+            className="w-full sm:w-auto px-4 py-2.5 rounded-xl bg-white/5 hover:bg-white/10 text-neutral-200 border border-white/10 text-xs font-bold transition-all flex items-center justify-center gap-1.5 shrink-0"
             title="Перейти к редактированию всех параметров профиля"
           >
             <span>Редактировать</span>

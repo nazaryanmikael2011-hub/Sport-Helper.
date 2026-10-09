@@ -54,14 +54,14 @@ export const WeightTracker = () => {
   const targetY = chartHeight - paddingY - ((targetWeight - minW) / range) * (chartHeight - paddingY * 2);
 
   return (
-    <div className="glass-card rounded-3xl p-5 sm:p-6 border border-white/5 relative overflow-hidden">
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
+    <div className="glass-card rounded-3xl p-4 sm:p-6 border border-white/5 relative overflow-hidden h-auto w-full">
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6 flex-wrap h-auto">
         <div>
           <div className="flex items-center gap-2 text-xs font-bold text-neutral-400 uppercase tracking-wider mb-1">
             <Scale className="w-4 h-4 text-[#00FF85]" />
             <span>Трекер веса и динамика</span>
           </div>
-          <div className="flex items-baseline gap-3">
+          <div className="flex flex-wrap items-baseline gap-2 sm:gap-3">
             <span className="text-3xl sm:text-4xl font-black text-white">
               {currentWeight} <span className="text-sm font-bold text-neutral-400">кг</span>
             </span>
@@ -75,7 +75,7 @@ export const WeightTracker = () => {
         </div>
 
         {/* Quick Log Form */}
-        <form onSubmit={handleAdd} className="flex items-center gap-2">
+        <form onSubmit={handleAdd} className="flex flex-wrap items-center gap-2 w-full sm:w-auto">
           <div className="relative">
             <input
               type="number"
@@ -100,17 +100,28 @@ export const WeightTracker = () => {
         </form>
       </div>
 
-      {/* Target summary bar */}
-      <div className="flex items-center justify-between p-3 rounded-2xl bg-white/[0.03] border border-white/5 mb-4 text-xs">
-        <div className="flex items-center gap-2">
-          <Target className="w-4 h-4 text-[#FF5E00]" />
-          <span className="text-neutral-300 font-medium">
-            Цель: <span className="text-white font-bold">{targetWeight} кг</span>
+      {/* Target summary bar with responsive wrap and gap */}
+      <div className="flex flex-col md:flex-row flex-wrap items-start md:items-center justify-between gap-3 md:gap-4 p-3.5 sm:p-4 rounded-2xl bg-white/[0.03] border border-white/5 mb-4 text-xs h-auto w-full">
+        <div className="flex flex-wrap items-center gap-2 sm:gap-3">
+          <div className="flex items-center gap-1.5">
+            <Target className="w-4 h-4 text-[#FF5E00] shrink-0" />
+            <span className="text-neutral-300 font-medium">
+              Цель веса: <strong className="text-white font-bold">{targetWeight} кг</strong>
+            </span>
+          </div>
+          <span className="text-neutral-600 hidden sm:inline">•</span>
+          <div className="flex items-center gap-1.5 text-neutral-400">
+            <Scale className="w-3.5 h-3.5 text-[#00FF85] shrink-0" />
+            <span>Текущий вес: <strong className="text-white font-bold">{currentWeight} кг</strong></span>
+          </div>
+        </div>
+
+        <div className="flex flex-wrap items-center gap-1.5 text-xs text-neutral-400 pt-1 md:pt-0 border-t md:border-t-0 border-white/5 w-full md:w-auto justify-between md:justify-end">
+          <span>Осталось до цели:</span>
+          <span className="text-[#00FF85] font-black px-2 py-0.5 rounded-md bg-[#00FF85]/10 border border-[#00FF85]/20">
+            {remainingToGoal} кг
           </span>
         </div>
-        <span className="text-neutral-400">
-          Осталось: <strong className="text-[#00FF85]">{remainingToGoal} кг</strong>
-        </span>
       </div>
 
       {/* Interactive SVG Chart */}
