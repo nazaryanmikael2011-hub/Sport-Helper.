@@ -39,6 +39,17 @@ export const DashboardView = ({ setActiveTab }) => {
 
   const unlockedBadgesList = mockBadges.filter(b => unlockedBadgeIds.includes(b.id));
 
+  const weekDays = [
+    { key: 'mon', label: 'Пн' },
+    { key: 'tue', label: 'Вт' },
+    { key: 'wed', label: 'Ср' },
+    { key: 'thu', label: 'Чт' },
+    { key: 'fri', label: 'Пт' },
+    { key: 'sat', label: 'Сб' },
+    { key: 'sun', label: 'Вс' },
+  ];
+  const currentDayIndex = (new Date().getDay() + 6) % 7; // 0 for Mon ... 6 for Sun
+
   return (
     <div className="space-y-6 sm:space-y-8 pb-10">
       {/* Top Welcome & Motivational Banner */}
@@ -181,16 +192,70 @@ export const DashboardView = ({ setActiveTab }) => {
           </ProgressRing>
         </div>
 
-        {/* Streak Counter */}
-        <StatCard
-          icon={Flame}
-          title="Дисциплина (Стрик)"
-          value={`${streak} дней`}
-          subvalue="активности"
-          badge="Огонь"
-          accentColor="#FF5E00"
-          progress={Math.min(100, (streak / 7) * 100)}
-        />
+        {/* Discipline / Streak 7-day Widget */}
+        <motion.div
+          whileHover={{ y: -3 }}
+          className="glass-card p-4 sm:p-5 rounded-2xl relative overflow-hidden group transition-all duration-300 border border-white/5 hover:border-[#FF5E00]/30 flex flex-col justify-between"
+        >
+          <div
+            className="absolute top-0 left-0 right-0 h-[2px] opacity-70 group-hover:opacity-100 transition-opacity"
+            style={{
+              background: 'linear-gradient(90deg, transparent, #FF5E00, transparent)'
+            }}
+          />
+
+          <div>
+            <div className="flex items-start justify-between gap-3 mb-2">
+              <div className="flex items-center gap-2">
+                <div className="p-2 rounded-xl bg-[#FF5E00]/15 text-[#FF5E00]">
+                  <Flame className="w-4 h-4 fill-[#FF5E00]" />
+                </div>
+                <span className="text-xs sm:text-sm font-medium text-neutral-400">
+                  Дисциплина (Стрик)
+                </span>
+              </div>
+              <span className="text-[10px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider bg-[#FF5E00]/15 text-[#FF5E00] border border-[#FF5E00]/30">
+                {streak === 1 ? 'День 1' : 'Огонь'}
+              </span>
+            </div>
+
+            <div className="text-2xl sm:text-3xl font-black text-white tracking-tight flex items-baseline gap-1.5 mt-1">
+              {streak} <span className="text-xs font-normal text-neutral-400">{streak === 1 ? 'день' : streak < 5 ? 'дня' : 'дней'} активности</span>
+            </div>
+          </div>
+
+          {/* 7 Days of the Week Indicator: only today is burning/active */}
+          <div className="mt-3 pt-2.5 border-t border-white/5">
+            <div className="flex items-center justify-between gap-1">
+              {weekDays.map((d, index) => {
+                const isToday = index === currentDayIndex;
+                const isActive = isToday;
+                return (
+                  <div
+                    key={d.key}
+                    title={isToday ? `${d.label} (Сегодня - закрыт день!)` : `${d.label} (Неактивно)`}
+                    className={`flex-1 py-1.5 px-0.5 rounded-lg flex flex-col items-center justify-center transition-all ${
+                      isActive
+                        ? 'bg-gradient-to-b from-[#FF5E00] to-[#E04F00] text-white shadow-[0_0_12px_rgba(255,94,0,0.35)] scale-105 font-black'
+                        : 'bg-white/[0.03] border border-white/5 text-neutral-500 font-semibold'
+                    }`}
+                  >
+                    <span className="text-[10px]">{d.label}</span>
+                    {isActive ? (
+                      <Flame className="w-3 h-3 fill-white text-white mt-0.5" />
+                    ) : (
+                      <div className="w-1.5 h-1.5 rounded-full bg-neutral-700 mt-1" />
+                    )}
+                  </div>
+                );
+              })}
+            </div>
+            <div className="flex justify-between items-center text-[10px] text-neutral-400 mt-2">
+              <span>Недельный цикл</span>
+              <span className="text-[#FF5E00] font-bold">1 из 7 дней закрыт</span>
+            </div>
+          </div>
+        </motion.div>
 
         {/* Workouts Burned */}
         <StatCard

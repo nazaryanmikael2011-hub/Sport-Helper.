@@ -20,7 +20,13 @@ import {
   Target,
   Sparkles,
   Save,
-  X
+  X,
+  CreditCard,
+  Heart,
+  Shield,
+  CheckCircle2,
+  Crown,
+  Loader2
 } from 'lucide-react';
 import { useFitness } from '../../context/FitnessContext';
 import { mockBadges } from '../../data/mockBadges';
@@ -40,7 +46,9 @@ export const ProfileView = ({ onOpenOnboarding, onOpenAuth }) => {
     orderHistory,
     updateFullProfile, 
     logout, 
-    resetDemoState 
+    resetDemoState,
+    isPremium,
+    activatePremium
   } = useFitness();
 
   const [isEditing, setIsEditing] = useState(false);
@@ -108,6 +116,78 @@ export const ProfileView = ({ onOpenOnboarding, onOpenAuth }) => {
     });
 
     setIsEditing(false);
+  };
+
+  // 1$ Support & Premium Card State
+  const [cardData, setCardData] = useState({
+    number: '',
+    expiry: '',
+    cvc: '',
+    name: ''
+  });
+  const [paymentErrors, setPaymentErrors] = useState({});
+  const [isProcessingPayment, setIsProcessingPayment] = useState(false);
+
+  const handleCardNumberChange = (e) => {
+    const raw = e.target.value.replace(/\D/g, '').slice(0, 16);
+    const formatted = raw.replace(/(\d{4})(?=\d)/g, '$1 ');
+    setCardData((prev) => ({ ...prev, number: formatted }));
+    if (paymentErrors.number) setPaymentErrors((prev) => ({ ...prev, number: null }));
+  };
+
+  const handleExpiryChange = (e) => {
+    let raw = e.target.value.replace(/\D/g, '').slice(0, 4);
+    if (raw.length >= 3) {
+      raw = `${raw.slice(0, 2)}/${raw.slice(2, 4)}`;
+    }
+    setCardData((prev) => ({ ...prev, expiry: raw }));
+    if (paymentErrors.expiry) setPaymentErrors((prev) => ({ ...prev, expiry: null }));
+  };
+
+  const handleCvcChange = (e) => {
+    const raw = e.target.value.replace(/\D/g, '').slice(0, 3);
+    setCardData((prev) => ({ ...prev, cvc: raw }));
+    if (paymentErrors.cvc) setPaymentErrors((prev) => ({ ...prev, cvc: null }));
+  };
+
+  const handleNameChange = (e) => {
+    const raw = e.target.value.replace(/[^a-zA-Z\s]/g, '').toUpperCase().slice(0, 30);
+    setCardData((prev) => ({ ...prev, name: raw }));
+    if (paymentErrors.name) setPaymentErrors((prev) => ({ ...prev, name: null }));
+  };
+
+  const handlePaySupport = (e) => {
+    e.preventDefault();
+    const cleanNumber = cardData.number.replace(/\s/g, '');
+    const errs = {};
+
+    if (cleanNumber.length !== 16) {
+      errs.number = 'Введите 16 цифр карты';
+    }
+    if (!/^\d{2}\/\d{2}$/.test(cardData.expiry)) {
+      errs.expiry = 'Формат ММ/ГГ';
+    } else {
+      const month = parseInt(cardData.expiry.slice(0, 2), 10);
+      if (month < 1 || month > 12) {
+        errs.expiry = 'Месяц от 01 до 12';
+      }
+    }
+    if (cardData.cvc.length !== 3) {
+      errs.cvc = '3 цифры CVC';
+    }
+    if (cardData.name.trim().length < 3) {
+      errs.name = 'Укажите имя владельца карты';
+    }
+
+    setPaymentErrors(errs);
+    if (Object.keys(errs).length > 0) return;
+
+    setIsProcessingPayment(true);
+    setTimeout(() => {
+      setIsProcessingPayment(false);
+      activatePremium();
+      setCardData({ number: '', expiry: '', cvc: '', name: '' });
+    }, 600);
   };
 
   return (
@@ -509,6 +589,173 @@ export const ProfileView = ({ onOpenOnboarding, onOpenAuth }) => {
           </div>
         </div>
       )}
+
+      {/* Support / Premium 1$ Donation Card */}
+      <div className="glass-card rounded-3xl p-6 sm:p-8 border border-white/5 relative overflow-hidden">
+        <div className="absolute top-0 right-0 w-80 h-40 bg-gradient-to-bl from-amber-500/10 to-transparent rounded-full blur-3xl pointer-events-none" />
+
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
+          <div className="flex items-center gap-3">
+            <div className="p-3 rounded-2xl bg-amber-500/15 text-amber-400 border border-amber-500/25">
+              <Heart className="w-6 h-6 fill-amber-400/20" />
+            </div>
+            <div>
+              <div className="flex items-center gap-2">
+                <h3 className="text-lg sm:text-xl font-black text-white">
+                  Помощь сайту & Премиум-доступ
+                </h3>
+                <span className="text-[11px] font-black px-2.5 py-0.5 rounded-full bg-amber-400 text-black shadow-[0_0_12px_rgba(251,191,36,0.4)]">
+                  1$
+                </span>
+              </div>
+              <p className="text-xs text-neutral-400 mt-1 max-w-xl">
+                Поддержите развитие проекта символическим взносом в 1$. В знак благодарности вы получите постоянный статус «Премиум атлет» и снимете все ограничения.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        {isPremium ? (
+          <div className="p-5 sm:p-6 rounded-2xl bg-gradient-to-r from-amber-500/15 via-yellow-500/10 to-amber-500/5 border border-amber-400/40 flex flex-col sm:flex-row items-center justify-between gap-4">
+            <div className="flex items-center gap-3.5">
+              <div className="p-3 rounded-xl bg-amber-400/20 text-amber-300">
+                <Crown className="w-7 h-7 fill-amber-300/40" />
+              </div>
+              <div>
+                <div className="flex items-center gap-2">
+                  <span className="text-sm font-black text-white">
+                    Премиум активирован навсегда! 🏆
+                  </span>
+                  <CheckCircle2 className="w-4 h-4 text-[#00FF85]" />
+                </div>
+                <p className="text-xs text-amber-200/80 mt-0.5">
+                  Огромное спасибо за поддержку! Ваш вклад помогает SPORT HELPER непрерывно развиваться и добавлять новые тренировки.
+                </p>
+              </div>
+            </div>
+            <div className="px-3.5 py-1.5 rounded-full bg-amber-400/20 border border-amber-400/40 text-amber-300 text-xs font-black shrink-0">
+              PRO статус активен
+            </div>
+          </div>
+        ) : (
+          <form onSubmit={handlePaySupport} className="space-y-4 max-w-xl">
+            <div className="p-4 rounded-2xl bg-white/[0.02] border border-white/5 space-y-3.5">
+              {/* Card Number */}
+              <div>
+                <label className="block text-xs font-bold text-neutral-300 mb-1.5 flex items-center justify-between">
+                  <span>Номер карты</span>
+                  <span className="text-[10px] text-neutral-500 font-normal">16 цифр Visa / Mastercard / МИР</span>
+                </label>
+                <div className="relative">
+                  <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-neutral-400">
+                    <CreditCard className="w-4 h-4" />
+                  </div>
+                  <input
+                    type="text"
+                    inputMode="numeric"
+                    value={cardData.number}
+                    onChange={handleCardNumberChange}
+                    placeholder="0000 0000 0000 0000"
+                    className={`w-full pl-10 pr-4 py-2.5 rounded-xl bg-black/40 border text-xs font-mono tracking-wider text-white placeholder-neutral-600 focus:outline-none transition-all ${
+                      paymentErrors.number ? 'border-red-500 ring-1 ring-red-500/50' : 'border-white/10 focus:border-[#00FF85]/50'
+                    }`}
+                  />
+                </div>
+                {paymentErrors.number && (
+                  <p className="text-[10px] text-red-400 mt-1 font-medium">{paymentErrors.number}</p>
+                )}
+              </div>
+
+              {/* Expiry and CVC */}
+              <div className="grid grid-cols-2 gap-3">
+                <div>
+                  <label className="block text-xs font-bold text-neutral-300 mb-1.5">
+                    Срок действия
+                  </label>
+                  <input
+                    type="text"
+                    inputMode="numeric"
+                    value={cardData.expiry}
+                    onChange={handleExpiryChange}
+                    placeholder="ММ/ГГ"
+                    className={`w-full px-3.5 py-2.5 rounded-xl bg-black/40 border text-xs font-mono text-center tracking-wider text-white placeholder-neutral-600 focus:outline-none transition-all ${
+                      paymentErrors.expiry ? 'border-red-500 ring-1 ring-red-500/50' : 'border-white/10 focus:border-[#00FF85]/50'
+                    }`}
+                  />
+                  {paymentErrors.expiry && (
+                    <p className="text-[10px] text-red-400 mt-1 font-medium">{paymentErrors.expiry}</p>
+                  )}
+                </div>
+
+                <div>
+                  <label className="block text-xs font-bold text-neutral-300 mb-1.5">
+                    CVC / CVV
+                  </label>
+                  <input
+                    type="password"
+                    inputMode="numeric"
+                    value={cardData.cvc}
+                    onChange={handleCvcChange}
+                    placeholder="•••"
+                    maxLength={3}
+                    className={`w-full px-3.5 py-2.5 rounded-xl bg-black/40 border text-xs font-mono text-center tracking-wider text-white placeholder-neutral-600 focus:outline-none transition-all ${
+                      paymentErrors.cvc ? 'border-red-500 ring-1 ring-red-500/50' : 'border-white/10 focus:border-[#00FF85]/50'
+                    }`}
+                  />
+                  {paymentErrors.cvc && (
+                    <p className="text-[10px] text-red-400 mt-1 font-medium">{paymentErrors.cvc}</p>
+                  )}
+                </div>
+              </div>
+
+              {/* Cardholder name */}
+              <div>
+                <label className="block text-xs font-bold text-neutral-300 mb-1.5">
+                  Имя владельца карты
+                </label>
+                <input
+                  type="text"
+                  value={cardData.name}
+                  onChange={handleNameChange}
+                  placeholder="IVAN IVANOV"
+                  className={`w-full px-3.5 py-2.5 rounded-xl bg-black/40 border text-xs uppercase font-medium text-white placeholder-neutral-600 focus:outline-none transition-all ${
+                    paymentErrors.name ? 'border-red-500 ring-1 ring-red-500/50' : 'border-white/10 focus:border-[#00FF85]/50'
+                  }`}
+                />
+                {paymentErrors.name && (
+                  <p className="text-[10px] text-red-400 mt-1 font-medium">{paymentErrors.name}</p>
+                )}
+              </div>
+            </div>
+
+            {/* Bottom info and submit */}
+            <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 pt-1">
+              <div className="flex items-center gap-1.5 text-[11px] text-neutral-400">
+                <Shield className="w-3.5 h-3.5 text-[#00FF85]" />
+                <span>Защищенный SSL 256-bit платеж</span>
+              </div>
+
+              <button
+                type="submit"
+                disabled={isProcessingPayment}
+                className="px-6 py-3 rounded-xl bg-gradient-to-r from-amber-400 to-[#FF5E00] hover:brightness-110 active:scale-95 text-black font-black text-xs shadow-[0_0_20px_rgba(251,191,36,0.35)] transition-all flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50"
+              >
+                {isProcessingPayment ? (
+                  <>
+                    <Loader2 className="w-4 h-4 animate-spin text-black" />
+                    <span>Обработка платежа...</span>
+                  </>
+                ) : (
+                  <>
+                    <Lock className="w-3.5 h-3.5" />
+                    <span>Оплатить 1$ и получить Премиум</span>
+                  </>
+                )}
+              </button>
+            </div>
+          </form>
+        )}
+      </div>
 
       {/* Danger / Demo reset zone */}
       <div className="p-6 rounded-3xl bg-red-950/20 border border-red-500/20 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">

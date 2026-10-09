@@ -71,17 +71,19 @@ export const mockShopProducts = [
   },
   {
     id: 'prod-speed-rope',
-    name: 'Скоростная алюминиевая скакалка с двойными подшипниками',
+    name: 'Скоростная стальная скакалка Pro (Jump Rope)',
     category: 'Аксессуары',
-    price: 1290,
-    oldPrice: 1790,
-    rating: 4.8,
-    reviewsCount: 184,
+    price: 1490,
+    oldPrice: 1990,
+    rating: 4.9,
+    reviewsCount: 240,
     image: 'https://images.unsplash.com/photo-1549576490-b0b4831ef60a?auto=format&fit=crop&w=600&q=80',
     recommendedGoal: 'lose_weight',
-    badge: 'Для кардио',
-    description: 'Разгоняется до 300 оборотов в минуту. Стальной трос в защитной оплетке и металлические рукоятки с насечкой.',
-    features: ['Вращение 360°', 'Регулировка длины без ключа', 'Запасной трос в наборе']
+    recommendedGoals: ['lose_weight', 'boxing'],
+    smartTargetBadge: 'Похудение & Бокс',
+    badge: 'Топ: Бокс & Кардио',
+    description: 'Профессиональная скоростная скакалка с высокоточными подшипниками 360° и регулируемым стальным тросом. Лучший тренажер для разгона пульса, взрывного кардио, сжигания жира и боксерской выносливости ног.',
+    features: ['Вращение 360° на подшипниках', 'Стальной трос в полиуретане', 'Рекомендовано: Похудение & Бокс']
   },
   {
     id: 'prod-fat-burner',

@@ -5,152 +5,51 @@ import { mockBadges } from '../data/mockBadges';
 
 const FitnessContext = createContext(null);
 
-const STORAGE_KEY = 'sport_helper_app_state_v1';
+const STORAGE_KEY = 'sport_helper_app_state_v2';
 
-// Default initial user data for demo/immediate immersion
+// Default initial user data for fresh start (all stats initialized with zeros)
 const initialDefaultState = {
   user: {
-    name: 'Алексей Смирнов',
-    email: 'alex.athlete@sporthelper.io',
+    name: 'Атлет',
+    email: '',
     avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=300&q=80',
-    isLoggedIn: true,
+    isLoggedIn: false,
   },
   profile: {
-    weight: 78.5,
-    targetWeight: 75.0,
-    height: 180,
-    age: 26,
+    weight: 75.0,
+    targetWeight: 70.0,
+    height: 178,
+    age: 22,
     gender: 'male',
     goal: 'gain_muscle', // 'gain_muscle' | 'lose_weight' | 'calisthenics_strength'
     fitnessLevel: 'intermediate', // 'beginner' | 'intermediate' | 'advanced'
     fitnessLevelName: 'Средний',
     strengthTest: {
-      pushups: 25,
-      pullups: 8,
-      squats: 35,
-      crunches: 25,
-      dips: 10
+      pushups: 15,
+      pullups: 5,
+      squats: 20,
+      crunches: 20,
+      dips: 5
     },
     activityLevel: 1.4,
-    isOnboarded: true,
+    isOnboarded: false,
   },
-  weightHistory: [
-    { date: '25 сен', weight: 81.0 },
-    { date: '28 сен', weight: 80.4 },
-    { date: '01 окт', weight: 79.8 },
-    { date: '04 окт', weight: 79.2 },
-    { date: '07 окт', weight: 78.8 },
-    { date: '09 окт', weight: 78.5 },
-  ],
+  weightHistory: [],
   meals: {
-    breakfast: [
-      {
-        id: 'm1',
-        name: 'Овсяная каша с ягодами',
-        portionGrams: 250,
-        calories: 170,
-        protein: 6.2,
-        fats: 3.0,
-        carbs: 30.0,
-        icon: '🥣'
-      },
-      {
-        id: 'm2',
-        name: 'Яичница из 3 яиц с зеленью',
-        portionGrams: 180,
-        calories: 279,
-        protein: 22.7,
-        fats: 20.7,
-        carbs: 1.3,
-        icon: '🍳'
-      }
-    ],
-    lunch: [
-      {
-        id: 'm3',
-        name: 'Куриное филе на гриле',
-        portionGrams: 200,
-        calories: 284,
-        protein: 59.0,
-        fats: 5.0,
-        carbs: 0.0,
-        icon: '🍗'
-      },
-      {
-        id: 'm4',
-        name: 'Бурый рис отварной',
-        portionGrams: 180,
-        calories: 202,
-        protein: 4.7,
-        fats: 1.6,
-        carbs: 42.3,
-        icon: '🍚'
-      }
-    ],
-    dinner: [
-      {
-        id: 'm5',
-        name: 'Филе индейки запеченное',
-        portionGrams: 180,
-        calories: 225,
-        protein: 45.0,
-        fats: 4.0,
-        carbs: 0.9,
-        icon: '🍗'
-      },
-      {
-        id: 'm6',
-        name: 'Овощи на гриле',
-        portionGrams: 200,
-        calories: 96,
-        protein: 3.0,
-        fats: 3.6,
-        carbs: 13.0,
-        icon: '🥦'
-      }
-    ],
-    snack: [
-      {
-        id: 'm7',
-        name: 'Протеиновый шейк на миндальном молоке',
-        portionGrams: 300,
-        calories: 195,
-        protein: 31.5,
-        fats: 4.5,
-        carbs: 6.6,
-        icon: '🥤'
-      }
-    ]
+    breakfast: [],
+    lunch: [],
+    dinner: [],
+    snack: []
   },
-  completedWorkouts: [
-    {
-      id: 'cw-1',
-      workoutId: 'w-lsit',
-      title: 'Калистеника: Прогрессия L-Sit',
-      date: 'Вчера, 18:30',
-      durationMin: 35,
-      caloriesBurned: 240,
-      xpEarned: 120
-    }
-  ],
-  xp: 380,
-  streak: 5,
+  completedWorkouts: [],
+  xp: 0,
+  streak: 1,
   lastActiveDate: new Date().toISOString().slice(0, 10),
-  unlockedBadgeIds: ['badge-first-workout', 'badge-streak-3', 'badge-calisthenics-pioneer'],
-  cart: [
-    {
-      product: {
-        id: 'prod-bands-set',
-        name: 'Набор петель и фитнес-резинок для подтягиваний (5 уровней)',
-        price: 1890,
-        image: 'https://images.unsplash.com/photo-1598971639058-fab3c3109a00?auto=format&fit=crop&w=600&q=80',
-        badge: 'Хит продаж',
-        category: 'Аксессуары'
-      },
-      quantity: 1
-    }
-  ],
-  orderHistory: []
+  unlockedBadgeIds: [],
+  cart: [],
+  orderHistory: [],
+  isPremium: false,
+  trialDaysLeft: 90,
 };
 
 export const FitnessProvider = ({ children }) => {
@@ -343,7 +242,21 @@ export const FitnessProvider = ({ children }) => {
       profile: {
         ...prev.profile,
         isOnboarded: false
-      }
+      },
+      meals: {
+        breakfast: [],
+        lunch: [],
+        dinner: [],
+        snack: []
+      },
+      completedWorkouts: [],
+      xp: 0,
+      streak: 1,
+      unlockedBadgeIds: [],
+      cart: [],
+      orderHistory: [],
+      isPremium: false,
+      trialDaysLeft: 90
     }));
     addToast('Регистрация успешна!', 'Давай настроим твой профиль для максимальных результатов.', 'success');
   };
@@ -468,7 +381,7 @@ export const FitnessProvider = ({ children }) => {
   };
 
   const finishOnboarding = (surveyData) => {
-    const updatedWeight = parseFloat(surveyData.weight) || state.profile.weight;
+    const updatedWeight = parseFloat(surveyData.weight) || state.profile.weight || 75;
     const userAge = Math.max(5, parseInt(surveyData.age, 10) || 20);
 
     const levelNamesMap = {
@@ -500,14 +413,21 @@ export const FitnessProvider = ({ children }) => {
         isOnboarded: true
       },
       weightHistory: [
-        ...prev.weightHistory,
         {
           date: 'Старт',
           weight: updatedWeight
         }
-      ]
+      ],
+      meals: {
+        breakfast: [],
+        lunch: [],
+        dinner: [],
+        snack: []
+      },
+      completedWorkouts: [],
+      xp: 0,
+      streak: 1,
     }));
-    awardXp(100, 'За завершение тестирования и онбординга');
     addToast('Профиль атлета сформирован! 🎯', `Уровень "${finalLevelName}" присвоен. Тренировки и нормы адаптированы!`, 'success', 5000);
   };
 
@@ -735,6 +655,26 @@ export const FitnessProvider = ({ children }) => {
     addToast('Данные сброшены', 'Экран первого входа активирован', 'info');
   };
 
+  // Support / Premium activation logic
+  const activatePremium = () => {
+    setState((prev) => ({
+      ...prev,
+      isPremium: true,
+      trialDaysLeft: 90
+    }));
+
+    try {
+      confetti({
+        particleCount: 100,
+        spread: 80,
+        origin: { y: 0.5 },
+        colors: ['#00FF85', '#FFD700', '#FF5E00', '#38BDF8']
+      });
+    } catch (_) {}
+
+    addToast('Спасибо за поддержку! 👑', 'Премиум активирован навсегда. Ваша помощь развивает SPORT HELPER!', 'badge', 6000);
+  };
+
   return (
     <FitnessContext.Provider
       value={{
@@ -768,6 +708,7 @@ export const FitnessProvider = ({ children }) => {
         updateUserAvatar,
         removeUserAvatar,
         resetDemoState,
+        activatePremium,
       }}
     >
       {children}

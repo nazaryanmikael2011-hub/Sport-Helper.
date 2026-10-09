@@ -80,6 +80,14 @@ export const ProductCard = ({ product, isRecommended = false }) => {
               ))}
             </div>
           )}
+
+          {/* Smart Target Recommendation Badge */}
+          {product.smartTargetBadge && (
+            <div className="flex items-center gap-1.5 mt-2.5 px-2.5 py-1 rounded-xl bg-[#00FF85]/10 border border-[#00FF85]/30 text-[11px] text-[#00FF85] font-black">
+              <span>🎯 Рекомендовано:</span>
+              <span className="text-white font-bold">{product.smartTargetBadge}</span>
+            </div>
+          )}
         </div>
 
         {/* Price & Buy Button */}

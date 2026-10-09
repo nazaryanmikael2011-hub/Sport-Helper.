@@ -1,9 +1,9 @@
 import React from 'react';
-import { Flame, Zap, ShoppingBag, User } from 'lucide-react';
+import { Flame, Zap, ShoppingBag, User, Clock, Crown } from 'lucide-react';
 import { useFitness } from '../../context/FitnessContext';
 
 export const Header = ({ activeTab, setActiveTab, onOpenCart, onOpenAuth }) => {
-  const { user, streak, levelInfo, cart } = useFitness();
+  const { user, streak, levelInfo, cart, isPremium, trialDaysLeft } = useFitness();
 
   const totalCartCount = cart.reduce((sum, item) => sum + item.quantity, 0);
 
@@ -36,11 +36,34 @@ export const Header = ({ activeTab, setActiveTab, onOpenCart, onOpenAuth }) => {
         </div>
 
         {/* Status Indicators & Fast Actions */}
-        <div className="flex items-center gap-2 sm:gap-4">
+        <div className="flex items-center gap-2 sm:gap-3">
+          {/* Global Trial / Premium Counter */}
+          {isPremium ? (
+            <button
+              onClick={() => setActiveTab('profile')}
+              title="Премиум статус активен"
+              className="flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-full bg-gradient-to-r from-amber-500/15 to-yellow-500/15 border border-amber-400/40 text-amber-300 text-xs font-black shadow-[0_0_15px_-3px_rgba(251,191,36,0.25)] hover:border-amber-400/70 transition-all cursor-pointer"
+            >
+              <Crown className="w-3.5 h-3.5 text-amber-400 fill-amber-400/30" />
+              <span className="hidden sm:inline">Премиум активирован</span>
+              <span className="sm:hidden">Премиум</span>
+            </button>
+          ) : (
+            <button
+              onClick={() => setActiveTab('profile')}
+              title="Бесплатный период 90 дней. Нажмите для перехода к поддержке и премиуму."
+              className="flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-full bg-cyan-500/10 border border-cyan-500/30 text-cyan-300 text-xs font-bold hover:bg-cyan-500/20 transition-all cursor-pointer"
+            >
+              <Clock className="w-3.5 h-3.5 text-cyan-400 animate-pulse" />
+              <span className="hidden sm:inline">Бесплатный период: {trialDaysLeft || 90} дней</span>
+              <span className="sm:hidden">{trialDaysLeft || 90} дн. триал</span>
+            </button>
+          )}
+
           {/* Streak indicator */}
           <div
             title="Дней подряд активности"
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[#FF5E00]/10 border border-[#FF5E00]/25 text-[#FF5E00] text-xs font-bold"
+            className="flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-full bg-[#FF5E00]/10 border border-[#FF5E00]/25 text-[#FF5E00] text-xs font-bold"
           >
             <Flame className="w-4 h-4 fill-[#FF5E00] animate-bounce" style={{ animationDuration: '2s' }} />
             <span>{streak} {streak === 1 ? 'день' : streak < 5 ? 'дня' : 'дней'}</span>

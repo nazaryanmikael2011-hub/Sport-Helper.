@@ -35,7 +35,11 @@ export const WorkoutsView = () => {
   );
 
   const levelCategories = [
-    { id: 'recommended', label: `Рекомендовано для вас (${userLevelName}) ✨` },
+    { id: 'recommended', label: `Рекомендовано (${userLevelName}) ✨` },
+    { id: 'yoga', label: 'Йога 🧘' },
+    { id: 'boxing', label: 'Бокс 🥊' },
+    { id: 'karate', label: 'Карате 🥋' },
+    { id: 'calisthenics', label: 'Калистеника ⚡' },
     { id: 'beginner', label: 'Начинающий 🟢' },
     { id: 'intermediate', label: 'Средний 🟡' },
     { id: 'advanced', label: 'Продвинутый 🔴' },
@@ -46,6 +50,18 @@ export const WorkoutsView = () => {
     if (activeCategory === 'recommended') {
       // Prioritize workouts matching user level or user goal
       return w.levelKey === userLevel || (profile.goal === 'lose_weight' ? w.goalTag === 'lose_weight' : w.goalTag === 'gain_muscle');
+    }
+    if (activeCategory === 'yoga') {
+      return w.category === 'Йога';
+    }
+    if (activeCategory === 'boxing') {
+      return w.category === 'Бокс';
+    }
+    if (activeCategory === 'karate') {
+      return w.category === 'Карате';
+    }
+    if (activeCategory === 'calisthenics') {
+      return w.category.includes('воркаут') || w.category.includes('Калистеника') || w.id.includes('calisthenics') || w.id.includes('planche') || w.id.includes('lsit') || w.id.includes('muscleup');
     }
     if (activeCategory === 'beginner') {
       return w.levelKey === 'beginner';

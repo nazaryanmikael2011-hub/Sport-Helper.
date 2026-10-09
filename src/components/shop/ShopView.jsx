@@ -22,8 +22,13 @@ export const ShopView = ({ onOpenCart }) => {
 
   // Smart Recommendations tailored to user goal:
   // If gain_muscle: pull-up bar (турник), bands (резинки), protein, dumbbells, parallettes, creatine
-  // If lose_weight: speed rope (скакалка), fat burner (L-карнитин), yoga mat, rashguard
+  // If lose_weight / boxing: speed rope (скакалка), fat burner (L-карнитин), yoga mat, rashguard
   const recommendedProducts = mockShopProducts.filter((product) => {
+    if (product.recommendedGoals && Array.isArray(product.recommendedGoals)) {
+      if (product.recommendedGoals.includes(profile.goal) || product.recommendedGoals.includes('all')) {
+        return true;
+      }
+    }
     return product.recommendedGoal === profile.goal || product.recommendedGoal === 'all';
   });
 
@@ -48,20 +53,20 @@ export const ShopView = ({ onOpenCart }) => {
                 Умная рекомендация
               </span>
               <span className="text-xs text-neutral-400 font-semibold">
-                Под цель: {profile.goal === 'gain_muscle' ? 'Набор массы & Воркаут' : 'Похудение & Рельеф'}
+                Под цель: {profile.goal === 'gain_muscle' ? 'Набор массы & Воркаут' : profile.goal === 'boxing' ? 'Бокс & Выносливость' : 'Похудение & Рельеф'}
               </span>
             </div>
 
             <h2 className="text-xl sm:text-2xl font-black text-white tracking-tight">
               {profile.goal === 'gain_muscle'
                 ? 'Рекомендуем для калистеники, турников и набора массы'
-                : 'Рекомендуем для жиросжигания, кардио и сушки'}
+                : 'Рекомендуем для жиросжигания, бокса и взрывного кардио'}
             </h2>
 
             <p className="text-xs sm:text-sm text-neutral-300 mt-1 max-w-xl">
               {profile.goal === 'gain_muscle'
                 ? 'Прогрессируй в подтягиваниях, L-sit и Tuck Planche с надежным турником, петлями сопротивления и качественным протеином.'
-                : 'Повышай расход калорий на кардио со скоростной скакалкой, матом для растяжки и термогенным L-карнитином.'}
+                : 'Увеличивай выносливость и расход калорий со скоростной скакалкой Pro, матом для растяжки и термогенным L-карнитином.'}
             </p>
           </div>
 
