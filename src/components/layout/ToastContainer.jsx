@@ -34,7 +34,7 @@ export const ToastContainer = () => {
   };
 
   return (
-    <div className="fixed bottom-20 sm:bottom-6 right-3 sm:right-6 z-50 pointer-events-none flex flex-col-reverse gap-2 max-w-[280px] sm:max-w-[310px] w-full">
+    <div className="fixed bottom-24 sm:bottom-6 right-3 sm:right-6 z-[70] pointer-events-none flex flex-col-reverse gap-2 max-w-[280px] sm:max-w-[310px] w-full">
       <AnimatePresence>
         {toasts.map((toast) => (
           <motion.div
