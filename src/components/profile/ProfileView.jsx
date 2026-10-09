@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { motion } from 'framer-motion';
+import React, { useState, useEffect } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { 
   User, 
   Award, 
@@ -14,11 +14,17 @@ import {
   Lock, 
   ShoppingBag,
   Zap,
-  Edit2
+  Edit2,
+  CheckCircle,
+  Trophy,
+  Target,
+  Sparkles,
+  Save,
+  X
 } from 'lucide-react';
 import { useFitness } from '../../context/FitnessContext';
 import { mockBadges } from '../../data/mockBadges';
-import { calculateBMI } from '../../utils/calculations';
+import { calculateBMI, calculateDailyTargets } from '../../utils/calculations';
 import { formatCurrency } from '../../utils/formatters';
 
 import { AvatarUploader } from './AvatarUploader';
@@ -32,25 +38,75 @@ export const ProfileView = ({ onOpenOnboarding, onOpenAuth }) => {
     streak, 
     unlockedBadgeIds, 
     orderHistory,
-    updateProfile, 
+    updateFullProfile, 
     logout, 
     resetDemoState 
   } = useFitness();
 
   const [isEditing, setIsEditing] = useState(false);
   const [editForm, setEditForm] = useState({
-    weight: profile.weight,
-    targetWeight: profile.targetWeight,
-    height: profile.height,
-    age: profile.age,
-    goal: profile.goal
+    name: user.name || '',
+    age: profile.age || 25,
+    height: profile.height || 178,
+    weight: profile.weight || 75,
+    targetWeight: profile.targetWeight || 72,
+    goal: profile.goal || 'gain_muscle',
+    fitnessLevel: profile.fitnessLevel || 'intermediate',
   });
+
+  // Keep form in sync when profile updates
+  useEffect(() => {
+    setEditForm({
+      name: user.name || '',
+      age: profile.age || 25,
+      height: profile.height || 178,
+      weight: profile.weight || 75,
+      targetWeight: profile.targetWeight || 72,
+      goal: profile.goal || 'gain_muscle',
+      fitnessLevel: profile.fitnessLevel || 'intermediate',
+    });
+  }, [user.name, profile]);
 
   const bmi = calculateBMI(profile.weight, profile.height);
 
+  // Live preview targets based on edited values
+  const previewTargets = calculateDailyTargets({
+    weight: editForm.weight,
+    height: editForm.height,
+    age: editForm.age,
+    gender: profile.gender || 'male',
+    goal: editForm.goal,
+    activityLevel: profile.activityLevel || 1.4,
+  });
+
+  const levelBadges = {
+    beginner: { name: 'Начинающий', color: '#38BDF8', bg: '#38BDF815' },
+    intermediate: { name: 'Средний', color: '#00FF85', bg: '#00FF8515' },
+    advanced: { name: 'Продвинутый', color: '#FF5E00', bg: '#FF5E0015' }
+  };
+
+  const currentLevelBadge = levelBadges[profile.fitnessLevel] || levelBadges.intermediate;
+
   const handleSave = (e) => {
     e.preventDefault();
-    updateProfile(editForm);
+
+    const levelNamesMap = {
+      beginner: 'Начинающий',
+      intermediate: 'Средний',
+      advanced: 'Продвинутый',
+    };
+
+    updateFullProfile({
+      name: editForm.name.trim() || user.name,
+      age: Math.max(5, parseInt(editForm.age, 10) || profile.age),
+      height: parseFloat(editForm.height) || profile.height,
+      weight: parseFloat(editForm.weight) || profile.weight,
+      targetWeight: parseFloat(editForm.targetWeight) || profile.targetWeight,
+      goal: editForm.goal,
+      fitnessLevel: editForm.fitnessLevel,
+      fitnessLevelName: levelNamesMap[editForm.fitnessLevel] || 'Средний',
+    });
+
     setIsEditing(false);
   };
 
@@ -60,24 +116,34 @@ export const ProfileView = ({ onOpenOnboarding, onOpenAuth }) => {
       <div className="glass-card rounded-3xl p-6 sm:p-8 border border-white/5 relative overflow-hidden">
         <div className="absolute top-0 right-0 w-72 h-72 bg-[#00FF85]/10 rounded-full blur-3xl pointer-events-none" />
 
-        <div className="flex flex-col sm:flex-row items-center sm:items-center justify-between gap-6">
-          <div className="flex flex-col sm:flex-row items-center sm:items-center gap-5 text-center sm:text-left">
+        <div className="flex flex-col sm:flex-row items-center justify-between gap-6">
+          <div className="flex flex-col sm:flex-row items-center gap-5 text-center sm:text-left">
             <AvatarUploader size="md" />
 
             <div>
-              <div className="flex items-center gap-2">
+              <div className="flex flex-wrap items-center justify-center sm:justify-start gap-2">
                 <h2 className="text-xl sm:text-2xl font-black text-white">
                   {user.name}
                 </h2>
-                <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-[#00FF85]/15 text-[#00FF85] border border-[#00FF85]/30">
+                <span className="text-[10px] font-bold px-2.5 py-0.5 rounded-full bg-[#00FF85]/15 text-[#00FF85] border border-[#00FF85]/30">
                   {levelInfo.title}
+                </span>
+                <span 
+                  className="text-[10px] font-black uppercase px-2.5 py-0.5 rounded-full border"
+                  style={{
+                    backgroundColor: currentLevelBadge.bg,
+                    color: currentLevelBadge.color,
+                    borderColor: `${currentLevelBadge.color}40`
+                  }}
+                >
+                  Уровень: {currentLevelBadge.name}
                 </span>
               </div>
               <p className="text-xs text-neutral-400 mt-0.5">
                 {user.email}
               </p>
 
-              <div className="flex items-center gap-3 mt-2 text-xs font-semibold">
+              <div className="flex flex-wrap items-center justify-center sm:justify-start gap-3 mt-2 text-xs font-semibold">
                 <span className="text-[#FF5E00] flex items-center gap-1">
                   <Flame className="w-3.5 h-3.5 fill-[#FF5E00]" />
                   {streak} дней стрик
@@ -87,6 +153,10 @@ export const ProfileView = ({ onOpenOnboarding, onOpenAuth }) => {
                   <Zap className="w-3.5 h-3.5" />
                   Уровень {levelInfo.level}
                 </span>
+                <span className="text-neutral-500">•</span>
+                <span className="text-neutral-300">
+                  {profile.age} лет
+                </span>
               </div>
             </div>
           </div>
@@ -95,92 +165,201 @@ export const ProfileView = ({ onOpenOnboarding, onOpenAuth }) => {
           <div className="flex items-center gap-2 w-full sm:w-auto">
             <button
               onClick={() => setIsEditing(!isEditing)}
-              className="flex-1 sm:flex-none px-4 py-2.5 rounded-xl bg-white/5 hover:bg-white/10 text-white font-bold text-xs flex items-center justify-center gap-1.5 border border-white/10 transition-colors"
+              className={`flex-1 sm:flex-none px-4 py-2.5 rounded-xl font-bold text-xs flex items-center justify-center gap-1.5 border transition-all ${
+                isEditing
+                  ? 'bg-white/10 text-white border-white/20'
+                  : 'bg-gradient-to-r from-[#00FF85]/20 to-[#10B981]/20 hover:brightness-125 text-[#00FF85] border-[#00FF85]/40 shadow-neon-green'
+              }`}
             >
-              <Edit2 className="w-3.5 h-3.5" />
-              <span>{isEditing ? 'Отмена' : 'Редактировать параметры'}</span>
+              {isEditing ? <X className="w-3.5 h-3.5" /> : <Edit2 className="w-3.5 h-3.5" />}
+              <span>{isEditing ? 'Закрыть редактор' : 'Редактировать профиль'}</span>
             </button>
 
             <button
               onClick={onOpenOnboarding}
-              className="flex-1 sm:flex-none px-4 py-2.5 rounded-xl bg-[#00FF85]/15 hover:bg-[#00FF85]/25 text-[#00FF85] font-bold text-xs border border-[#00FF85]/30 transition-colors"
+              className="flex-1 sm:flex-none px-4 py-2.5 rounded-xl bg-white/5 hover:bg-white/10 text-neutral-300 font-bold text-xs border border-white/10 transition-colors"
             >
               Пройти опрос заново
             </button>
           </div>
         </div>
 
-        {/* Edit Parameters Form Drawer */}
-        {isEditing && (
-          <motion.form
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: 'auto' }}
-            exit={{ opacity: 0, height: 0 }}
-            onSubmit={handleSave}
-            className="mt-6 pt-6 border-t border-white/10 grid grid-cols-2 sm:grid-cols-5 gap-3"
-          >
-            <div>
-              <label className="text-[10px] uppercase font-bold text-neutral-400 block mb-1">
-                Текущий вес (кг)
-              </label>
-              <input
-                type="number"
-                step="0.1"
-                value={editForm.weight}
-                onChange={(e) => setEditForm({ ...editForm, weight: parseFloat(e.target.value) || 0 })}
-                className="w-full bg-[#1A1A24] border border-white/10 rounded-xl px-3 py-2 text-sm text-white focus:outline-none focus:border-[#00FF85]"
-              />
-            </div>
+        {/* FULL PROFILE EDITING FORM DRAWER */}
+        <AnimatePresence>
+          {isEditing && (
+            <motion.form
+              initial={{ opacity: 0, height: 0 }}
+              animate={{ opacity: 1, height: 'auto' }}
+              exit={{ opacity: 0, height: 0 }}
+              onSubmit={handleSave}
+              className="mt-6 pt-6 border-t border-white/10 space-y-4"
+            >
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <Edit2 className="w-4 h-4 text-[#00FF85]" />
+                  <h3 className="text-sm font-black text-white uppercase tracking-wider">
+                    Полное редактирование данных профиля
+                  </h3>
+                </div>
+                <span className="text-[11px] text-neutral-400">
+                  Возраст доступен от 5 лет • Мгновенный пересчет калорий
+                </span>
+              </div>
 
-            <div>
-              <label className="text-[10px] uppercase font-bold text-neutral-400 block mb-1">
-                Целевой вес (кг)
-              </label>
-              <input
-                type="number"
-                step="0.1"
-                value={editForm.targetWeight}
-                onChange={(e) => setEditForm({ ...editForm, targetWeight: parseFloat(e.target.value) || 0 })}
-                className="w-full bg-[#1A1A24] border border-white/10 rounded-xl px-3 py-2 text-sm text-white focus:outline-none focus:border-[#00FF85]"
-              />
-            </div>
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5">
+                {/* 1. Name */}
+                <div>
+                  <label className="text-[10px] uppercase font-bold text-neutral-300 block mb-1">
+                    Имя пользователя
+                  </label>
+                  <input
+                    type="text"
+                    required
+                    value={editForm.name}
+                    onChange={(e) => setEditForm({ ...editForm, name: e.target.value })}
+                    placeholder="Ваше имя"
+                    className="w-full bg-[#1A1A24] border border-white/10 rounded-xl px-3 py-2 text-sm text-white focus:outline-none focus:border-[#00FF85]"
+                  />
+                </div>
 
-            <div>
-              <label className="text-[10px] uppercase font-bold text-neutral-400 block mb-1">
-                Рост (см)
-              </label>
-              <input
-                type="number"
-                value={editForm.height}
-                onChange={(e) => setEditForm({ ...editForm, height: parseInt(e.target.value, 10) || 0 })}
-                className="w-full bg-[#1A1A24] border border-white/10 rounded-xl px-3 py-2 text-sm text-white focus:outline-none focus:border-[#00FF85]"
-              />
-            </div>
+                {/* 2. Age (from 5 years old) */}
+                <div>
+                  <label className="text-[10px] uppercase font-bold text-neutral-300 block mb-1">
+                    Возраст (лет) <span className="text-emerald-400 font-normal">от 5 лет</span>
+                  </label>
+                  <input
+                    type="number"
+                    min="5"
+                    max="99"
+                    required
+                    value={editForm.age}
+                    onChange={(e) => {
+                      const val = parseInt(e.target.value, 10);
+                      setEditForm({ ...editForm, age: isNaN(val) ? 5 : Math.max(5, val) });
+                    }}
+                    className="w-full bg-[#1A1A24] border border-white/10 rounded-xl px-3 py-2 text-sm text-white focus:outline-none focus:border-[#00FF85]"
+                  />
+                </div>
 
-            <div>
-              <label className="text-[10px] uppercase font-bold text-neutral-400 block mb-1">
-                Цель
-              </label>
-              <select
-                value={editForm.goal}
-                onChange={(e) => setEditForm({ ...editForm, goal: e.target.value })}
-                className="w-full bg-[#1A1A24] border border-white/10 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-[#00FF85]"
-              >
-                <option value="gain_muscle">Набор массы / Сила</option>
-                <option value="lose_weight">Похудение / Рельеф</option>
-              </select>
-            </div>
+                {/* 3. Height */}
+                <div>
+                  <label className="text-[10px] uppercase font-bold text-neutral-300 block mb-1">
+                    Рост (см)
+                  </label>
+                  <input
+                    type="number"
+                    min="90"
+                    max="230"
+                    required
+                    value={editForm.height}
+                    onChange={(e) => setEditForm({ ...editForm, height: parseInt(e.target.value, 10) || 170 })}
+                    className="w-full bg-[#1A1A24] border border-white/10 rounded-xl px-3 py-2 text-sm text-white focus:outline-none focus:border-[#00FF85]"
+                  />
+                </div>
 
-            <div className="col-span-2 sm:col-span-1 flex items-end">
-              <button
-                type="submit"
-                className="w-full py-2.5 rounded-xl bg-[#00FF85] hover:bg-[#00FF85]/90 text-black font-extrabold text-xs shadow-neon-green transition-all"
-              >
-                Сохранить
-              </button>
-            </div>
-          </motion.form>
-        )}
+                {/* 4. Current Weight */}
+                <div>
+                  <label className="text-[10px] uppercase font-bold text-neutral-300 block mb-1">
+                    Текущий вес (кг)
+                  </label>
+                  <input
+                    type="number"
+                    step="0.1"
+                    min="15"
+                    max="200"
+                    required
+                    value={editForm.weight}
+                    onChange={(e) => setEditForm({ ...editForm, weight: parseFloat(e.target.value) || 70 })}
+                    className="w-full bg-[#1A1A24] border border-white/10 rounded-xl px-3 py-2 text-sm text-white focus:outline-none focus:border-[#00FF85]"
+                  />
+                </div>
+
+                {/* 5. Target Weight */}
+                <div>
+                  <label className="text-[10px] uppercase font-bold text-neutral-300 block mb-1">
+                    Целевой вес (кг)
+                  </label>
+                  <input
+                    type="number"
+                    step="0.1"
+                    min="15"
+                    max="200"
+                    required
+                    value={editForm.targetWeight}
+                    onChange={(e) => setEditForm({ ...editForm, targetWeight: parseFloat(e.target.value) || 70 })}
+                    className="w-full bg-[#1A1A24] border border-white/10 rounded-xl px-3 py-2 text-sm text-white focus:outline-none focus:border-[#00FF85]"
+                  />
+                </div>
+
+                {/* 6. Main Goal */}
+                <div>
+                  <label className="text-[10px] uppercase font-bold text-neutral-300 block mb-1">
+                    Главная цель
+                  </label>
+                  <select
+                    value={editForm.goal}
+                    onChange={(e) => setEditForm({ ...editForm, goal: e.target.value })}
+                    className="w-full bg-[#1A1A24] border border-white/10 rounded-xl px-3 py-2.5 text-xs text-white focus:outline-none focus:border-[#00FF85]"
+                  >
+                    <option value="gain_muscle">Набор массы & Гипертрофия (+15% ккал)</option>
+                    <option value="lose_weight">Похудение & Рельеф (-20% ккал)</option>
+                    <option value="calisthenics_strength">Сила и калистеника (L-sit / Planche)</option>
+                  </select>
+                </div>
+
+                {/* 7. Fitness Level */}
+                <div className="lg:col-span-2">
+                  <label className="text-[10px] uppercase font-bold text-neutral-300 block mb-1">
+                    Уровень подготовки
+                  </label>
+                  <select
+                    value={editForm.fitnessLevel}
+                    onChange={(e) => setEditForm({ ...editForm, fitnessLevel: e.target.value })}
+                    className="w-full bg-[#1A1A24] border border-white/10 rounded-xl px-3 py-2.5 text-xs text-white focus:outline-none focus:border-[#00FF85]"
+                  >
+                    <option value="beginner">Начинающий (Базовые отжимания, приседания, планка)</option>
+                    <option value="intermediate">Средний (Подтягивания, брусья, L-sit, алмазные отжимания)</option>
+                    <option value="advanced">Продвинутый (Tuck Planche, выходы силой, тяжелые веса)</option>
+                  </select>
+                </div>
+              </div>
+
+              {/* Dynamic Live Nutrients Preview */}
+              <div className="p-3.5 rounded-2xl bg-white/[0.03] border border-white/5 flex flex-wrap items-center justify-between gap-3 text-xs">
+                <div className="flex items-center gap-2">
+                  <Sparkles className="w-4 h-4 text-[#00FF85]" />
+                  <span className="text-neutral-300">
+                    Пересчитанная дневная норма: <strong className="text-white">{previewTargets.calories} ккал</strong>
+                  </span>
+                </div>
+                <div className="flex items-center gap-3 text-neutral-400">
+                  <span>Белки: <strong className="text-sky-400">{previewTargets.protein}г</strong></span>
+                  <span>Жиры: <strong className="text-[#FF5E00]">{previewTargets.fats}г</strong></span>
+                  <span>Углеводы: <strong className="text-[#00FF85]">{previewTargets.carbs}г</strong></span>
+                </div>
+              </div>
+
+              {/* Form submit actions */}
+              <div className="flex items-center justify-end gap-3 pt-2">
+                <button
+                  type="button"
+                  onClick={() => setIsEditing(false)}
+                  className="px-4 py-2.5 rounded-xl bg-white/5 hover:bg-white/10 text-neutral-300 font-bold text-xs transition-colors"
+                >
+                  Отмена
+                </button>
+
+                <button
+                  type="submit"
+                  className="px-6 py-2.5 rounded-xl bg-gradient-to-r from-[#00FF85] to-[#10B981] hover:brightness-110 text-black font-black text-xs flex items-center gap-1.5 shadow-neon-green transition-all"
+                >
+                  <Save className="w-4 h-4 stroke-[2.5]" />
+                  <span>Сохранить изменения</span>
+                </button>
+              </div>
+            </motion.form>
+          )}
+        </AnimatePresence>
       </div>
 
       {/* Metrics Cards Grid */}
@@ -194,7 +373,7 @@ export const ProfileView = ({ onOpenOnboarding, onOpenAuth }) => {
             {profile.weight} <span className="text-xs text-neutral-400">→ {profile.targetWeight} кг</span>
           </div>
           <span className="text-[11px] text-[#00FF85] font-semibold mt-1 block">
-            {profile.goal === 'gain_muscle' ? 'Набор мышечной массы' : 'Снижение жира'}
+            {profile.goal === 'gain_muscle' ? 'Набор мышечной массы' : profile.goal === 'calisthenics_strength' ? 'Калистеника & Сила' : 'Снижение жира'}
           </span>
         </div>
 
@@ -207,17 +386,20 @@ export const ProfileView = ({ onOpenOnboarding, onOpenAuth }) => {
             {profile.height} см
           </div>
           <span className="text-[11px] text-neutral-400 font-medium mt-1 block">
-            {profile.age} лет • ИМТ {bmi.bmi}
+            {profile.age} лет • ИМТ {bmi.bmi} ({bmi.label})
           </span>
         </div>
 
         <div className="p-4 rounded-2xl glass-card border border-white/5">
           <div className="flex items-center gap-1.5 text-xs text-neutral-400 mb-1">
-            <Activity className="w-4 h-4 text-[#FF5E00]" />
-            <span>Метаболизм (BMR)</span>
+            <Trophy className="w-4 h-4 text-[#FF5E00]" />
+            <span>Уровень подготовки</span>
           </div>
-          <div className="text-xl font-black text-white">
-            {dailyTargets.bmr} <span className="text-xs text-neutral-400">ккал</span>
+          <div 
+            className="text-xl font-black"
+            style={{ color: currentLevelBadge.color }}
+          >
+            {currentLevelBadge.name}
           </div>
           <span className="text-[11px] text-neutral-400 font-medium mt-1 block">
             TDEE расход: {dailyTargets.tdee} ккал

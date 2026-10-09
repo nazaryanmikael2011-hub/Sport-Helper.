@@ -21,7 +21,16 @@ const initialDefaultState = {
     height: 180,
     age: 26,
     gender: 'male',
-    goal: 'gain_muscle', // 'gain_muscle' | 'lose_weight'
+    goal: 'gain_muscle', // 'gain_muscle' | 'lose_weight' | 'calisthenics_strength'
+    fitnessLevel: 'intermediate', // 'beginner' | 'intermediate' | 'advanced'
+    fitnessLevelName: 'Средний',
+    strengthTest: {
+      pushups: 25,
+      pullups: 8,
+      squats: 35,
+      crunches: 25,
+      dips: 10
+    },
     activityLevel: 1.4,
     isOnboarded: true,
   },
@@ -408,8 +417,69 @@ export const FitnessProvider = ({ children }) => {
     addToast('Профиль обновлен', 'Новые нормы питания пересчитаны', 'success');
   };
 
+  const updateFullProfile = ({ name, email, age, height, weight, targetWeight, goal, fitnessLevel, fitnessLevelName, strengthTest }) => {
+    setState((prev) => {
+      const updatedUser = {
+        ...prev.user,
+        ...(name && { name }),
+        ...(email && { email }),
+      };
+
+      const updatedWeight = weight !== undefined ? parseFloat(weight) || prev.profile.weight : prev.profile.weight;
+      const parsedAge = age !== undefined ? Math.max(5, parseInt(age, 10) || prev.profile.age) : prev.profile.age;
+
+      const levelNamesMap = {
+        beginner: 'Начинающий',
+        intermediate: 'Средний',
+        advanced: 'Продвинутый',
+      };
+
+      const finalLevelName = fitnessLevelName || (fitnessLevel ? levelNamesMap[fitnessLevel] : prev.profile.fitnessLevelName) || 'Средний';
+
+      const updatedProfile = {
+        ...prev.profile,
+        age: parsedAge,
+        ...(height !== undefined && { height: parseFloat(height) || prev.profile.height }),
+        ...(weight !== undefined && { weight: updatedWeight }),
+        ...(targetWeight !== undefined && { targetWeight: parseFloat(targetWeight) || prev.profile.targetWeight }),
+        ...(goal && { goal }),
+        ...(fitnessLevel && { fitnessLevel }),
+        fitnessLevelName: finalLevelName,
+        ...(strengthTest && { strengthTest: { ...prev.profile.strengthTest, ...strengthTest } }),
+      };
+
+      // Add to weight history if weight changed significantly
+      let newWeightHistory = prev.weightHistory;
+      if (weight && Math.abs(updatedWeight - prev.profile.weight) >= 0.1) {
+        const todayStr = new Intl.DateTimeFormat('ru-RU', { day: 'numeric', month: 'short' }).format(new Date());
+        newWeightHistory = [...prev.weightHistory, { date: todayStr, weight: updatedWeight }];
+      }
+
+      return {
+        ...prev,
+        user: updatedUser,
+        profile: updatedProfile,
+        weightHistory: newWeightHistory,
+      };
+    });
+
+    awardXp(35, 'За актуализацию личных данных профиля');
+    addToast('Изменения сохранены! ⚡', 'Личные данные обновлены, калории и тренировки пересчитаны.', 'success', 4500);
+  };
+
   const finishOnboarding = (surveyData) => {
     const updatedWeight = parseFloat(surveyData.weight) || state.profile.weight;
+    const userAge = Math.max(5, parseInt(surveyData.age, 10) || 20);
+
+    const levelNamesMap = {
+      beginner: 'Начинающий',
+      intermediate: 'Средний',
+      advanced: 'Продвинутый',
+    };
+
+    const finalLevel = surveyData.fitnessLevel || 'intermediate';
+    const finalLevelName = surveyData.fitnessLevelName || levelNamesMap[finalLevel] || 'Средний';
+
     setState((prev) => ({
       ...prev,
       user: {
@@ -422,8 +492,11 @@ export const FitnessProvider = ({ children }) => {
         weight: updatedWeight,
         targetWeight: parseFloat(surveyData.targetWeight) || prev.profile.targetWeight,
         height: parseFloat(surveyData.height) || prev.profile.height,
-        age: parseInt(surveyData.age, 10) || prev.profile.age,
+        age: userAge,
         goal: surveyData.goal || prev.profile.goal,
+        fitnessLevel: finalLevel,
+        fitnessLevelName: finalLevelName,
+        strengthTest: surveyData.strengthTest || prev.profile.strengthTest,
         isOnboarded: true
       },
       weightHistory: [
@@ -434,8 +507,8 @@ export const FitnessProvider = ({ children }) => {
         }
       ]
     }));
-    awardXp(100, 'За завершение онбординга');
-    addToast('Профиль атлета сформирован! 🎯', 'Программа тренировок и меню адаптированы под твою цель.', 'success', 5000);
+    awardXp(100, 'За завершение тестирования и онбординга');
+    addToast('Профиль атлета сформирован! 🎯', `Уровень "${finalLevelName}" присвоен. Тренировки и нормы адаптированы!`, 'success', 5000);
   };
 
   const addWeightEntry = (weightValue) => {
@@ -676,6 +749,7 @@ export const FitnessProvider = ({ children }) => {
         loadDemoUser,
         logout,
         updateProfile,
+        updateFullProfile,
         finishOnboarding,
         addWeightEntry,
         addMealItem,

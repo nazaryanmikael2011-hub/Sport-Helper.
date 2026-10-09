@@ -50,16 +50,19 @@ export const DashboardView = ({ setActiveTab }) => {
           <AvatarUploader size="md" />
 
           <div className="space-y-1">
-            <div className="flex items-center justify-center sm:justify-start gap-2">
+            <div className="flex flex-wrap items-center justify-center sm:justify-start gap-2">
               <h2 className="text-xl sm:text-2xl font-black text-white">
                 {user.name}
               </h2>
               <span className="text-[10px] font-black px-2 py-0.5 rounded-full bg-[#00FF85]/15 text-[#00FF85] border border-[#00FF85]/30">
                 PRO Атлет
               </span>
+              <span className="text-[10px] font-black uppercase px-2.5 py-0.5 rounded-full bg-sky-500/15 text-sky-400 border border-sky-500/30">
+                {profile.fitnessLevelName || (profile.fitnessLevel === 'advanced' ? 'Продвинутый' : profile.fitnessLevel === 'beginner' ? 'Начинающий' : 'Средний')}
+              </span>
             </div>
             <p className="text-xs text-neutral-400">
-              {user.email}
+              {user.email} • {profile.age} лет
             </p>
             <div className="flex flex-wrap items-center justify-center sm:justify-start gap-3 pt-1 text-xs font-semibold text-neutral-300">
               <span className="flex items-center gap-1 text-[#FF5E00]">
@@ -74,9 +77,9 @@ export const DashboardView = ({ setActiveTab }) => {
           </div>
         </div>
 
-        {/* Right side target summary */}
-        <div className="flex items-center gap-3 w-full md:w-auto justify-center md:justify-end">
-          <div className="p-3.5 rounded-2xl bg-white/[0.03] border border-white/5 text-center sm:text-right min-w-[140px]">
+        {/* Right side target summary & Edit Profile button */}
+        <div className="flex flex-col sm:flex-row items-center gap-3 w-full md:w-auto justify-center md:justify-end">
+          <div className="p-3 rounded-2xl bg-white/[0.03] border border-white/5 text-center sm:text-right min-w-[140px]">
             <span className="text-[10px] text-neutral-400 uppercase font-bold block">
               Текущая цель
             </span>
@@ -87,6 +90,15 @@ export const DashboardView = ({ setActiveTab }) => {
               Целевой вес: {profile.targetWeight} кг
             </span>
           </div>
+
+          <button
+            onClick={() => setActiveTab('profile')}
+            className="w-full sm:w-auto px-4 py-2.5 rounded-xl bg-white/5 hover:bg-white/10 text-neutral-200 border border-white/10 text-xs font-bold transition-all flex items-center justify-center gap-1.5"
+            title="Перейти к редактированию всех параметров профиля"
+          >
+            <span>Редактировать</span>
+            <ArrowRight className="w-3.5 h-3.5" />
+          </button>
         </div>
       </div>
 

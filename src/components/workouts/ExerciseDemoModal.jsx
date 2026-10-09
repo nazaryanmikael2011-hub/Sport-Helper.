@@ -14,9 +14,10 @@ import {
   Sparkles, 
   Info, 
   ShieldAlert, 
-  Volume2, 
-  VolumeX,
-  Maximize2
+  ChevronLeft,
+  ChevronRight,
+  Layers,
+  Image as ImageIcon
 } from 'lucide-react';
 import confetti from 'canvas-confetti';
 import { useFitness } from '../../context/FitnessContext';
@@ -24,9 +25,9 @@ import { useFitness } from '../../context/FitnessContext';
 export const ExerciseDemoModal = ({ exercise, isOpen, onClose }) => {
   const { awardXp, addToast } = useFitness();
 
-  // Video player simulation state
-  const [isPlayingVideo, setIsPlayingVideo] = useState(true);
-  const [videoLoopTime, setVideoLoopTime] = useState(0);
+  // Active step/phase index (0, 1, 2)
+  const [activePhaseIndex, setActivePhaseIndex] = useState(0);
+  const [imgErrorMap, setImgErrorMap] = useState({});
 
   // Set & Reps / Timer state
   const isStatic = exercise?.isStatic ?? false;
@@ -43,16 +44,33 @@ export const ExerciseDemoModal = ({ exercise, isOpen, onClose }) => {
   const [currentSet, setCurrentSet] = useState(1);
   const totalSets = 4;
 
-  // Video looping tick simulation
-  useEffect(() => {
-    let interval = null;
-    if (isOpen && isPlayingVideo) {
-      interval = setInterval(() => {
-        setVideoLoopTime((prev) => (prev >= 6 ? 0 : +(prev + 0.5).toFixed(1)));
-      }, 500);
+  // Fallback phases if exercise does not declare custom phases
+  const defaultPhases = [
+    {
+      phaseNumber: 1,
+      badge: 'Фаза 1: Старт',
+      title: 'Исходное положение (Стартовая позиция)',
+      description: 'Займите устойчивое исходное положение. Мышцы кора и лопатки зафиксированы, дыхание ровное.',
+      image: exercise?.poster || 'https://images.unsplash.com/photo-1517838277536-f5f99be501cd?auto=format&fit=crop&w=800&q=80',
+    },
+    {
+      phaseNumber: 2,
+      badge: 'Фаза 2: Движение',
+      title: 'Фаза активного движения (Эксцентрика / Концентрика)',
+      description: 'Подконтрольно выполняйте движение без рывков, сохраняя постоянное натяжение в рабочих мышцах.',
+      image: 'https://images.unsplash.com/photo-1581009146145-b5ef050c2e1e?auto=format&fit=crop&w=800&q=80',
+    },
+    {
+      phaseNumber: 3,
+      badge: 'Фаза 3: Пик',
+      title: 'Пиковое сокращение мышц (Фиксация)',
+      description: 'Максимально прожмите целевую мышечную группу в конечной точке траектории с фиксацией на 1 секунду.',
+      image: 'https://images.unsplash.com/photo-1534438327276-14e5300c3a48?auto=format&fit=crop&w=800&q=80',
     }
-    return () => clearInterval(interval);
-  }, [isOpen, isPlayingVideo]);
+  ];
+
+  const phases = exercise?.phases && exercise.phases.length > 0 ? exercise.phases : defaultPhases;
+  const currentPhase = phases[activePhaseIndex] || phases[0];
 
   // Static countdown / countup timer
   useEffect(() => {
@@ -61,7 +79,6 @@ export const ExerciseDemoModal = ({ exercise, isOpen, onClose }) => {
       timerInterval = setInterval(() => {
         setStaticSeconds((prev) => {
           if (prev >= targetVal) {
-            // Reached goal!
             setIsTimerRunning(false);
             try {
               confetti({
@@ -87,11 +104,20 @@ export const ExerciseDemoModal = ({ exercise, isOpen, onClose }) => {
       setStaticSeconds(0);
       setIsTimerRunning(false);
       setCurrentSet(1);
-      setIsPlayingVideo(true);
+      setActivePhaseIndex(0);
+      setImgErrorMap({});
     }
   }, [exercise]);
 
   if (!isOpen || !exercise) return null;
+
+  const handleNextPhase = () => {
+    setActivePhaseIndex((prev) => (prev + 1) % phases.length);
+  };
+
+  const handlePrevPhase = () => {
+    setActivePhaseIndex((prev) => (prev - 1 + phases.length) % phases.length);
+  };
 
   const handleFinishSet = () => {
     try {
@@ -116,7 +142,6 @@ export const ExerciseDemoModal = ({ exercise, isOpen, onClose }) => {
 
     if (currentSet < totalSets) {
       setCurrentSet((prev) => prev + 1);
-      // Reset for next set
       setStaticSeconds(0);
       setIsTimerRunning(false);
     } else {
@@ -139,16 +164,10 @@ export const ExerciseDemoModal = ({ exercise, isOpen, onClose }) => {
         initial={{ opacity: 0, scale: 0.94, y: 15 }}
         animate={{ opacity: 1, scale: 1, y: 0 }}
         exit={{ opacity: 0, scale: 0.94, y: 15 }}
-        className="relative w-full max-w-2xl bg-[#121217] border border-white/10 rounded-3xl overflow-hidden shadow-2xl flex flex-col my-auto max-h-[94vh]"
+        className="relative w-full max-w-2xl bg-[#121217] border border-white/10 rounded-3xl shadow-2xl flex flex-col my-auto max-h-[92vh] overflow-hidden"
       >
-        {/* Glow ambient */}
-        <div
-          className="absolute -top-24 right-0 w-80 h-80 rounded-full blur-3xl pointer-events-none opacity-20"
-          style={{ backgroundColor: exercise.accentColor || '#00FF85' }}
-        />
-
         {/* Top Header Bar */}
-        <div className="p-4 sm:p-5 border-b border-white/5 flex items-center justify-between gap-3 shrink-0 bg-[#121217]/80 backdrop-blur-md z-10">
+        <div className="p-4 sm:p-5 border-b border-white/5 flex items-center justify-between gap-3 shrink-0 bg-[#121217]/90 backdrop-blur-md z-10">
           <div>
             <div className="flex items-center gap-2">
               <span
@@ -162,7 +181,7 @@ export const ExerciseDemoModal = ({ exercise, isOpen, onClose }) => {
                 {exercise.category || (isStatic ? 'Статический элемент' : 'Динамика')}
               </span>
               <span className="text-xs text-neutral-400">
-                Сложность: <strong className="text-white">{exercise.difficulty || 'Средний'}</strong>
+                Уровень: <strong className="text-white">{exercise.level || 'Средний'}</strong>
               </span>
             </div>
             <h3 className="text-lg sm:text-2xl font-black text-white mt-1 leading-tight">
@@ -181,34 +200,151 @@ export const ExerciseDemoModal = ({ exercise, isOpen, onClose }) => {
 
         {/* Scrollable Body */}
         <div className="p-4 sm:p-6 flex-1 overflow-y-auto space-y-5">
-          {/* REAL RESPONSIVE HTML5 VIDEO PLAYER */}
-          <div className="relative rounded-3xl overflow-hidden border border-white/10 bg-black shadow-2xl group w-full aspect-video">
-            <video
-              key={exercise.videoUrl || exercise.id}
-              src={exercise.videoUrl || 'https://www.w3schools.com/html/mov_bbb.mp4'}
-              poster={exercise.poster}
-              controls
-              playsInline
-              preload="metadata"
-              loop={isStatic}
-              muted={isStatic}
-              autoPlay={isStatic}
-              className="w-full h-full object-cover rounded-3xl bg-neutral-950"
-            >
-              <source src={exercise.videoUrl || 'https://www.w3schools.com/html/mov_bbb.mp4'} type="video/mp4" />
-              Ваш браузер не поддерживает HTML5 видео.
-            </video>
+          {/* STEP-BY-STEP PHOTO INSTRUCTION (HERO GALLERY) */}
+          <div className="space-y-3">
+            {/* Phase Selector Tabs */}
+            <div className="flex items-center justify-between gap-2">
+              <div className="flex items-center gap-1.5 overflow-x-auto pb-1 scrollbar-none">
+                {phases.map((ph, idx) => {
+                  const isSelected = activePhaseIndex === idx;
+                  return (
+                    <button
+                      key={ph.phaseNumber || idx}
+                      onClick={() => setActivePhaseIndex(idx)}
+                      className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 whitespace-nowrap ${
+                        isSelected
+                          ? 'bg-[#00FF85] text-black shadow-neon-green font-black'
+                          : 'bg-white/5 text-neutral-400 hover:text-white hover:bg-white/10'
+                      }`}
+                    >
+                      <span>Фаза {idx + 1}</span>
+                      <span className="hidden sm:inline opacity-80">• {idx === 0 ? 'Старт' : idx === 1 ? 'Движение' : 'Пик'}</span>
+                    </button>
+                  );
+                })}
+              </div>
 
-            {/* Ambient Badges Overlay on Video */}
-            <div className="absolute top-3 left-3 pointer-events-none flex items-center gap-2">
-              <span className="text-[10px] font-black uppercase tracking-wider px-2.5 py-0.5 rounded-lg bg-black/75 text-[#00FF85] border border-[#00FF85]/30 backdrop-blur-md">
-                Видео-демонстрация
-              </span>
-              {isStatic && (
-                <span className="text-[10px] font-bold px-2 py-0.5 rounded-lg bg-black/75 text-neutral-300 backdrop-blur-md border border-white/10">
-                  Зацикленный повтор (Loop)
+              <div className="flex items-center gap-1 shrink-0">
+                <button
+                  onClick={handlePrevPhase}
+                  className="p-1.5 rounded-xl bg-white/5 hover:bg-white/10 text-neutral-300 hover:text-white transition-colors"
+                  title="Предыдущая фаза"
+                >
+                  <ChevronLeft className="w-4 h-4" />
+                </button>
+                <button
+                  onClick={handleNextPhase}
+                  className="p-1.5 rounded-xl bg-white/5 hover:bg-white/10 text-neutral-300 hover:text-white transition-colors"
+                  title="Следующая фаза"
+                >
+                  <ChevronRight className="w-4 h-4" />
+                </button>
+              </div>
+            </div>
+
+            {/* Main Active Photo Container */}
+            <div className="relative rounded-3xl overflow-hidden border border-white/10 bg-black shadow-2xl group w-full aspect-video">
+              <AnimatePresence mode="wait">
+                <motion.div
+                  key={activePhaseIndex}
+                  initial={{ opacity: 0, scale: 0.98 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 0.2 }}
+                  className="w-full h-full relative"
+                >
+                  {!imgErrorMap[activePhaseIndex] ? (
+                    <img
+                      src={currentPhase.image}
+                      alt={currentPhase.title}
+                      onError={() => {
+                        setImgErrorMap((prev) => ({ ...prev, [activePhaseIndex]: true }));
+                      }}
+                      className="w-full h-full object-cover rounded-3xl bg-neutral-900"
+                    />
+                  ) : (
+                    // Sleek graceful fallback card if image is blocked
+                    <div className="w-full h-full rounded-3xl bg-gradient-to-br from-neutral-900 via-neutral-950 to-black p-6 flex flex-col justify-between border border-white/10">
+                      <div className="flex items-center gap-2 text-[#00FF85]">
+                        <ImageIcon className="w-6 h-6" />
+                        <span className="text-xs font-black uppercase tracking-wider">
+                          Схематическая визуализация • Фаза {activePhaseIndex + 1}
+                        </span>
+                      </div>
+                      <div className="my-auto text-center space-y-2">
+                        <h4 className="text-lg font-black text-white">
+                          {currentPhase.title}
+                        </h4>
+                        <p className="text-xs text-neutral-400 max-w-md mx-auto">
+                          {currentPhase.description}
+                        </p>
+                      </div>
+                      <div className="text-[10px] text-neutral-500 uppercase tracking-widest text-center">
+                        SPORT-HELPER ATHELIC GUIDE
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Gradient shadow overlay */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-black/30 pointer-events-none" />
+
+                  {/* Top Phase Pill */}
+                  <div className="absolute top-3 left-3 flex items-center gap-2 pointer-events-none">
+                    <span className="text-[10px] font-black uppercase tracking-wider px-2.5 py-1 rounded-lg bg-black/80 text-[#00FF85] border border-[#00FF85]/40 backdrop-blur-md">
+                      {currentPhase.badge || `Фаза ${activePhaseIndex + 1} из ${phases.length}`}
+                    </span>
+                  </div>
+
+                  {/* Bottom title overlay */}
+                  <div className="absolute bottom-3 left-3 right-3 text-white pointer-events-none">
+                    <h4 className="text-sm sm:text-base font-black drop-shadow-md">
+                      {currentPhase.title}
+                    </h4>
+                  </div>
+                </motion.div>
+              </AnimatePresence>
+            </div>
+
+            {/* Active Phase Detailed Bio-mechanical Guide */}
+            <div className="p-3.5 sm:p-4 rounded-2xl bg-[#1A1A24] border border-white/5 flex items-start gap-3">
+              <div className="p-2 rounded-xl bg-[#00FF85]/15 text-[#00FF85] shrink-0 mt-0.5">
+                <Layers className="w-4 h-4" />
+              </div>
+              <div className="space-y-0.5">
+                <span className="text-[10px] font-bold text-neutral-400 uppercase tracking-wider block">
+                  Инструкция к текущей фазе:
                 </span>
-              )}
+                <p className="text-xs sm:text-sm text-neutral-200 leading-relaxed">
+                  {currentPhase.description}
+                </p>
+              </div>
+            </div>
+
+            {/* 3 Thumbnails Quick Previews */}
+            <div className="grid grid-cols-3 gap-2 pt-1">
+              {phases.map((ph, idx) => (
+                <div
+                  key={idx}
+                  onClick={() => setActivePhaseIndex(idx)}
+                  className={`p-2 rounded-xl border transition-all cursor-pointer flex flex-col justify-between ${
+                    activePhaseIndex === idx
+                      ? 'bg-white/[0.08] border-[#00FF85] shadow-neon-green'
+                      : 'bg-white/[0.02] border-white/5 hover:border-white/20'
+                  }`}
+                >
+                  <div className="flex items-center justify-between mb-1">
+                    <span className="text-[9px] font-black uppercase text-neutral-400">
+                      Этап {idx + 1}
+                    </span>
+                    {activePhaseIndex === idx && (
+                      <span className="w-1.5 h-1.5 rounded-full bg-[#00FF85]" />
+                    )}
+                  </div>
+                  <span className="text-[11px] font-bold text-white line-clamp-1">
+                    {idx === 0 ? 'Старт' : idx === 1 ? 'Движение' : 'Пик'}
+                  </span>
+                </div>
+              ))}
             </div>
           </div>
 
@@ -235,7 +371,7 @@ export const ExerciseDemoModal = ({ exercise, isOpen, onClose }) => {
             <div className="flex items-center gap-2">
               <Sparkles className="w-4 h-4 text-[#00FF85]" />
               <h4 className="text-sm font-bold text-white uppercase tracking-wider">
-                Техника выполнения
+                Пошаговая техника упражнения
               </h4>
             </div>
 
@@ -278,7 +414,7 @@ export const ExerciseDemoModal = ({ exercise, isOpen, onClose }) => {
               </span>
             </div>
 
-            {/* If STATIC (like Tuck Planche, L-sit, Plank): Big interactive stopwatch */}
+            {/* If STATIC (like Tuck Planche, L-sit, Plank Lean): Big interactive stopwatch */}
             {isStatic ? (
               <div className="flex flex-col items-center justify-center py-2">
                 <div className="relative flex items-center justify-center mb-3">
@@ -323,7 +459,7 @@ export const ExerciseDemoModal = ({ exercise, isOpen, onClose }) => {
                 </div>
               </div>
             ) : (
-              /* If DYNAMIC (like Push-ups, Dips, Burpees): Reps counter with +/- */
+              /* If DYNAMIC (like Push-ups, Squats, Dips, Muscle-ups): Reps counter with +/- */
               <div className="flex flex-col items-center justify-center py-2">
                 <div className="flex items-center gap-4 sm:gap-6 my-2">
                   <button

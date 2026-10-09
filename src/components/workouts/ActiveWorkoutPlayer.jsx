@@ -13,7 +13,7 @@ import {
   ChevronLeft,
   Sparkles,
   Info,
-  Video
+  Image as ImageIcon
 } from 'lucide-react';
 import { useFitness } from '../../context/FitnessContext';
 import { findExerciseData } from '../../data/mockExercises';
@@ -193,9 +193,10 @@ export const ActiveWorkoutPlayer = ({ workout, onClose }) => {
               <button
                 onClick={() => setShowDemoModal(true)}
                 className="px-2.5 py-1 rounded-xl bg-[#00FF85]/15 hover:bg-[#00FF85]/25 text-[#00FF85] border border-[#00FF85]/30 text-xs font-bold transition-all flex items-center gap-1.5"
+                title="Посмотреть пошаговые фото фаз техники"
               >
-                <Video className="w-3.5 h-3.5" />
-                <span>Техника</span>
+                <ImageIcon className="w-3.5 h-3.5" />
+                <span>Фото-фазы</span>
               </button>
             </div>
 
