@@ -14,11 +14,14 @@ import {
   User,
   Mail,
   Lock,
+  Eye,
+  EyeOff,
   Sparkles,
   ShieldCheck,
   CheckCircle2,
   Trophy,
-  Award
+  Award,
+  AlertCircle
 } from 'lucide-react';
 import { useFitness } from '../../context/FitnessContext';
 import { calculateDailyTargets, calculateBMI, calculateFitnessLevelFromTest } from '../../utils/calculations';
@@ -51,31 +54,33 @@ export const OnboardingFlow = ({ isOpen, onClose }) => {
 
   const [step, setStep] = useState(1);
   const [direction, setDirection] = useState(1);
+  const [showPassword, setShowPassword] = useState(false);
+  const [errors, setErrors] = useState({});
 
-  // Step 1: Account
+  // Step 1: Account (ALL INITIALIZED AS EMPTY STRINGS)
   const [accountData, setAccountData] = useState({
-    name: 'Алексей Смирнов',
-    email: 'alex.athlete@sporthelper.io',
-    password: 'password123',
+    name: '',
+    email: '',
+    password: '',
   });
 
-  // Step 2: Physical Metrics (age now supported from 5 years old)
+  // Step 2: Physical Metrics (ALL INITIALIZED AS EMPTY STRINGS)
   const [metricsData, setMetricsData] = useState({
-    age: 22,
-    weight: 76.0,
-    targetWeight: 74.0,
-    height: 178,
+    age: '',
+    weight: '',
+    targetWeight: '',
+    height: '',
     gender: 'male',
     activityLevel: 1.4,
   });
 
-  // Step 3: Strength Evaluation (5 tests)
+  // Step 3: Strength Evaluation (ALL INITIALIZED AS EMPTY STRINGS)
   const [strengthData, setStrengthData] = useState({
-    pushups: 20,
-    pullups: 6,
-    squats: 30,
-    crunches: 25,
-    dips: 8,
+    pushups: '',
+    pullups: '',
+    squats: '',
+    crunches: '',
+    dips: '',
   });
 
   // Step 4: Focus: 'lose_weight' | 'gain_muscle' | 'calisthenics_strength'
@@ -83,22 +88,163 @@ export const OnboardingFlow = ({ isOpen, onClose }) => {
 
   if (!isOpen) return null;
 
-  // Real-time evaluation of strength test
-  const fitnessLevelEvaluation = calculateFitnessLevelFromTest(strengthData);
+  // Real-time evaluation of strength test (using 0 for any blank fields during preview)
+  const activeStrengthForEval = {
+    pushups: Number(strengthData.pushups) || 0,
+    pullups: Number(strengthData.pullups) || 0,
+    squats: Number(strengthData.squats) || 0,
+    crunches: Number(strengthData.crunches) || 0,
+    dips: Number(strengthData.dips) || 0,
+  };
+  const isAnyStrengthFilled = Object.values(strengthData).some((val) => val !== '');
+  const fitnessLevelEvaluation = calculateFitnessLevelFromTest(activeStrengthForEval);
+
+  // Live calculations for BMI & Targets
+  const parsedWeight = parseFloat(metricsData.weight) || 75;
+  const parsedHeight = parseFloat(metricsData.height) || 178;
+  const parsedAge = parseInt(metricsData.age, 10) || 20;
+
+  const liveBmi = calculateBMI(parsedWeight, parsedHeight);
+  const liveTargets = calculateDailyTargets({
+    weight: parsedWeight,
+    height: parsedHeight,
+    age: parsedAge,
+    gender: metricsData.gender,
+    goal: selectedFocus,
+    activityLevel: metricsData.activityLevel,
+  });
+
+  // Validation functions per step
+  const validateStep1 = () => {
+    const errs = {};
+    if (!accountData.name || !accountData.name.trim()) {
+      errs.name = 'Обязательное поле. Введите имя';
+    } else if (accountData.name.trim().length < 2) {
+      errs.name = 'Имя должно содержать минимум 2 символа';
+    }
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!accountData.email || !accountData.email.trim()) {
+      errs.email = 'Обязательное поле. Введите почту';
+    } else if (!emailRegex.test(accountData.email.trim())) {
+      errs.email = 'Введите корректную почту (например, athlete@mail.ru)';
+    }
+
+    if (!accountData.password) {
+      errs.password = 'Обязательное поле. Введите пароль';
+    } else if (accountData.password.length < 6) {
+      errs.password = 'Пароль должен содержать минимум 6 символов';
+    }
+
+    setErrors(errs);
+    return Object.keys(errs).length === 0;
+  };
+
+  const validateStep2 = () => {
+    const errs = {};
+
+    // Age validation (>= 5 years)
+    if (metricsData.age === '' || metricsData.age === null || metricsData.age === undefined) {
+      errs.age = 'Обязательное поле. Введите ваш возраст';
+    } else {
+      const ageNum = parseInt(metricsData.age, 10);
+      if (isNaN(ageNum) || ageNum < 5 || ageNum > 99) {
+        errs.age = 'Возраст должен быть от 5 до 99 лет';
+      }
+    }
+
+    // Weight validation
+    if (metricsData.weight === '' || metricsData.weight === null || metricsData.weight === undefined) {
+      errs.weight = 'Обязательное поле. Введите текущий вес';
+    } else {
+      const wNum = parseFloat(metricsData.weight);
+      if (isNaN(wNum) || wNum < 15 || wNum > 250) {
+        errs.weight = 'Введите корректный вес (от 15 до 250 кг)';
+      }
+    }
+
+    // Target Weight validation
+    if (metricsData.targetWeight === '' || metricsData.targetWeight === null || metricsData.targetWeight === undefined) {
+      errs.targetWeight = 'Обязательное поле. Введите целевой вес';
+    } else {
+      const twNum = parseFloat(metricsData.targetWeight);
+      if (isNaN(twNum) || twNum < 15 || twNum > 250) {
+        errs.targetWeight = 'Введите корректный целевой вес (от 15 до 250 кг)';
+      }
+    }
+
+    // Height validation
+    if (metricsData.height === '' || metricsData.height === null || metricsData.height === undefined) {
+      errs.height = 'Обязательное поле. Введите ваш рост';
+    } else {
+      const hNum = parseInt(metricsData.height, 10);
+      if (isNaN(hNum) || hNum < 80 || hNum > 240) {
+        errs.height = 'Введите корректный рост (от 80 до 240 см)';
+      }
+    }
+
+    setErrors(errs);
+    return Object.keys(errs).length === 0;
+  };
+
+  const validateStep3 = () => {
+    const errs = {};
+    const testKeys = [
+      { key: 'pushups', name: 'отжимания' },
+      { key: 'pullups', name: 'подтягивания' },
+      { key: 'squats', name: 'приседания' },
+      { key: 'crunches', name: 'скручивания' },
+      { key: 'dips', name: 'отжимания на брусьях' },
+    ];
+
+    testKeys.forEach(({ key, name }) => {
+      const val = strengthData[key];
+      if (val === '' || val === null || val === undefined) {
+        errs[key] = `Укажите количество (или 0)`;
+      } else {
+        const num = parseInt(val, 10);
+        if (isNaN(num) || num < 0) {
+          errs[key] = 'Число должно быть от 0';
+        }
+      }
+    });
+
+    setErrors(errs);
+    return Object.keys(errs).length === 0;
+  };
 
   const handleNext = () => {
-    if (step < 4) {
+    if (step === 1) {
+      if (!validateStep1()) return;
       setDirection(1);
-      setStep((prev) => prev + 1);
+      setStep(2);
+    } else if (step === 2) {
+      if (!validateStep2()) return;
+      setDirection(1);
+      setStep(3);
+    } else if (step === 3) {
+      if (!validateStep3()) return;
+      setDirection(1);
+      setStep(4);
     } else {
-      // Complete Registration & Onboarding
-      register(accountData.email, accountData.name);
+      // Step 4: Finalize
+      register(accountData.email.trim(), accountData.name.trim());
       finishOnboarding({
-        ...metricsData,
+        weight: parseFloat(metricsData.weight) || 75,
+        targetWeight: parseFloat(metricsData.targetWeight) || 70,
+        height: parseInt(metricsData.height, 10) || 178,
+        age: parseInt(metricsData.age, 10) || 20,
+        gender: metricsData.gender,
         goal: selectedFocus,
         fitnessLevel: fitnessLevelEvaluation.levelKey,
         fitnessLevelName: fitnessLevelEvaluation.levelName,
-        strengthTest: strengthData,
+        strengthTest: {
+          pushups: Number(strengthData.pushups) || 0,
+          pullups: Number(strengthData.pullups) || 0,
+          squats: Number(strengthData.squats) || 0,
+          crunches: Number(strengthData.crunches) || 0,
+          dips: Number(strengthData.dips) || 0,
+        },
       });
       onClose();
     }
@@ -106,20 +252,11 @@ export const OnboardingFlow = ({ isOpen, onClose }) => {
 
   const handleBack = () => {
     if (step > 1) {
+      setErrors({});
       setDirection(-1);
       setStep((prev) => prev - 1);
     }
   };
-
-  const liveBmi = calculateBMI(metricsData.weight, metricsData.height);
-  const liveTargets = calculateDailyTargets({
-    weight: metricsData.weight,
-    height: metricsData.height,
-    age: metricsData.age,
-    gender: metricsData.gender,
-    goal: selectedFocus,
-    activityLevel: metricsData.activityLevel,
-  });
 
   const focusOptions = [
     {
@@ -155,7 +292,7 @@ export const OnboardingFlow = ({ isOpen, onClose }) => {
     {
       key: 'pushups',
       title: '1. Отжимания от пола',
-      subtitle: 'Количество чистых повторений в одном подходе',
+      subtitle: 'Чистые повторения за один подход',
       min: 0,
       max: 80,
       step: 1,
@@ -173,7 +310,7 @@ export const OnboardingFlow = ({ isOpen, onClose }) => {
     {
       key: 'squats',
       title: '3. Приседания со своим весом',
-      subtitle: 'До угла 90° или полного седа',
+      subtitle: 'Глубокий сед до параллели полу',
       min: 0,
       max: 120,
       step: 1,
@@ -182,7 +319,7 @@ export const OnboardingFlow = ({ isOpen, onClose }) => {
     {
       key: 'crunches',
       title: '4. Скручивания на пресс',
-      subtitle: 'Подъемы корпуса или скручивания лежа',
+      subtitle: 'Подъемы корпуса или скручивания',
       min: 0,
       max: 100,
       step: 1,
@@ -237,7 +374,7 @@ export const OnboardingFlow = ({ isOpen, onClose }) => {
         </div>
 
         {/* Multi-step Sliding Content */}
-        <div className="relative overflow-hidden min-h-[380px] flex flex-col justify-between">
+        <div className="relative overflow-hidden min-h-[390px] flex flex-col justify-between">
           <AnimatePresence custom={direction} mode="wait">
             {/* STEP 1: ACCOUNT CREATION */}
             {step === 1 && (
@@ -255,70 +392,133 @@ export const OnboardingFlow = ({ isOpen, onClose }) => {
                     Шаг 1: Создание аккаунта атлета
                   </h2>
                   <p className="text-xs sm:text-sm text-neutral-400 mt-1">
-                    Введи свои данные для создания персонального профиля
+                    Заполните форму для регистрации личного кабинета
                   </p>
                 </div>
 
-                <div className="space-y-3.5 pt-2">
+                <div className="space-y-3.5 pt-1">
+                  {/* Name field */}
                   <div>
                     <label className="block text-xs font-bold text-neutral-300 mb-1.5 uppercase tracking-wider">
-                      Имя / Никнейм
+                      Имя / Никнейм <span className="text-red-400">*</span>
                     </label>
                     <div className="relative">
                       <User className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-neutral-400" />
                       <input
                         type="text"
-                        required
                         value={accountData.name}
-                        onChange={(e) => setAccountData({ ...accountData, name: e.target.value })}
-                        placeholder="Например: Артем Смирнов"
-                        className="w-full bg-[#1A1A24] border border-white/10 rounded-xl pl-10 pr-4 py-2.5 text-sm text-white placeholder-neutral-500 focus:outline-none focus:border-[#00FF85]"
+                        onChange={(e) => {
+                          setAccountData({ ...accountData, name: e.target.value });
+                          if (errors.name) setErrors((prev) => ({ ...prev, name: null }));
+                        }}
+                        placeholder="Введите имя"
+                        className={`w-full bg-[#1A1A24] rounded-xl pl-10 pr-4 py-2.5 text-sm text-white placeholder-neutral-500/80 focus:outline-none transition-all ${
+                          errors.name
+                            ? 'border-2 border-red-500/90 focus:border-red-500 ring-2 ring-red-500/20 shadow-[0_0_12px_rgba(239,68,68,0.2)]'
+                            : 'border border-white/10 focus:border-[#00FF85] focus:ring-1 focus:ring-[#00FF85]/30'
+                        }`}
                       />
                     </div>
+                    {errors.name && (
+                      <motion.div
+                        initial={{ opacity: 0, y: -4 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        className="flex items-center gap-1.5 mt-1 text-xs text-red-400 font-medium"
+                      >
+                        <AlertCircle className="w-3.5 h-3.5 shrink-0" />
+                        <span>{errors.name}</span>
+                      </motion.div>
+                    )}
                   </div>
 
+                  {/* Email field */}
                   <div>
                     <label className="block text-xs font-bold text-neutral-300 mb-1.5 uppercase tracking-wider">
-                      Электронная почта
+                      Электронная почта <span className="text-red-400">*</span>
                     </label>
                     <div className="relative">
                       <Mail className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-neutral-400" />
                       <input
                         type="email"
-                        required
                         value={accountData.email}
-                        onChange={(e) => setAccountData({ ...accountData, email: e.target.value })}
-                        placeholder="athlete@sporthelper.io"
-                        className="w-full bg-[#1A1A24] border border-white/10 rounded-xl pl-10 pr-4 py-2.5 text-sm text-white placeholder-neutral-500 focus:outline-none focus:border-[#00FF85]"
+                        onChange={(e) => {
+                          setAccountData({ ...accountData, email: e.target.value });
+                          if (errors.email) setErrors((prev) => ({ ...prev, email: null }));
+                        }}
+                        placeholder="Введите почту"
+                        className={`w-full bg-[#1A1A24] rounded-xl pl-10 pr-4 py-2.5 text-sm text-white placeholder-neutral-500/80 focus:outline-none transition-all ${
+                          errors.email
+                            ? 'border-2 border-red-500/90 focus:border-red-500 ring-2 ring-red-500/20 shadow-[0_0_12px_rgba(239,68,68,0.2)]'
+                            : 'border border-white/10 focus:border-[#00FF85] focus:ring-1 focus:ring-[#00FF85]/30'
+                        }`}
                       />
                     </div>
+                    {errors.email && (
+                      <motion.div
+                        initial={{ opacity: 0, y: -4 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        className="flex items-center gap-1.5 mt-1 text-xs text-red-400 font-medium"
+                      >
+                        <AlertCircle className="w-3.5 h-3.5 shrink-0" />
+                        <span>{errors.email}</span>
+                      </motion.div>
+                    )}
                   </div>
 
+                  {/* Password field with show/hide toggle */}
                   <div>
                     <label className="block text-xs font-bold text-neutral-300 mb-1.5 uppercase tracking-wider">
-                      Пароль
+                      Пароль <span className="text-red-400">*</span>
                     </label>
                     <div className="relative">
                       <Lock className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-neutral-400" />
                       <input
-                        type="password"
-                        required
+                        type={showPassword ? 'text' : 'password'}
                         value={accountData.password}
-                        onChange={(e) => setAccountData({ ...accountData, password: e.target.value })}
-                        placeholder="••••••••"
-                        className="w-full bg-[#1A1A24] border border-white/10 rounded-xl pl-10 pr-4 py-2.5 text-sm text-white placeholder-neutral-500 focus:outline-none focus:border-[#00FF85]"
+                        onChange={(e) => {
+                          setAccountData({ ...accountData, password: e.target.value });
+                          if (errors.password) setErrors((prev) => ({ ...prev, password: null }));
+                        }}
+                        placeholder="Введите пароль"
+                        className={`w-full bg-[#1A1A24] rounded-xl pl-10 pr-11 py-2.5 text-sm text-white placeholder-neutral-500/80 focus:outline-none transition-all ${
+                          errors.password
+                            ? 'border-2 border-red-500/90 focus:border-red-500 ring-2 ring-red-500/20 shadow-[0_0_12px_rgba(239,68,68,0.2)]'
+                            : 'border border-white/10 focus:border-[#00FF85] focus:ring-1 focus:ring-[#00FF85]/30'
+                        }`}
                       />
+                      <button
+                        type="button"
+                        onClick={() => setShowPassword(!showPassword)}
+                        className="absolute right-3.5 top-1/2 -translate-y-1/2 p-1 text-neutral-400 hover:text-white transition-colors focus:outline-none"
+                        title={showPassword ? 'Скрыть пароль' : 'Показать пароль'}
+                      >
+                        {showPassword ? (
+                          <EyeOff className="w-4 h-4 text-neutral-300" />
+                        ) : (
+                          <Eye className="w-4 h-4 text-neutral-400" />
+                        )}
+                      </button>
                     </div>
+                    {errors.password && (
+                      <motion.div
+                        initial={{ opacity: 0, y: -4 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        className="flex items-center gap-1.5 mt-1 text-xs text-red-400 font-medium"
+                      >
+                        <AlertCircle className="w-3.5 h-3.5 shrink-0" />
+                        <span>{errors.password}</span>
+                      </motion.div>
+                    )}
                     <div className="flex items-center gap-1.5 mt-2 text-[11px] text-emerald-400 font-semibold">
                       <ShieldCheck className="w-3.5 h-3.5" />
-                      <span>Пароль защищен и зашифрован локально</span>
+                      <span>Пароль сохраняется локально и защищен</span>
                     </div>
                   </div>
                 </div>
               </motion.div>
             )}
 
-            {/* STEP 2: PHYSICAL METRICS (AGE >= 5 VALIDATION) */}
+            {/* STEP 2: PHYSICAL METRICS (ALL EMPTY INITIALLY + VALIDATION) */}
             {step === 2 && (
               <motion.div
                 key="step2"
@@ -327,80 +527,105 @@ export const OnboardingFlow = ({ isOpen, onClose }) => {
                 initial="enter"
                 animate="center"
                 exit="exit"
-                className="space-y-4"
+                className="space-y-3.5"
               >
                 <div>
                   <div className="flex items-center justify-between">
                     <h2 className="text-xl sm:text-2xl font-black text-white tracking-tight">
                       Шаг 2: Физические показатели
                     </h2>
-                    <span
-                      className="text-[11px] font-bold px-2.5 py-0.5 rounded-full"
-                      style={{
-                        backgroundColor: `${liveBmi.color}20`,
-                        color: liveBmi.color,
-                        border: `1px solid ${liveBmi.color}40`
-                      }}
-                    >
-                      ИМТ: {liveBmi.bmi} ({liveBmi.label})
-                    </span>
+                    {metricsData.weight && metricsData.height ? (
+                      <span
+                        className="text-[11px] font-bold px-2.5 py-0.5 rounded-full"
+                        style={{
+                          backgroundColor: `${liveBmi.color}20`,
+                          color: liveBmi.color,
+                          border: `1px solid ${liveBmi.color}40`
+                        }}
+                      >
+                        ИМТ: {liveBmi.bmi} ({liveBmi.label})
+                      </span>
+                    ) : (
+                      <span className="text-[11px] font-semibold text-neutral-400">
+                        Возраст от 5 лет
+                      </span>
+                    )}
                   </div>
-                  <p className="text-xs text-neutral-400 mt-1">
-                    Возраст доступен от 5 лет. Используй ползунки или вводи числа напрямую.
+                  <p className="text-xs text-neutral-400 mt-0.5">
+                    Заполните ваши физические данные для точного расчета калорий
                   </p>
                 </div>
 
-                <div className="space-y-2.5 pt-1 max-h-[300px] overflow-y-auto pr-1">
-                  {/* Age slider & direct input (MIN 5 YEARS OLD) */}
-                  <div className="p-3 rounded-2xl bg-[#1A1A24] border border-white/5">
+                <div className="space-y-3 pt-1 max-h-[300px] overflow-y-auto pr-1">
+                  {/* Age Input & Slider (MIN 5 YEARS) */}
+                  <div className={`p-3 rounded-2xl bg-[#1A1A24] transition-all ${
+                    errors.age ? 'border-2 border-red-500/90 ring-2 ring-red-500/20' : 'border border-white/5'
+                  }`}>
                     <div className="flex justify-between items-center mb-1.5">
                       <div>
                         <span className="text-xs font-bold text-neutral-300 uppercase">Возраст</span>
                         <span className="text-[10px] text-emerald-400 ml-2 font-medium">от 5 лет</span>
                       </div>
-                      <div className="flex items-center gap-1">
+                      <div className="flex items-center gap-1.5">
                         <input
                           type="number"
                           min="5"
-                          max="95"
+                          max="99"
                           value={metricsData.age}
                           onChange={(e) => {
-                            const val = parseInt(e.target.value, 10);
-                            setMetricsData({ ...metricsData, age: isNaN(val) ? 5 : Math.max(5, Math.min(val, 99)) });
+                            setMetricsData({ ...metricsData, age: e.target.value });
+                            if (errors.age) setErrors((prev) => ({ ...prev, age: null }));
                           }}
-                          className="w-14 bg-white/5 border border-white/10 rounded-lg px-2 py-0.5 text-right text-xs font-black text-white focus:outline-none focus:border-[#00FF85]"
+                          placeholder="Введите ваш возраст"
+                          className="w-44 bg-white/5 border border-white/10 rounded-lg px-2.5 py-1 text-right text-xs font-black text-white placeholder:text-neutral-500/80 placeholder:font-normal focus:outline-none focus:border-[#00FF85]"
                         />
-                        <span className="text-xs text-neutral-400 font-bold">лет</span>
+                        {metricsData.age && <span className="text-xs text-neutral-400 font-bold">лет</span>}
                       </div>
                     </div>
                     <input
                       type="range"
                       min="5"
                       max="90"
-                      value={metricsData.age}
-                      onChange={(e) => setMetricsData({ ...metricsData, age: Math.max(5, parseInt(e.target.value, 10)) })}
+                      value={metricsData.age === '' ? 5 : Number(metricsData.age)}
+                      onChange={(e) => {
+                        setMetricsData({ ...metricsData, age: e.target.value });
+                        if (errors.age) setErrors((prev) => ({ ...prev, age: null }));
+                      }}
                       className="w-full accent-[#00FF85] cursor-pointer"
                     />
+                    {errors.age && (
+                      <motion.div
+                        initial={{ opacity: 0, y: -4 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        className="flex items-center gap-1.5 mt-1 text-xs text-red-400 font-medium"
+                      >
+                        <AlertCircle className="w-3.5 h-3.5 shrink-0" />
+                        <span>{errors.age}</span>
+                      </motion.div>
+                    )}
                   </div>
 
-                  {/* Weight slider */}
-                  <div className="p-3 rounded-2xl bg-[#1A1A24] border border-white/5">
+                  {/* Weight Input & Slider */}
+                  <div className={`p-3 rounded-2xl bg-[#1A1A24] transition-all ${
+                    errors.weight ? 'border-2 border-red-500/90 ring-2 ring-red-500/20' : 'border border-white/5'
+                  }`}>
                     <div className="flex justify-between items-center mb-1.5">
                       <span className="text-xs font-bold text-neutral-300 uppercase">Текущий вес</span>
-                      <div className="flex items-center gap-1">
+                      <div className="flex items-center gap-1.5">
                         <input
                           type="number"
-                          min="20"
-                          max="180"
                           step="0.5"
+                          min="15"
+                          max="250"
                           value={metricsData.weight}
                           onChange={(e) => {
-                            const val = parseFloat(e.target.value);
-                            setMetricsData({ ...metricsData, weight: isNaN(val) ? 50 : Math.max(15, val) });
+                            setMetricsData({ ...metricsData, weight: e.target.value });
+                            if (errors.weight) setErrors((prev) => ({ ...prev, weight: null }));
                           }}
-                          className="w-16 bg-white/5 border border-white/10 rounded-lg px-2 py-0.5 text-right text-xs font-black text-[#00FF85] focus:outline-none focus:border-[#00FF85]"
+                          placeholder="Введите текущий вес"
+                          className="w-44 bg-white/5 border border-white/10 rounded-lg px-2.5 py-1 text-right text-xs font-black text-[#00FF85] placeholder:text-neutral-500/80 placeholder:font-normal focus:outline-none focus:border-[#00FF85]"
                         />
-                        <span className="text-xs text-neutral-400 font-bold">кг</span>
+                        {metricsData.weight && <span className="text-xs text-neutral-400 font-bold">кг</span>}
                       </div>
                     </div>
                     <input
@@ -408,30 +633,46 @@ export const OnboardingFlow = ({ isOpen, onClose }) => {
                       min="20"
                       max="150"
                       step="0.5"
-                      value={metricsData.weight}
-                      onChange={(e) => setMetricsData({ ...metricsData, weight: parseFloat(e.target.value) })}
+                      value={metricsData.weight === '' ? 20 : Number(metricsData.weight)}
+                      onChange={(e) => {
+                        setMetricsData({ ...metricsData, weight: e.target.value });
+                        if (errors.weight) setErrors((prev) => ({ ...prev, weight: null }));
+                      }}
                       className="w-full accent-[#00FF85] cursor-pointer"
                     />
+                    {errors.weight && (
+                      <motion.div
+                        initial={{ opacity: 0, y: -4 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        className="flex items-center gap-1.5 mt-1 text-xs text-red-400 font-medium"
+                      >
+                        <AlertCircle className="w-3.5 h-3.5 shrink-0" />
+                        <span>{errors.weight}</span>
+                      </motion.div>
+                    )}
                   </div>
 
-                  {/* Target Weight slider */}
-                  <div className="p-3 rounded-2xl bg-[#1A1A24] border border-white/5">
+                  {/* Target Weight Input & Slider */}
+                  <div className={`p-3 rounded-2xl bg-[#1A1A24] transition-all ${
+                    errors.targetWeight ? 'border-2 border-red-500/90 ring-2 ring-red-500/20' : 'border border-white/5'
+                  }`}>
                     <div className="flex justify-between items-center mb-1.5">
-                      <span className="text-xs font-bold text-neutral-300 uppercase">Желаемый (целевой) вес</span>
-                      <div className="flex items-center gap-1">
+                      <span className="text-xs font-bold text-neutral-300 uppercase">Желаемый вес</span>
+                      <div className="flex items-center gap-1.5">
                         <input
                           type="number"
-                          min="20"
-                          max="180"
                           step="0.5"
+                          min="15"
+                          max="250"
                           value={metricsData.targetWeight}
                           onChange={(e) => {
-                            const val = parseFloat(e.target.value);
-                            setMetricsData({ ...metricsData, targetWeight: isNaN(val) ? 50 : Math.max(15, val) });
+                            setMetricsData({ ...metricsData, targetWeight: e.target.value });
+                            if (errors.targetWeight) setErrors((prev) => ({ ...prev, targetWeight: null }));
                           }}
-                          className="w-16 bg-white/5 border border-white/10 rounded-lg px-2 py-0.5 text-right text-xs font-black text-[#FF5E00] focus:outline-none focus:border-[#FF5E00]"
+                          placeholder="Введите целевой вес"
+                          className="w-44 bg-white/5 border border-white/10 rounded-lg px-2.5 py-1 text-right text-xs font-black text-[#FF5E00] placeholder:text-neutral-500/80 placeholder:font-normal focus:outline-none focus:border-[#FF5E00]"
                         />
-                        <span className="text-xs text-neutral-400 font-bold">кг</span>
+                        {metricsData.targetWeight && <span className="text-xs text-neutral-400 font-bold">кг</span>}
                       </div>
                     </div>
                     <input
@@ -439,45 +680,74 @@ export const OnboardingFlow = ({ isOpen, onClose }) => {
                       min="20"
                       max="150"
                       step="0.5"
-                      value={metricsData.targetWeight}
-                      onChange={(e) => setMetricsData({ ...metricsData, targetWeight: parseFloat(e.target.value) })}
+                      value={metricsData.targetWeight === '' ? 20 : Number(metricsData.targetWeight)}
+                      onChange={(e) => {
+                        setMetricsData({ ...metricsData, targetWeight: e.target.value });
+                        if (errors.targetWeight) setErrors((prev) => ({ ...prev, targetWeight: null }));
+                      }}
                       className="w-full accent-[#FF5E00] cursor-pointer"
                     />
+                    {errors.targetWeight && (
+                      <motion.div
+                        initial={{ opacity: 0, y: -4 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        className="flex items-center gap-1.5 mt-1 text-xs text-red-400 font-medium"
+                      >
+                        <AlertCircle className="w-3.5 h-3.5 shrink-0" />
+                        <span>{errors.targetWeight}</span>
+                      </motion.div>
+                    )}
                   </div>
 
-                  {/* Height slider */}
-                  <div className="p-3 rounded-2xl bg-[#1A1A24] border border-white/5">
+                  {/* Height Input & Slider */}
+                  <div className={`p-3 rounded-2xl bg-[#1A1A24] transition-all ${
+                    errors.height ? 'border-2 border-red-500/90 ring-2 ring-red-500/20' : 'border border-white/5'
+                  }`}>
                     <div className="flex justify-between items-center mb-1.5">
                       <span className="text-xs font-bold text-neutral-300 uppercase">Рост</span>
-                      <div className="flex items-center gap-1">
+                      <div className="flex items-center gap-1.5">
                         <input
                           type="number"
-                          min="100"
-                          max="230"
+                          min="80"
+                          max="240"
                           value={metricsData.height}
                           onChange={(e) => {
-                            const val = parseInt(e.target.value, 10);
-                            setMetricsData({ ...metricsData, height: isNaN(val) ? 160 : Math.max(90, val) });
+                            setMetricsData({ ...metricsData, height: e.target.value });
+                            if (errors.height) setErrors((prev) => ({ ...prev, height: null }));
                           }}
-                          className="w-14 bg-white/5 border border-white/10 rounded-lg px-2 py-0.5 text-right text-xs font-black text-sky-400 focus:outline-none focus:border-sky-400"
+                          placeholder="Введите ваш рост"
+                          className="w-44 bg-white/5 border border-white/10 rounded-lg px-2.5 py-1 text-right text-xs font-black text-sky-400 placeholder:text-neutral-500/80 placeholder:font-normal focus:outline-none focus:border-sky-400"
                         />
-                        <span className="text-xs text-neutral-400 font-bold">см</span>
+                        {metricsData.height && <span className="text-xs text-neutral-400 font-bold">см</span>}
                       </div>
                     </div>
                     <input
                       type="range"
-                      min="100"
+                      min="90"
                       max="220"
-                      value={metricsData.height}
-                      onChange={(e) => setMetricsData({ ...metricsData, height: parseInt(e.target.value, 10) })}
+                      value={metricsData.height === '' ? 90 : Number(metricsData.height)}
+                      onChange={(e) => {
+                        setMetricsData({ ...metricsData, height: e.target.value });
+                        if (errors.height) setErrors((prev) => ({ ...prev, height: null }));
+                      }}
                       className="w-full accent-sky-400 cursor-pointer"
                     />
+                    {errors.height && (
+                      <motion.div
+                        initial={{ opacity: 0, y: -4 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        className="flex items-center gap-1.5 mt-1 text-xs text-red-400 font-medium"
+                      >
+                        <AlertCircle className="w-3.5 h-3.5 shrink-0" />
+                        <span>{errors.height}</span>
+                      </motion.div>
+                    )}
                   </div>
                 </div>
               </motion.div>
             )}
 
-            {/* STEP 3: STRENGTH ASSESSMENT (5 QUESTIONS) */}
+            {/* STEP 3: STRENGTH ASSESSMENT (ALL EMPTY INITIALLY + VALIDATION) */}
             {step === 3 && (
               <motion.div
                 key="step3"
@@ -496,7 +766,7 @@ export const OnboardingFlow = ({ isOpen, onClose }) => {
                     </h2>
                   </div>
                   <p className="text-xs text-neutral-400 mt-0.5">
-                    Сколько раз за один подход вы можете выполнить упражнения:
+                    Укажите, сколько повторений вы делаете за один подход (если 0 — введите 0):
                   </p>
                 </div>
 
@@ -516,7 +786,7 @@ export const OnboardingFlow = ({ isOpen, onClose }) => {
                     <div>
                       <div className="flex items-center gap-2">
                         <span className="text-[10px] font-bold text-neutral-400 uppercase tracking-wider">
-                          Ваш уровень:
+                          Расчет уровня:
                         </span>
                         <span 
                           className="text-xs font-black uppercase px-2 py-0.5 rounded-full"
@@ -530,7 +800,9 @@ export const OnboardingFlow = ({ isOpen, onClose }) => {
                         </span>
                       </div>
                       <p className="text-[11px] text-neutral-300 leading-tight mt-0.5">
-                        {fitnessLevelEvaluation.description}
+                        {isAnyStrengthFilled
+                          ? fitnessLevelEvaluation.description
+                          : 'Заполните поля ниже для персонального подбора программ'}
                       </p>
                     </div>
                   </div>
@@ -538,47 +810,75 @@ export const OnboardingFlow = ({ isOpen, onClose }) => {
 
                 {/* 5 Questions Inputs */}
                 <div className="space-y-2.5 max-h-[260px] overflow-y-auto pr-1">
-                  {strengthQuestions.map((q) => (
-                    <div key={q.key} className="p-2.5 rounded-xl bg-[#1A1A24] border border-white/5">
-                      <div className="flex items-center justify-between mb-1">
-                        <div>
-                          <span className="text-xs font-bold text-white block">{q.title}</span>
-                          <span className="text-[10px] text-neutral-400">{q.subtitle}</span>
-                        </div>
-                        <div className="flex items-center gap-1 shrink-0 ml-2">
-                          <input
-                            type="number"
-                            min={q.min}
-                            max={q.max}
-                            value={strengthData[q.key]}
-                            onChange={(e) => {
-                              const val = parseInt(e.target.value, 10);
-                              setStrengthData({
-                                ...strengthData,
-                                [q.key]: isNaN(val) ? 0 : Math.max(0, val)
-                              });
-                            }}
-                            className="w-14 bg-white/5 border border-white/10 rounded-lg px-2 py-0.5 text-right text-xs font-black text-white focus:outline-none focus:border-[#00FF85]"
-                          />
-                          <span className="text-[11px] text-neutral-400 font-bold">раз</span>
-                        </div>
-                      </div>
+                  {strengthQuestions.map((q) => {
+                    const hasError = Boolean(errors[q.key]);
 
-                      <input
-                        type="range"
-                        min={q.min}
-                        max={q.max}
-                        step={q.step}
-                        value={strengthData[q.key]}
-                        onChange={(e) => setStrengthData({
-                          ...strengthData,
-                          [q.key]: parseInt(e.target.value, 10)
-                        })}
-                        className="w-full cursor-pointer"
-                        style={{ accentColor: q.accent }}
-                      />
-                    </div>
-                  ))}
+                    return (
+                      <div 
+                        key={q.key} 
+                        className={`p-2.5 rounded-xl bg-[#1A1A24] transition-all ${
+                          hasError ? 'border-2 border-red-500/90 ring-2 ring-red-500/20' : 'border border-white/5'
+                        }`}
+                      >
+                        <div className="flex items-center justify-between mb-1">
+                          <div>
+                            <span className="text-xs font-bold text-white block">
+                              {q.title} <span className="text-red-400">*</span>
+                            </span>
+                            <span className="text-[10px] text-neutral-400">{q.subtitle}</span>
+                          </div>
+                          <div className="flex items-center gap-1.5 shrink-0 ml-2">
+                            <input
+                              type="number"
+                              min={q.min}
+                              max={q.max}
+                              value={strengthData[q.key]}
+                              onChange={(e) => {
+                                setStrengthData({
+                                  ...strengthData,
+                                  [q.key]: e.target.value
+                                });
+                                if (errors[q.key]) setErrors((prev) => ({ ...prev, [q.key]: null }));
+                              }}
+                              placeholder="Введите количество"
+                              className="w-36 bg-white/5 border border-white/10 rounded-lg px-2.5 py-1 text-right text-xs font-black text-white placeholder:text-neutral-500/80 placeholder:font-normal focus:outline-none focus:border-[#00FF85]"
+                            />
+                            {strengthData[q.key] !== '' && (
+                              <span className="text-[11px] text-neutral-400 font-bold">раз</span>
+                            )}
+                          </div>
+                        </div>
+
+                        <input
+                          type="range"
+                          min={q.min}
+                          max={q.max}
+                          step={q.step}
+                          value={strengthData[q.key] === '' ? 0 : Number(strengthData[q.key])}
+                          onChange={(e) => {
+                            setStrengthData({
+                              ...strengthData,
+                              [q.key]: e.target.value
+                            });
+                            if (errors[q.key]) setErrors((prev) => ({ ...prev, [q.key]: null }));
+                          }}
+                          className="w-full cursor-pointer"
+                          style={{ accentColor: q.accent }}
+                        />
+
+                        {hasError && (
+                          <motion.div
+                            initial={{ opacity: 0, y: -4 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            className="flex items-center gap-1 mt-1 text-[11px] text-red-400 font-medium"
+                          >
+                            <AlertCircle className="w-3 h-3 shrink-0" />
+                            <span>{errors[q.key]}</span>
+                          </motion.div>
+                        )}
+                      </div>
+                    );
+                  })}
                 </div>
               </motion.div>
             )}
