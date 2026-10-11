@@ -1,14 +1,16 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Utensils, Plus, Sparkles, Flame, Info, CheckCircle2 } from 'lucide-react';
+import { Utensils, Plus, Sparkles, Flame, Info, CheckCircle2, Camera } from 'lucide-react';
 import { useFitness } from '../../context/FitnessContext';
 import { ProgressRing } from '../common/ProgressRing';
 import { MealSection } from './MealSection';
 import { AddFoodModal } from './AddFoodModal';
+import { AiFoodScannerModal } from './AiFoodScannerModal';
 
 export const NutritionView = () => {
   const { profile, meals, todayNutrients, dailyTargets } = useFitness();
   const [modalState, setModalState] = useState({ isOpen: false, mealType: 'breakfast' });
+  const [isAiScannerOpen, setIsAiScannerOpen] = useState(false);
 
   const openAddModal = (mealType) => {
     setModalState({ isOpen: true, mealType });
@@ -27,7 +29,7 @@ export const NutritionView = () => {
 
   return (
     <div className="space-y-6 sm:space-y-8 pb-10">
-      {/* Dynamic Goal Rationale Card */}
+      {/* Dynamic Goal Rationale Card & Fast AI Action */}
       <div className="glass-card rounded-3xl p-5 sm:p-6 border border-white/5 relative overflow-hidden">
         <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
           <div className="max-w-xl">
@@ -49,13 +51,23 @@ export const NutritionView = () => {
             </p>
           </div>
 
-          <button
-            onClick={() => openAddModal('lunch')}
-            className="px-4 py-2.5 rounded-xl bg-[#00FF85] hover:bg-[#00FF85]/90 text-black font-extrabold text-xs flex items-center gap-2 shadow-neon-green transition-all shrink-0"
-          >
-            <Plus className="w-4 h-4 stroke-[3]" />
-            <span>Записать прием пищи</span>
-          </button>
+          <div className="flex flex-wrap items-center gap-2.5 shrink-0">
+            <button
+              onClick={() => setIsAiScannerOpen(true)}
+              className="px-4 py-2.5 rounded-xl bg-gradient-to-r from-sky-400 via-[#00FF85] to-[#10B981] hover:brightness-110 active:scale-95 text-black font-black text-xs flex items-center gap-2 shadow-[0_0_20px_rgba(0,255,133,0.35)] transition-all cursor-pointer"
+            >
+              <Camera className="w-4 h-4 stroke-[2.5]" />
+              <span>Распознать еду по фото (AI) 📸✨</span>
+            </button>
+
+            <button
+              onClick={() => openAddModal('lunch')}
+              className="px-3.5 py-2.5 rounded-xl bg-white/5 hover:bg-white/10 text-white font-bold text-xs flex items-center gap-1.5 border border-white/10 transition-all cursor-pointer"
+            >
+              <Plus className="w-4 h-4 stroke-[2.5]" />
+              <span>Вручную</span>
+            </button>
+          </div>
         </div>
       </div>
 
@@ -210,6 +222,13 @@ export const NutritionView = () => {
         isOpen={modalState.isOpen}
         defaultMealType={modalState.mealType}
         onClose={closeAddModal}
+      />
+
+      {/* AI Food Photo Scanner Modal */}
+      <AiFoodScannerModal
+        isOpen={isAiScannerOpen}
+        defaultMealType="lunch"
+        onClose={() => setIsAiScannerOpen(false)}
       />
     </div>
   );

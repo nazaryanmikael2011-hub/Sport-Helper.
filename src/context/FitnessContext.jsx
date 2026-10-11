@@ -7,6 +7,8 @@ const FitnessContext = createContext(null);
 
 const STORAGE_KEY = 'sport_helper_app_state_v2';
 
+const THEME_KEY = 'sport_helper_theme';
+
 // Default initial user data for fresh start (all stats initialized with zeros)
 const initialDefaultState = {
   user: {
@@ -24,6 +26,7 @@ const initialDefaultState = {
     goal: 'gain_muscle', // 'gain_muscle' | 'lose_weight' | 'calisthenics_strength'
     fitnessLevel: 'intermediate', // 'beginner' | 'intermediate' | 'advanced'
     fitnessLevelName: 'Средний',
+    equipment: ['pullup_bar', 'dumbbells', 'resistance_bands', 'jump_rope'], // list of available equipment
     strengthTest: {
       pushups: 15,
       pullups: 5,
@@ -79,8 +82,38 @@ export const FitnessProvider = ({ children }) => {
   // Active workout runner state (not persisted in case of accidental reload)
   const [activeWorkout, setActiveWorkout] = useState(null);
 
+  // Theme mode: 'dark' (default neon) or 'light' (clean minimalist)
+  const [theme, setTheme] = useState(() => {
+    try {
+      const saved = localStorage.getItem(THEME_KEY);
+      if (saved === 'light' || saved === 'dark') {
+        return saved;
+      }
+    } catch (_) {}
+    return 'dark';
+  });
+
+  // Apply theme class to documentElement
+  useEffect(() => {
+    try {
+      localStorage.setItem(THEME_KEY, theme);
+    } catch (_) {}
+    if (theme === 'dark') {
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+    }
+  }, [theme]);
+
   // Active toast notifications list
   const [toasts, setToasts] = useState([]);
+
+  const toggleTheme = useCallback(() => {
+    setTheme((prev) => {
+      const next = prev === 'dark' ? 'light' : 'dark';
+      return next;
+    });
+  }, []);
 
   // Save state to localStorage whenever it changes
   useEffect(() => {
@@ -330,7 +363,7 @@ export const FitnessProvider = ({ children }) => {
     addToast('Профиль обновлен', 'Новые нормы питания пересчитаны', 'success');
   };
 
-  const updateFullProfile = ({ name, email, age, height, weight, targetWeight, goal, fitnessLevel, fitnessLevelName, strengthTest }) => {
+  const updateFullProfile = ({ name, email, age, height, weight, targetWeight, goal, fitnessLevel, fitnessLevelName, strengthTest, equipment }) => {
     setState((prev) => {
       const updatedUser = {
         ...prev.user,
@@ -358,6 +391,7 @@ export const FitnessProvider = ({ children }) => {
         ...(goal && { goal }),
         ...(fitnessLevel && { fitnessLevel }),
         fitnessLevelName: finalLevelName,
+        ...(equipment !== undefined && { equipment }),
         ...(strengthTest && { strengthTest: { ...prev.profile.strengthTest, ...strengthTest } }),
       };
 
@@ -409,6 +443,7 @@ export const FitnessProvider = ({ children }) => {
         goal: surveyData.goal || prev.profile.goal,
         fitnessLevel: finalLevel,
         fitnessLevelName: finalLevelName,
+        equipment: surveyData.equipment || prev.profile.equipment || ['none'],
         strengthTest: surveyData.strengthTest || prev.profile.strengthTest,
         isOnboarded: true
       },
@@ -708,6 +743,8 @@ export const FitnessProvider = ({ children }) => {
         updateUserAvatar,
         removeUserAvatar,
         resetDemoState,
+        theme,
+        toggleTheme,
         activatePremium,
       }}
     >

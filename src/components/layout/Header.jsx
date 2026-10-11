@@ -1,9 +1,9 @@
 import React from 'react';
-import { Flame, Zap, ShoppingBag, User, Clock, Crown } from 'lucide-react';
+import { Flame, Zap, ShoppingBag, User, Clock, Crown, Sun, Moon } from 'lucide-react';
 import { useFitness } from '../../context/FitnessContext';
 
 export const Header = ({ activeTab, setActiveTab, onOpenCart, onOpenAuth }) => {
-  const { user, streak, levelInfo, cart, isPremium, trialDaysLeft } = useFitness();
+  const { user, streak, levelInfo, cart, isPremium, trialDaysLeft, theme, toggleTheme } = useFitness();
 
   const totalCartCount = cart.reduce((sum, item) => sum + item.quantity, 0);
 
@@ -88,18 +88,32 @@ export const Header = ({ activeTab, setActiveTab, onOpenCart, onOpenAuth }) => {
             </div>
           </div>
 
+          {/* Theme Switcher Button */}
+          <button
+            onClick={toggleTheme}
+            title={theme === 'dark' ? 'Включить светлую тему' : 'Включить темную тему'}
+            aria-label="Смена темы оформления"
+            className="p-2.5 rounded-xl bg-white/5 border border-white/10 hover:border-[#00FF85]/40 text-neutral-300 hover:text-white transition-all group cursor-pointer"
+          >
+            {theme === 'dark' ? (
+              <Sun className="w-5 h-5 text-amber-400 group-hover:rotate-45 transition-transform" />
+            ) : (
+              <Moon className="w-5 h-5 text-indigo-500 group-hover:-rotate-12 transition-transform" />
+            )}
+          </button>
+
           {/* Cart Icon */}
           <button
             onClick={onOpenCart}
             aria-label="Корзина покупок"
             className="relative p-2.5 rounded-xl bg-white/5 border border-white/10 hover:border-[#00FF85]/40 text-neutral-300 hover:text-white transition-all group"
           >
-            <ShoppingBag className="w-5 h-5 group-hover:text-[#00FF85] transition-colors" />
             {totalCartCount > 0 && (
               <span className="absolute -top-1 -right-1 min-w-[20px] h-5 bg-[#00FF85] text-black font-black text-xs rounded-full flex items-center justify-center px-1 shadow-neon-green">
                 {totalCartCount}
               </span>
             )}
+            <ShoppingBag className="w-5 h-5 group-hover:text-[#00FF85] transition-colors" />
           </button>
 
           {/* User Profile / Auth Toggle */}

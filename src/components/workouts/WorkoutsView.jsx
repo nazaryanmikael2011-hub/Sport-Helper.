@@ -14,7 +14,12 @@ import {
   ChevronRight,
   Trophy,
   Layers,
-  ArrowRight
+  ArrowRight,
+  Home,
+  Trees,
+  SlidersHorizontal,
+  Check,
+  AlertTriangle
 } from 'lucide-react';
 import { useFitness } from '../../context/FitnessContext';
 import { mockWorkouts } from '../../data/mockWorkouts';
@@ -22,9 +27,20 @@ import { mockExercisesDatabase, findExerciseData } from '../../data/mockExercise
 import { WorkoutDetailModal } from './WorkoutDetailModal';
 import { ExerciseDemoModal } from './ExerciseDemoModal';
 
+const EQUIPMENT_LABELS = {
+  pullup_bar: 'Турник 🚪',
+  dumbbells: 'Гантели 🏋️',
+  resistance_bands: 'Резинки 🎗️',
+  jump_rope: 'Скакалка 🪢',
+  none: 'Свой вес 🤸',
+  gym_machines: 'Оборудование зала 🏋️',
+};
+
 export const WorkoutsView = () => {
   const { profile, updateProfile, startWorkout } = useFitness();
-  const [activeCategory, setActiveCategory] = useState('recommended');
+  const [activeLocation, setActiveLocation] = useState('home'); // 'home' | 'street' | 'gym'
+  const [filterByEquipment, setFilterByEquipment] = useState(true);
+  const [activeSubFilter, setActiveSubFilter] = useState('all');
   const [exerciseLevelFilter, setExerciseLevelFilter] = useState('all');
   const [selectedWorkout, setSelectedWorkout] = useState(null);
   const [selectedExerciseForDemo, setSelectedExerciseForDemo] = useState(null);
@@ -33,45 +49,52 @@ export const WorkoutsView = () => {
   const userLevelName = profile.fitnessLevelName || (
     userLevel === 'beginner' ? 'Начинающий' : userLevel === 'advanced' ? 'Продвинутый' : 'Средний'
   );
+  const userEquipment = profile.equipment || ['none'];
 
-  const levelCategories = [
+  const locationTabs = [
+    { id: 'home', label: 'Дома', icon: Home, emoji: '🏠', count: mockWorkouts.filter((w) => w.location === 'home').length },
+    { id: 'street', label: 'На улице (Воркаут)', icon: Trees, emoji: '🌳', count: mockWorkouts.filter((w) => w.location === 'street').length },
+    { id: 'gym', label: 'В тренажерном зале', icon: Dumbbell, emoji: '🏋️', count: mockWorkouts.filter((w) => w.location === 'gym').length },
+  ];
+
+  const subFilters = [
+    { id: 'all', label: 'Все программы' },
     { id: 'recommended', label: `Рекомендовано (${userLevelName}) ✨` },
-    { id: 'yoga', label: 'Йога 🧘' },
-    { id: 'boxing', label: 'Бокс 🥊' },
-    { id: 'karate', label: 'Карате 🥋' },
-    { id: 'calisthenics', label: 'Калистеника ⚡' },
     { id: 'beginner', label: 'Начинающий 🟢' },
     { id: 'intermediate', label: 'Средний 🟡' },
     { id: 'advanced', label: 'Продвинутый 🔴' },
-    { id: 'all', label: 'Все программы' },
+    { id: 'calisthenics', label: 'Калистеника ⚡' },
+    { id: 'martial', label: 'Йога & Единоборства 🥋' },
   ];
 
+  // Helper to check if user has necessary equipment for a workout
+  const hasRequiredEquipment = (workout) => {
+    if (!workout.requiredEquipment || workout.requiredEquipment.length === 0) return true;
+    if (workout.location === 'gym') return true; // Gym provides all machines
+    return workout.requiredEquipment.every((eq) => userEquipment.includes(eq));
+  };
+
   const filteredWorkouts = mockWorkouts.filter((w) => {
-    if (activeCategory === 'recommended') {
-      // Prioritize workouts matching user level or user goal
+    // 1. Primary Location filter
+    if (w.location !== activeLocation) return false;
+
+    // 2. Equipment intelligent filter
+    if (filterByEquipment && !hasRequiredEquipment(w)) return false;
+
+    // 3. Sub-category & level filter
+    if (activeSubFilter === 'recommended') {
       return w.levelKey === userLevel || (profile.goal === 'lose_weight' ? w.goalTag === 'lose_weight' : w.goalTag === 'gain_muscle');
     }
-    if (activeCategory === 'yoga') {
-      return w.category === 'Йога';
+    if (activeSubFilter === 'beginner') return w.levelKey === 'beginner';
+    if (activeSubFilter === 'intermediate') return w.levelKey === 'intermediate';
+    if (activeSubFilter === 'advanced') return w.levelKey === 'advanced';
+    if (activeSubFilter === 'calisthenics') {
+      return w.category.toLowerCase().includes('воркаут') || w.category.toLowerCase().includes('калистеника') || w.id.includes('calisthenics') || w.id.includes('planche') || w.id.includes('lsit') || w.id.includes('muscleup');
     }
-    if (activeCategory === 'boxing') {
-      return w.category === 'Бокс';
+    if (activeSubFilter === 'martial') {
+      return w.category === 'Йога' || w.category === 'Бокс' || w.category === 'Карате';
     }
-    if (activeCategory === 'karate') {
-      return w.category === 'Карате';
-    }
-    if (activeCategory === 'calisthenics') {
-      return w.category.includes('воркаут') || w.category.includes('Калистеника') || w.id.includes('calisthenics') || w.id.includes('planche') || w.id.includes('lsit') || w.id.includes('muscleup');
-    }
-    if (activeCategory === 'beginner') {
-      return w.levelKey === 'beginner';
-    }
-    if (activeCategory === 'intermediate') {
-      return w.levelKey === 'intermediate';
-    }
-    if (activeCategory === 'advanced') {
-      return w.levelKey === 'advanced';
-    }
+
     return true;
   });
 
@@ -108,7 +131,7 @@ export const WorkoutsView = () => {
           <div className="space-y-1.5">
             <div className="flex flex-wrap items-center gap-2">
               <span className="text-[10px] font-bold uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-[#00FF85]/15 text-[#00FF85] border border-[#00FF85]/30">
-                Умная персонализация
+                Умная адаптация
               </span>
               <span 
                 className="text-[10px] font-black uppercase tracking-wider px-2.5 py-0.5 rounded-full border"
@@ -130,17 +153,17 @@ export const WorkoutsView = () => {
             </h2>
 
             <p className="text-xs sm:text-sm text-neutral-400 max-w-xl leading-relaxed">
-              {userLevel === 'beginner'
-                ? 'Программа сфокусирована на базовой биомеханике (отжимания, приседания, планка), укреплении суставов и плавной адаптации.'
-                : userLevel === 'advanced'
-                ? 'Элитная калистеника: выходы силой (Muscle-Up), прогрессии горизонта Tuck Planche, L-Sit и максимальная мощность.'
-                : 'Сбалансированная база: брусья, подтягивания, прогрессии уголка L-Sit и интенсивные интервалы.'}
+              {activeLocation === 'home'
+                ? 'Домашние тренировки: комплексы со своим весом, гантелями, фитнес-резинками и кардио для комфортных занятий в квартире.'
+                : activeLocation === 'street'
+                ? 'Уличная калистеника: турники, параллельные брусья, скоростной бег и мощные статические элементы на свежем воздухе.'
+                : 'Тренажерный зал: классический силовой сплит, штанги, гантельные ряды и блочные кроссоверы для максимальной гипертрофии.'}
             </p>
           </div>
 
           <button
             onClick={toggleGoal}
-            className="px-4 py-2.5 rounded-xl bg-white/5 hover:bg-white/10 text-neutral-200 border border-white/10 text-xs font-bold transition-all shrink-0 flex items-center gap-2 self-start md:self-center"
+            className="px-4 py-2.5 rounded-xl bg-white/5 hover:bg-white/10 text-neutral-200 border border-white/10 text-xs font-bold transition-all shrink-0 flex items-center gap-2 self-start md:self-center cursor-pointer"
           >
             <Sparkles className="w-4 h-4 text-[#00FF85]" />
             <span>Сменить цель</span>
@@ -148,15 +171,89 @@ export const WorkoutsView = () => {
         </div>
       </div>
 
-      {/* Level & Category Filter Pills */}
-      <div className="flex items-center gap-2 overflow-x-auto pb-2 scrollbar-none">
-        {levelCategories.map((cat) => {
-          const isActive = activeCategory === cat.id;
+      {/* 3 PRIMARY LOCATION TABS (Дома, На улице, В зале) */}
+      <div className="glass-panel p-2 rounded-3xl border border-white/10">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
+          {locationTabs.map((tab) => {
+            const isActive = activeLocation === tab.id;
+            const Icon = tab.icon;
+
+            return (
+              <button
+                key={tab.id}
+                onClick={() => {
+                  setActiveLocation(tab.id);
+                  setActiveSubFilter('all');
+                }}
+                className={`py-3.5 px-4 rounded-2xl flex items-center justify-between transition-all cursor-pointer ${
+                  isActive
+                    ? 'bg-gradient-to-r from-[#00FF85] to-[#10B981] text-black shadow-neon-green font-black'
+                    : 'bg-white/[0.02] hover:bg-white/[0.06] text-neutral-300 border border-white/5'
+                }`}
+              >
+                <div className="flex items-center gap-2.5">
+                  <span className="text-xl">{tab.emoji}</span>
+                  <div className="text-left">
+                    <span className="text-xs sm:text-sm font-black block">
+                      {tab.label}
+                    </span>
+                    <span className={`text-[10px] block ${isActive ? 'text-black/80 font-bold' : 'text-neutral-400'}`}>
+                      {tab.count} {tab.count === 1 ? 'программа' : tab.count < 5 ? 'программы' : 'программ'}
+                    </span>
+                  </div>
+                </div>
+
+                <div
+                  className={`w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold ${
+                    isActive ? 'bg-black text-[#00FF85]' : 'bg-white/10 text-neutral-300'
+                  }`}
+                >
+                  {tab.count}
+                </div>
+              </button>
+            );
+          })}
+        </div>
+      </div>
+
+      {/* INTELLIGENT EQUIPMENT FILTER TOGGLE & STATUS BAR */}
+      <div className="p-4 rounded-2xl bg-white/[0.02] border border-white/5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 text-xs">
+        <div className="flex items-center gap-2 flex-wrap">
+          <span className="text-neutral-400 font-semibold">Ваш инвентарь:</span>
+          {userEquipment.map((eq) => (
+            <span
+              key={eq}
+              className="px-2.5 py-0.5 rounded-lg bg-white/5 border border-white/10 text-neutral-200 text-[11px] font-bold"
+            >
+              {EQUIPMENT_LABELS[eq] || eq}
+            </span>
+          ))}
+        </div>
+
+        <button
+          onClick={() => setFilterByEquipment(!filterByEquipment)}
+          className={`px-3 py-1.5 rounded-xl border text-xs font-bold flex items-center gap-1.5 transition-all cursor-pointer ${
+            filterByEquipment
+              ? 'bg-[#00FF85]/15 border-[#00FF85]/40 text-[#00FF85]'
+              : 'bg-white/5 border-white/10 text-neutral-400 hover:text-white'
+          }`}
+        >
+          <SlidersHorizontal className="w-3.5 h-3.5" />
+          <span>
+            {filterByEquipment ? 'Фильтр инвентаря: ВКЛ' : 'Показать все (без учета инвентаря)'}
+          </span>
+        </button>
+      </div>
+
+      {/* Sub-category & Level Filter Pills */}
+      <div className="flex items-center gap-2 overflow-x-auto pb-1 scrollbar-none">
+        {subFilters.map((cat) => {
+          const isActive = activeSubFilter === cat.id;
           return (
             <button
               key={cat.id}
-              onClick={() => setActiveCategory(cat.id)}
-              className={`px-4 py-2.5 rounded-xl text-xs font-bold whitespace-nowrap transition-all ${
+              onClick={() => setActiveSubFilter(cat.id)}
+              className={`px-3.5 py-2 rounded-xl text-xs font-bold whitespace-nowrap transition-all cursor-pointer ${
                 isActive
                   ? 'bg-[#00FF85] text-black shadow-neon-green font-black'
                   : 'bg-white/5 text-neutral-400 hover:text-white hover:bg-white/10'
@@ -169,115 +266,147 @@ export const WorkoutsView = () => {
       </div>
 
       {/* Workouts Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-        {filteredWorkouts.map((workout) => {
-          const isUserLevelMatch = workout.levelKey === userLevel;
-          const lvlColor = getLevelColor(workout.levelKey);
+      {filteredWorkouts.length === 0 ? (
+        <div className="p-8 rounded-3xl glass-card border border-white/5 text-center space-y-3">
+          <p className="text-neutral-300 font-bold text-sm">
+            В данной категории нет программ, подходящих под текущий фильтр инвентаря.
+          </p>
+          <button
+            onClick={() => setFilterByEquipment(false)}
+            className="px-4 py-2 rounded-xl bg-[#00FF85] text-black font-bold text-xs"
+          >
+            Показать все программы локации
+          </button>
+        </div>
+      ) : (
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+          {filteredWorkouts.map((workout) => {
+            const isUserLevelMatch = workout.levelKey === userLevel;
+            const lvlColor = getLevelColor(workout.levelKey);
+            const userHasEq = hasRequiredEquipment(workout);
 
-          return (
-            <motion.div
-              key={workout.id}
-              whileHover={{ y: -4 }}
-              className={`glass-card rounded-3xl overflow-hidden border transition-all flex flex-col group ${
-                isUserLevelMatch ? 'border-[#00FF85]/30 shadow-[0_0_20px_-8px_rgba(0,255,133,0.2)]' : 'border-white/5 hover:border-white/20'
-              }`}
-            >
-              {/* Image Banner */}
-              <div className="relative h-44 w-full overflow-hidden">
-                <img
-                  src={workout.image}
-                  alt={workout.title}
-                  className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-[#121217] via-[#121217]/50 to-transparent" />
+            return (
+              <motion.div
+                key={workout.id}
+                whileHover={{ y: -4 }}
+                className={`glass-card rounded-3xl overflow-hidden border transition-all flex flex-col group ${
+                  isUserLevelMatch ? 'border-[#00FF85]/30 shadow-[0_0_20px_-8px_rgba(0,255,133,0.2)]' : 'border-white/5 hover:border-white/20'
+                }`}
+              >
+                {/* Image Banner */}
+                <div className="relative h-44 w-full overflow-hidden">
+                  <img
+                    src={workout.image}
+                    alt={workout.title}
+                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#121217] via-[#121217]/50 to-transparent" />
 
-                {/* Category & Matches pills */}
-                <div className="absolute top-3 left-3 flex items-center gap-1.5 flex-wrap">
-                  <span
-                    className="text-[10px] font-bold px-2.5 py-0.5 rounded-full uppercase tracking-wider backdrop-blur-md"
-                    style={{
-                      backgroundColor: `${workout.accentColor || '#00FF85'}25`,
-                      color: workout.accentColor || '#00FF85',
-                      border: `1px solid ${workout.accentColor || '#00FF85'}40`
-                    }}
-                  >
-                    {workout.category}
-                  </span>
-
-                  {isUserLevelMatch && (
-                    <span className="text-[10px] font-black uppercase tracking-wider px-2 py-0.5 rounded-full bg-[#00FF85] text-black shadow-neon-green">
-                      🎯 Твой уровень
+                  {/* Category & Matches pills */}
+                  <div className="absolute top-3 left-3 flex items-center gap-1.5 flex-wrap">
+                    <span
+                      className="text-[10px] font-bold px-2.5 py-0.5 rounded-full uppercase tracking-wider backdrop-blur-md"
+                      style={{
+                        backgroundColor: `${workout.accentColor || '#00FF85'}25`,
+                        color: workout.accentColor || '#00FF85',
+                        border: `1px solid ${workout.accentColor || '#00FF85'}40`
+                      }}
+                    >
+                      {workout.category}
                     </span>
-                  )}
+
+                    {isUserLevelMatch && (
+                      <span className="text-[10px] font-black uppercase tracking-wider px-2 py-0.5 rounded-full bg-[#00FF85] text-black shadow-neon-green">
+                        🎯 Твой уровень
+                      </span>
+                    )}
+
+                    {!userHasEq && (
+                      <span className="text-[10px] font-black uppercase tracking-wider px-2 py-0.5 rounded-full bg-amber-500 text-black flex items-center gap-1 shadow-md">
+                        <AlertTriangle className="w-3 h-3" />
+                        <span>Нужен инвентарь</span>
+                      </span>
+                    )}
+                  </div>
+
+                  {/* Level indicator */}
+                  <div className="absolute top-3 right-3">
+                    <span 
+                      className="text-[10px] font-bold px-2.5 py-0.5 rounded-full backdrop-blur-md border"
+                      style={{
+                        backgroundColor: lvlColor.bg,
+                        color: lvlColor.text,
+                        borderColor: lvlColor.border
+                      }}
+                    >
+                      {workout.level}
+                    </span>
+                  </div>
+
+                  <div className="absolute bottom-3 left-3 right-3">
+                    <h3 className="text-base sm:text-lg font-black text-white line-clamp-1">
+                      {workout.title}
+                    </h3>
+                    <p className="text-xs text-neutral-300 line-clamp-1 mt-0.5">
+                      {workout.subtitle}
+                    </p>
+                  </div>
                 </div>
 
-                {/* Level indicator */}
-                <div className="absolute top-3 right-3">
-                  <span 
-                    className="text-[10px] font-bold px-2.5 py-0.5 rounded-full backdrop-blur-md border"
-                    style={{
-                      backgroundColor: lvlColor.bg,
-                      color: lvlColor.text,
-                      borderColor: lvlColor.border
-                    }}
-                  >
-                    {workout.level}
-                  </span>
-                </div>
+                {/* Workout Details & Stats */}
+                <div className="p-4 sm:p-5 flex-1 flex flex-col justify-between">
+                  <div className="flex items-center justify-between text-xs text-neutral-400 py-2 border-b border-white/5">
+                    <span className="flex items-center gap-1.5 font-semibold">
+                      <Clock className="w-3.5 h-3.5 text-neutral-400" />
+                      {workout.durationMin} мин
+                    </span>
+                    <span className="flex items-center gap-1.5 font-semibold text-[#FF5E00]">
+                      <Flame className="w-3.5 h-3.5" />
+                      ~{workout.caloriesBurned} ккал
+                    </span>
+                    <span className="flex items-center gap-1.5 font-semibold text-[#00FF85]">
+                      <Zap className="w-3.5 h-3.5" />
+                      +{workout.xpReward} XP
+                    </span>
+                  </div>
 
-                <div className="absolute bottom-3 left-3 right-3">
-                  <h3 className="text-base sm:text-lg font-black text-white line-clamp-1">
-                    {workout.title}
-                  </h3>
-                  <p className="text-xs text-neutral-300 line-clamp-1 mt-0.5">
-                    {workout.subtitle}
+                  {/* Equipment Tag */}
+                  <div className="mt-2.5 flex items-center gap-2">
+                    <span className="text-[11px] text-neutral-400">Требуемый инвентарь:</span>
+                    <span className="text-[11px] font-bold text-white px-2 py-0.5 rounded-md bg-white/5 border border-white/10">
+                      {workout.requiredEquipment && workout.requiredEquipment.length > 0
+                        ? workout.requiredEquipment.map((eq) => EQUIPMENT_LABELS[eq] || eq).join(', ')
+                        : 'Свой вес тела (без инвентаря) 🤸'}
+                    </span>
+                  </div>
+
+                  <p className="text-xs text-neutral-400 mt-2 line-clamp-2 leading-relaxed">
+                    {workout.description}
                   </p>
+
+                  {/* Actions */}
+                  <div className="flex items-center gap-2 mt-4 pt-3">
+                    <button
+                      onClick={() => setSelectedWorkout(workout)}
+                      className="flex-1 py-2.5 px-3 rounded-xl bg-white/5 hover:bg-white/10 text-xs font-bold text-neutral-300 hover:text-white transition-all text-center cursor-pointer"
+                    >
+                      Упражнения ({workout.exercises.length})
+                    </button>
+
+                    <button
+                      onClick={() => startWorkout(workout)}
+                      className="py-2.5 px-4 rounded-xl bg-[#00FF85] hover:bg-[#00FF85]/90 text-black font-black text-xs flex items-center justify-center gap-1.5 shadow-neon-green transition-all cursor-pointer"
+                    >
+                      <Play className="w-3.5 h-3.5 fill-black" />
+                      <span>Старт</span>
+                    </button>
+                  </div>
                 </div>
-              </div>
-
-              {/* Workout Details & Stats */}
-              <div className="p-4 sm:p-5 flex-1 flex flex-col justify-between">
-                <div className="flex items-center justify-between text-xs text-neutral-400 py-2 border-b border-white/5">
-                  <span className="flex items-center gap-1.5 font-semibold">
-                    <Clock className="w-3.5 h-3.5 text-neutral-400" />
-                    {workout.durationMin} мин
-                  </span>
-                  <span className="flex items-center gap-1.5 font-semibold text-[#FF5E00]">
-                    <Flame className="w-3.5 h-3.5" />
-                    ~{workout.caloriesBurned} ккал
-                  </span>
-                  <span className="flex items-center gap-1.5 font-semibold text-[#00FF85]">
-                    <Zap className="w-3.5 h-3.5" />
-                    +{workout.xpReward} XP
-                  </span>
-                </div>
-
-                <p className="text-xs text-neutral-400 mt-3 line-clamp-2 leading-relaxed">
-                  {workout.description}
-                </p>
-
-                {/* Actions */}
-                <div className="flex items-center gap-2 mt-4 pt-3">
-                  <button
-                    onClick={() => setSelectedWorkout(workout)}
-                    className="flex-1 py-2.5 px-3 rounded-xl bg-white/5 hover:bg-white/10 text-xs font-bold text-neutral-300 hover:text-white transition-all text-center"
-                  >
-                    Упражнения ({workout.exercises.length})
-                  </button>
-
-                  <button
-                    onClick={() => startWorkout(workout)}
-                    className="py-2.5 px-4 rounded-xl bg-[#00FF85] hover:bg-[#00FF85]/90 text-black font-black text-xs flex items-center justify-center gap-1.5 shadow-neon-green transition-all"
-                  >
-                    <Play className="w-3.5 h-3.5 fill-black" />
-                    <span>Старт</span>
-                  </button>
-                </div>
-              </div>
-            </motion.div>
-          );
-        })}
-      </div>
+              </motion.div>
+            );
+          })}
+        </div>
+      )}
 
       {/* EXERCISE TECHNIQUE DATABASE SPOTLIGHT (3-PHASE PHOTO INSTRUCTIONS) */}
       <div className="glass-card rounded-3xl p-5 sm:p-7 border border-white/5 space-y-4">
@@ -307,7 +436,7 @@ export const WorkoutsView = () => {
               <button
                 key={f.id}
                 onClick={() => setExerciseLevelFilter(f.id)}
-                className={`px-2.5 py-1 rounded-lg text-[11px] font-bold transition-all ${
+                className={`px-2.5 py-1 rounded-lg text-[11px] font-bold transition-all cursor-pointer ${
                   exerciseLevelFilter === f.id
                     ? 'bg-[#00FF85] text-black font-black'
                     : 'text-neutral-400 hover:text-white'

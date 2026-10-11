@@ -83,10 +83,66 @@ export const OnboardingFlow = ({ isOpen, onClose }) => {
     dips: '',
   });
 
-  // Step 4: Focus: 'lose_weight' | 'gain_muscle' | 'calisthenics_strength'
+  // Step 4: Equipment (Multi-select)
+  const [selectedEquipment, setSelectedEquipment] = useState(['pullup_bar', 'dumbbells']);
+
+  // Step 5: Focus: 'lose_weight' | 'gain_muscle' | 'calisthenics_strength'
   const [selectedFocus, setSelectedFocus] = useState('calisthenics_strength');
 
   if (!isOpen) return null;
+
+  const toggleEquipmentOption = (id) => {
+    if (id === 'none') {
+      setSelectedEquipment(['none']);
+      return;
+    }
+    let current = selectedEquipment.filter((x) => x !== 'none');
+    if (current.includes(id)) {
+      current = current.filter((x) => x !== id);
+      if (current.length === 0) current = ['none'];
+    } else {
+      current.push(id);
+    }
+    setSelectedEquipment(current);
+  };
+
+  const equipmentOptions = [
+    {
+      id: 'pullup_bar',
+      title: 'Турник / Перекладина',
+      subtitle: 'Для подтягиваний, уголков L-Sit и базовой калистеники',
+      icon: '🚪',
+      badge: 'Верх тела'
+    },
+    {
+      id: 'dumbbells',
+      title: 'Гантели',
+      subtitle: 'Для жимов, изоляции рук, дельт и акцентированной гипертрофии',
+      icon: '🏋️',
+      badge: 'Свободные веса'
+    },
+    {
+      id: 'resistance_bands',
+      title: 'Фитнес-резинки / Эспандеры',
+      subtitle: 'Для мобильности, разминки суставов и пампинга',
+      icon: '🎗️',
+      badge: 'Мобильность'
+    },
+    {
+      id: 'jump_rope',
+      title: 'Скакалка',
+      subtitle: 'Для взрывного кардио, боксерского темпа и сушки',
+      icon: '🪢',
+      badge: 'Кардио & HIIT'
+    },
+    {
+      id: 'none',
+      title: 'Нет инвентаря',
+      subtitle: 'Тренировки исключительно с собственным весом тела (Bodyweight)',
+      icon: '🤸',
+      badge: 'Свой вес'
+    }
+  ];
 
   // Real-time evaluation of strength test (using 0 for any blank fields during preview)
   const activeStrengthForEval = {
@@ -226,8 +282,12 @@ export const OnboardingFlow = ({ isOpen, onClose }) => {
       if (!validateStep3()) return;
       setDirection(1);
       setStep(4);
+    } else if (step === 4) {
+      // Step 4: Equipment selected
+      setDirection(1);
+      setStep(5);
     } else {
-      // Step 4: Finalize
+      // Step 5: Finalize
       register(accountData.email.trim(), accountData.name.trim());
       finishOnboarding({
         weight: parseFloat(metricsData.weight) || 75,
@@ -238,6 +298,7 @@ export const OnboardingFlow = ({ isOpen, onClose }) => {
         goal: selectedFocus,
         fitnessLevel: fitnessLevelEvaluation.levelKey,
         fitnessLevelName: fitnessLevelEvaluation.levelName,
+        equipment: selectedEquipment && selectedEquipment.length > 0 ? selectedEquipment : ['none'],
         strengthTest: {
           pushups: Number(strengthData.pushups) || 0,
           pullups: Number(strengthData.pullups) || 0,
@@ -350,7 +411,7 @@ export const OnboardingFlow = ({ isOpen, onClose }) => {
         {/* Step Progress Tracker (4 steps) */}
         <div className="flex items-center justify-between mb-5 shrink-0">
           <div className="flex items-center gap-2">
-            {[1, 2, 3, 4].map((s) => (
+            {[1, 2, 3, 4, 5].map((s) => (
               <div
                 key={s}
                 className={`h-1.5 rounded-full transition-all duration-300 ${
@@ -365,10 +426,11 @@ export const OnboardingFlow = ({ isOpen, onClose }) => {
           </div>
 
           <span className="text-xs font-bold text-neutral-400">
-            Шаг {step} из 4 • {
+            Шаг {step} из 5 • {
               step === 1 ? 'Аккаунт' : 
               step === 2 ? 'Параметры' : 
-              step === 3 ? 'Тест силы' : 'Фокус'
+              step === 3 ? 'Тест силы' : 
+              step === 4 ? 'Инвентарь' : 'Фокус'
             }
           </span>
         </div>
@@ -883,7 +945,7 @@ export const OnboardingFlow = ({ isOpen, onClose }) => {
               </motion.div>
             )}
 
-            {/* STEP 4: FOCUS SELECTION (CARDS WITH ICONS) */}
+            {/* STEP 4: EQUIPMENT SELECTION (MULTI-SELECT) */}
             {step === 4 && (
               <motion.div
                 key="step4"
@@ -896,7 +958,74 @@ export const OnboardingFlow = ({ isOpen, onClose }) => {
               >
                 <div>
                   <h2 className="text-xl sm:text-2xl font-black text-white tracking-tight">
-                    Шаг 4: Выбор главного фокуса
+                    Шаг 4: Ваш спортивный инвентарь
+                  </h2>
+                  <p className="text-xs text-neutral-400 mt-0.5">
+                    Имеются ли у вас спортивные принадлежности дома или на улице? (Можно выбрать несколько)
+                  </p>
+                </div>
+
+                <div className="space-y-2">
+                  {equipmentOptions.map((item) => {
+                    const isSelected = selectedEquipment.includes(item.id);
+
+                    return (
+                      <div
+                        key={item.id}
+                        onClick={() => toggleEquipmentOption(item.id)}
+                        className={`p-3 rounded-2xl cursor-pointer border transition-all flex items-center justify-between gap-3 ${
+                          isSelected
+                            ? 'bg-[#00FF85]/10 border-[#00FF85] shadow-[0_0_15px_rgba(0,255,133,0.15)]'
+                            : 'bg-white/[0.02] border-white/5 hover:border-white/15'
+                        }`}
+                      >
+                        <div className="flex items-center gap-3 min-w-0">
+                          <span className="text-2xl">{item.icon}</span>
+                          <div className="min-w-0">
+                            <div className="flex items-center gap-2">
+                              <h4 className="font-bold text-white text-xs sm:text-sm">
+                                {item.title}
+                              </h4>
+                              <span className="text-[9px] font-bold px-1.5 py-0.2 rounded bg-white/5 text-neutral-300 border border-white/10 hidden sm:inline">
+                                {item.badge}
+                              </span>
+                            </div>
+                            <p className="text-[11px] text-neutral-400 mt-0.5 truncate">
+                              {item.subtitle}
+                            </p>
+                          </div>
+                        </div>
+
+                        <div
+                          className={`w-5 h-5 rounded-lg flex items-center justify-center border transition-all shrink-0 ${
+                            isSelected
+                              ? 'bg-[#00FF85] border-[#00FF85] text-black shadow-neon-green'
+                              : 'border-white/20 bg-white/5'
+                          }`}
+                        >
+                          {isSelected && <Check className="w-3.5 h-3.5 stroke-[3]" />}
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              </motion.div>
+            )}
+
+            {/* STEP 5: FOCUS SELECTION (CARDS WITH ICONS) */}
+            {step === 5 && (
+              <motion.div
+                key="step5"
+                custom={direction}
+                variants={slideVariants}
+                initial="enter"
+                animate="center"
+                exit="exit"
+                className="space-y-3"
+              >
+                <div>
+                  <h2 className="text-xl sm:text-2xl font-black text-white tracking-tight">
+                    Шаг 5: Выбор главного фокуса
                   </h2>
                   <p className="text-xs text-neutral-400 mt-0.5">
                     Программа и калории будут откалиброваны под твой фокус и уровень ({fitnessLevelEvaluation.levelName})
@@ -960,7 +1089,7 @@ export const OnboardingFlow = ({ isOpen, onClose }) => {
                                 : 'border-neutral-600'
                             }`}
                           >
-                            {isSelected && <Check className="w-3 h-3 stroke-[3]" />}
+                            {isSelected && <Check className="w-3.5 h-3.5 stroke-[3]" />}
                           </div>
                         </div>
                       </div>
@@ -1002,7 +1131,7 @@ export const OnboardingFlow = ({ isOpen, onClose }) => {
             onClick={handleNext}
             className="px-6 py-3 rounded-xl bg-gradient-to-r from-[#00FF85] to-[#10B981] hover:brightness-110 text-black font-black text-xs sm:text-sm flex items-center gap-2 shadow-neon-green transition-all ml-auto"
           >
-            <span>{step === 4 ? 'Завершить регистрацию 🚀' : 'Продолжить'}</span>
+            <span>{step === 5 ? 'Завершить регистрацию 🚀' : 'Продолжить'}</span>
             <ArrowRight className="w-4 h-4" />
           </button>
         </div>

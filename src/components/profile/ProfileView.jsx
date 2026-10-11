@@ -26,7 +26,10 @@ import {
   Shield,
   CheckCircle2,
   Crown,
-  Loader2
+  Loader2,
+  Sun,
+  Moon,
+  Layers
 } from 'lucide-react';
 import { useFitness } from '../../context/FitnessContext';
 import { mockBadges } from '../../data/mockBadges';
@@ -34,6 +37,14 @@ import { calculateBMI, calculateDailyTargets } from '../../utils/calculations';
 import { formatCurrency } from '../../utils/formatters';
 
 import { AvatarUploader } from './AvatarUploader';
+
+const EQUIPMENT_OPTIONS = [
+  { id: 'pullup_bar', label: 'Турник', icon: '🚪' },
+  { id: 'dumbbells', label: 'Гантели', icon: '🏋️' },
+  { id: 'resistance_bands', label: 'Фитнес-резинки', icon: '🎗️' },
+  { id: 'jump_rope', label: 'Скакалка', icon: '🪢' },
+  { id: 'none', label: 'Свой вес', icon: '🤸' },
+];
 
 export const ProfileView = ({ onOpenOnboarding, onOpenAuth }) => {
   const { 
@@ -48,7 +59,9 @@ export const ProfileView = ({ onOpenOnboarding, onOpenAuth }) => {
     logout, 
     resetDemoState,
     isPremium,
-    activatePremium
+    activatePremium,
+    theme,
+    toggleTheme
   } = useFitness();
 
   const [isEditing, setIsEditing] = useState(false);
@@ -60,6 +73,7 @@ export const ProfileView = ({ onOpenOnboarding, onOpenAuth }) => {
     targetWeight: profile.targetWeight || 72,
     goal: profile.goal || 'gain_muscle',
     fitnessLevel: profile.fitnessLevel || 'intermediate',
+    equipment: profile.equipment || ['none'],
   });
 
   // Keep form in sync when profile updates
@@ -72,6 +86,7 @@ export const ProfileView = ({ onOpenOnboarding, onOpenAuth }) => {
       targetWeight: profile.targetWeight || 72,
       goal: profile.goal || 'gain_muscle',
       fitnessLevel: profile.fitnessLevel || 'intermediate',
+      equipment: profile.equipment || ['none'],
     });
   }, [user.name, profile]);
 
@@ -95,6 +110,23 @@ export const ProfileView = ({ onOpenOnboarding, onOpenAuth }) => {
 
   const currentLevelBadge = levelBadges[profile.fitnessLevel] || levelBadges.intermediate;
 
+  const toggleEquipmentItem = (id) => {
+    setEditForm((prev) => {
+      let current = prev.equipment || [];
+      if (id === 'none') {
+        return { ...prev, equipment: ['none'] };
+      }
+      let next = current.filter((x) => x !== 'none');
+      if (next.includes(id)) {
+        next = next.filter((x) => x !== id);
+        if (next.length === 0) next = ['none'];
+      } else {
+        next.push(id);
+      }
+      return { ...prev, equipment: next };
+    });
+  };
+
   const handleSave = (e) => {
     e.preventDefault();
 
@@ -113,6 +145,7 @@ export const ProfileView = ({ onOpenOnboarding, onOpenAuth }) => {
       goal: editForm.goal,
       fitnessLevel: editForm.fitnessLevel,
       fitnessLevelName: levelNamesMap[editForm.fitnessLevel] || 'Средний',
+      equipment: editForm.equipment && editForm.equipment.length > 0 ? editForm.equipment : ['none'],
     });
 
     setIsEditing(false);
@@ -402,6 +435,36 @@ export const ProfileView = ({ onOpenOnboarding, onOpenAuth }) => {
                     <option value="advanced">Продвинутый (Tuck Planche, выходы силой, тяжелые веса)</option>
                   </select>
                 </div>
+
+                {/* 8. Available Equipment */}
+                <div className="lg:col-span-2">
+                  <label className="text-[10px] uppercase font-bold text-neutral-300 block mb-1.5">
+                    Доступный инвентарь (для подбора тренировок)
+                  </label>
+                  <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
+                    {EQUIPMENT_OPTIONS.map((item) => {
+                      const isSelected = (editForm.equipment || []).includes(item.id);
+                      return (
+                        <button
+                          key={item.id}
+                          type="button"
+                          onClick={() => toggleEquipmentItem(item.id)}
+                          className={`p-2.5 rounded-xl border text-xs font-semibold flex items-center justify-between gap-1.5 transition-all text-left cursor-pointer ${
+                            isSelected
+                              ? 'bg-[#00FF85]/15 border-[#00FF85] text-white shadow-[0_0_10px_rgba(0,255,133,0.15)]'
+                              : 'bg-white/[0.02] border-white/10 text-neutral-400 hover:text-white hover:border-white/20'
+                          }`}
+                        >
+                          <span className="flex items-center gap-1.5">
+                            <span>{item.icon}</span>
+                            <span>{item.label}</span>
+                          </span>
+                          {isSelected && <Check className="w-3.5 h-3.5 text-[#00FF85]" />}
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
               </div>
 
               {/* Dynamic Live Nutrients Preview */}
@@ -497,6 +560,91 @@ export const ProfileView = ({ onOpenOnboarding, onOpenAuth }) => {
           <span className="text-[11px] text-neutral-400 font-medium mt-1 block">
             Б: {dailyTargets.protein}г • Ж: {dailyTargets.fats}г • У: {dailyTargets.carbs}г
           </span>
+        </div>
+      </div>
+
+      {/* Equipment & Theme Row */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        {/* User Equipment Card */}
+        <div className="glass-card rounded-3xl p-5 sm:p-6 border border-white/5 flex flex-col justify-between">
+          <div className="flex items-center justify-between mb-3">
+            <div className="flex items-center gap-2">
+              <div className="p-2 rounded-xl bg-[#00FF85]/15 text-[#00FF85]">
+                <Layers className="w-5 h-5" />
+              </div>
+              <div>
+                <h4 className="text-sm font-bold text-white">Спортивный инвентарь</h4>
+                <p className="text-[11px] text-neutral-400">Учитывается при умном подборе тренировок</p>
+              </div>
+            </div>
+            <button
+              onClick={() => setIsEditing(true)}
+              className="text-[11px] text-[#00FF85] hover:underline font-bold flex items-center gap-1 cursor-pointer"
+            >
+              <Edit2 className="w-3 h-3" />
+              <span>Изменить</span>
+            </button>
+          </div>
+
+          <div className="flex flex-wrap gap-1.5 pt-2">
+            {(profile.equipment && profile.equipment.length > 0 ? profile.equipment : ['none']).map((eqId) => {
+              const eq = EQUIPMENT_OPTIONS.find((item) => item.id === eqId) || { label: eqId, icon: '⚡' };
+              return (
+                <span
+                  key={eqId}
+                  className="px-2.5 py-1 rounded-xl bg-white/5 border border-white/10 text-xs text-neutral-200 font-medium flex items-center gap-1.5"
+                >
+                  <span>{eq.icon}</span>
+                  <span>{eq.label}</span>
+                </span>
+              );
+            })}
+          </div>
+        </div>
+
+        {/* Theme Settings Card */}
+        <div className="glass-card rounded-3xl p-5 sm:p-6 border border-white/5 flex flex-col justify-between">
+          <div className="flex items-center justify-between mb-3">
+            <div className="flex items-center gap-2">
+              <div className={`p-2 rounded-xl ${theme === 'dark' ? 'bg-[#00FF85]/15 text-[#00FF85]' : 'bg-amber-500/15 text-amber-500'}`}>
+                {theme === 'dark' ? <Moon className="w-5 h-5" /> : <Sun className="w-5 h-5" />}
+              </div>
+              <div>
+                <h4 className="text-sm font-bold text-white">Тема оформления</h4>
+                <p className="text-[11px] text-neutral-400">
+                  {theme === 'dark' ? 'Темная неоновая (OLED Dark)' : 'Светлая минималистичная (Clean Light)'}
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div className="flex items-center gap-2 pt-2">
+            <button
+              type="button"
+              onClick={() => theme !== 'light' && toggleTheme()}
+              className={`flex-1 py-2 px-3 rounded-xl text-xs font-bold flex items-center justify-center gap-2 transition-all cursor-pointer ${
+                theme === 'light'
+                  ? 'bg-amber-400 text-black shadow-md'
+                  : 'bg-white/5 border border-white/10 text-neutral-300 hover:text-white'
+              }`}
+            >
+              <Sun className="w-4 h-4" />
+              <span>Светлая тема</span>
+            </button>
+
+            <button
+              type="button"
+              onClick={() => theme !== 'dark' && toggleTheme()}
+              className={`flex-1 py-2 px-3 rounded-xl text-xs font-bold flex items-center justify-center gap-2 transition-all cursor-pointer ${
+                theme === 'dark'
+                  ? 'bg-[#00FF85] text-black shadow-neon-green'
+                  : 'bg-white/5 border border-white/10 text-neutral-300 hover:text-white'
+              }`}
+            >
+              <Moon className="w-4 h-4" />
+              <span>Темная тема</span>
+            </button>
+          </div>
         </div>
       </div>
 

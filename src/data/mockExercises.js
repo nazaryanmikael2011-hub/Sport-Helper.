@@ -996,6 +996,314 @@ export const mockExercisesDatabase = [
       'Заваливание плеч назад от цели.'
     ],
     breathingTip: 'Выдох на взрывном раскрытии голени в наивысшей точке дуги.'
+  },
+
+  // ===================== УПРАЖНЕНИЯ С ГАНТЕЛЯМИ И ИНВЕНТАРЕМ =====================
+  {
+    id: 'ex-dumbbell-press',
+    name: 'Жим гантелей стоя на плечи',
+    category: 'Свободные веса & Плечи',
+    levelKey: 'intermediate',
+    level: 'Средний',
+    isStatic: false,
+    targetValue: 12,
+    targetUnit: 'раз',
+    accentColor: '#F59E0B',
+    gradient: 'from-amber-950 via-amber-500/20 to-[#0A0A0C]',
+    muscleTags: ['Передняя дельта', 'Средняя дельта', 'Трицепс', 'Мышцы кора'],
+    overview: 'Базовое движение со свободными весами для построения широких плечевых дельт и стабилизации корпуса.',
+    phases: [
+      {
+        phaseNumber: 1,
+        badge: 'Фаза 1: Исходное',
+        title: 'Гантели на уровне ключиц',
+        description: 'Стопы на ширине плеч, локти под гантелями, пресс напряжен, нейтральный прогиб в пояснице.',
+        image: 'https://images.unsplash.com/photo-1583454110551-21f2fa2afe61?auto=format&fit=crop&w=800&q=80',
+        fallbackPlaceholder: 'https://placehold.co/800x450/121217/F59E0B?text=Фаза+1:+Старт+жима+гантелей'
+      },
+      {
+        phaseNumber: 2,
+        badge: 'Фаза 2: Подъем',
+        title: 'Мощный жим вверх по траектории дуги',
+        description: 'На выдохе выжмите гантели над головой без запрокидывания головы назад и без рывка ногами.',
+        image: 'https://images.unsplash.com/photo-1581009146145-b5ef050c2e1e?auto=format&fit=crop&w=800&q=80',
+        fallbackPlaceholder: 'https://placehold.co/800x450/121217/38BDF8?text=Фаза+2:+Жим+над+головой'
+      },
+      {
+        phaseNumber: 3,
+        badge: 'Фаза 3: Фиксация',
+        title: 'Пиковая фиксация в верхней точке',
+        description: 'Гантели над макушкой, руки выпрямлены, лопатки стабилизированы, подконтрольный спуск на вдохе.',
+        image: 'https://images.unsplash.com/photo-1534438327276-14e5300c3a48?auto=format&fit=crop&w=800&q=80',
+        fallbackPlaceholder: 'https://placehold.co/800x450/121217/00FF85?text=Фаза+3:+Пиковая+фиксация'
+      }
+    ],
+    techniqueSteps: [
+      'Не разгибайте колени рывком (жим строгий, без читинга).',
+      'Держите локти направленными слегка вперед под углом 30-45°.',
+      'Опускайте гантели плавно до уровня ушей.'
+    ],
+    commonMistakes: [
+      'Чрезмерный прогиб в пояснице назад при подъеме тяжелого веса.',
+      'Стуканье гантелями в верхней точке.'
+    ],
+    breathingTip: 'Вдох в нижней точке, акцентированный выдох при выжимании гантелей вверх.'
+  },
+
+  {
+    id: 'ex-dumbbell-goblet',
+    name: 'Приседания с гантелью (Goblet Squat)',
+    category: 'Ноги & Свободные веса',
+    levelKey: 'beginner',
+    level: 'Начинающий',
+    isStatic: false,
+    targetValue: 15,
+    targetUnit: 'раз',
+    accentColor: '#10B981',
+    gradient: 'from-emerald-950 via-emerald-500/20 to-[#0A0A0C]',
+    muscleTags: ['Квадрицепсы', 'Ягодичные', 'Бицепс бедра', 'Кор'],
+    overview: 'Одно из лучших безопасных упражнений на ноги, идеально ставящее глубокую и правильную биомеханику седа.',
+    phases: [
+      {
+        phaseNumber: 1,
+        badge: 'Фаза 1: Стойка',
+        title: 'Удержание гантели у груди (кубок)',
+        description: 'Держите гантель обеими ладонями вертикально у верхней части груди, локти смотрят вниз.',
+        image: 'https://images.unsplash.com/photo-1574680096145-d05b474e2155?auto=format&fit=crop&w=800&q=80',
+        fallbackPlaceholder: 'https://placehold.co/800x450/121217/10B981?text=Фаза+1:+Стойка+с+гантелью'
+      },
+      {
+        phaseNumber: 2,
+        badge: 'Фаза 2: Сед',
+        title: 'Глубокий подконтрольный присед',
+        description: 'Разводя колени в стороны стоп, опуститесь тазом между бедер до параллели или ниже.',
+        image: 'https://images.unsplash.com/photo-1517838277536-f5f99be501cd?auto=format&fit=crop&w=800&q=80',
+        fallbackPlaceholder: 'https://placehold.co/800x450/121217/38BDF8?text=Фаза+2:+Глубокий+сед'
+      },
+      {
+        phaseNumber: 3,
+        badge: 'Фаза 3: Подъем',
+        title: 'Мощный подъем упором через пятки',
+        description: 'Давите пятками в пол, выпрямляя колени и тазобедренные суставы, сжав ягодицы вверху.',
+        image: 'https://images.unsplash.com/photo-1541534741688-6078c6bfb5c5?auto=format&fit=crop&w=800&q=80',
+        fallbackPlaceholder: 'https://placehold.co/800x450/121217/FF5E00?text=Фаза+3:+Выход+вверх'
+      }
+    ],
+    techniqueSteps: [
+      'Спина строго прямая, грудь раскрыта.',
+      'Колени идут сонаправленно носкам (носки развернуты на 20-30°).',
+      'Пятки ни в коем случае не отрываются от пола.'
+    ],
+    commonMistakes: [
+      'Сведение коленей внутрь при подъеме.',
+      'Наклон корпуса вперед с округлением спины.'
+    ],
+    breathingTip: 'Вдох при опускании вниз, мощный выдох при выталкивании вверх.'
+  },
+
+  {
+    id: 'ex-band-row',
+    name: 'Тяга резинки к поясу сидя',
+    category: 'Фитнес-резинки & Спина',
+    levelKey: 'beginner',
+    level: 'Начинающий',
+    isStatic: false,
+    targetValue: 18,
+    targetUnit: 'раз',
+    accentColor: '#38BDF8',
+    gradient: 'from-sky-950 via-sky-500/20 to-[#0A0A0C]',
+    muscleTags: ['Широчайшие мышцы спины', 'Ромбовидные', 'Задняя дельта', 'Бицепс'],
+    overview: 'Отличное домашнее упражнение с резиной для укрепления осанки и формирования V-образного силуэта.',
+    phases: [
+      {
+        phaseNumber: 1,
+        badge: 'Фаза 1: Натяжение',
+        title: 'Резинка зафиксирована на стопах',
+        description: 'Сядьте с прямыми ногами, зацепите резинку за середину стоп, держите концы с легким натяжением.',
+        image: 'https://images.unsplash.com/photo-1518611012118-696072aa579a?auto=format&fit=crop&w=800&q=80',
+        fallbackPlaceholder: 'https://placehold.co/800x450/121217/38BDF8?text=Фаза+1:+Старт+тяги+резинки'
+      },
+      {
+        phaseNumber: 2,
+        badge: 'Фаза 2: Тяга',
+        title: 'Тяга локтями назад вдоль туловища',
+        description: 'Притягивайте ручки эспандера к низу живота, ведя локти вплотную к ребрам.',
+        image: 'https://images.unsplash.com/photo-1540420773420-3366772f4999?auto=format&fit=crop&w=800&q=80',
+        fallbackPlaceholder: 'https://placehold.co/800x450/121217/00FF85?text=Фаза+2:+Тяга+к+животу'
+      },
+      {
+        phaseNumber: 3,
+        badge: 'Фаза 3: Сведение',
+        title: 'Пиковое сведение лопаток',
+        description: 'Задержите лопатки сведенными на 1 секунду в максимальной точке сокращения широчайших.',
+        image: 'https://images.unsplash.com/photo-1598971639058-fab3c3109a00?auto=format&fit=crop&w=800&q=80',
+        fallbackPlaceholder: 'https://placehold.co/800x450/121217/FF5E00?text=Фаза+3:+Сведение+лопаток'
+      }
+    ],
+    techniqueSteps: [
+      'Тяните усилием спины, а не только силой бицепсов.',
+      'Грудь подавайте вперед навстречу движению.',
+      'Возвращайте руки в исходное положение медленно, сопротивляясь натяжению.'
+    ],
+    commonMistakes: [
+      'Поднимание плеч к ушам (зажим трапеции).',
+      'Раскачивание туловища вперед-назад.'
+    ],
+    breathingTip: 'Выдох на пиковом сведении лопаток к позвоночнику, вдох при плавном возврате.'
+  },
+
+  // ===================== УПРАЖНЕНИЯ В ЗАЛЕ (GYM) =====================
+  {
+    id: 'ex-gym-bench-press',
+    name: 'Классический жим штанги лежа',
+    category: 'Тренажерный зал & Грудь',
+    levelKey: 'intermediate',
+    level: 'Средний',
+    isStatic: false,
+    targetValue: 10,
+    targetUnit: 'раз',
+    accentColor: '#FF5E00',
+    gradient: 'from-orange-950 via-orange-500/20 to-[#0A0A0C]',
+    muscleTags: ['Большая грудная', 'Трицепс', 'Передняя дельта'],
+    overview: 'Золотой стандарт развития массивной мускулатуры груди и силы жимового плечевого пояса в зале.',
+    phases: [
+      {
+        phaseNumber: 1,
+        badge: 'Фаза 1: Мост и хват',
+        title: 'Съем штанги со стоек',
+        description: 'Лопатки сведены и вдавлены в скамью, стопы упираются в пол, гриф строго над глазами.',
+        image: 'https://images.unsplash.com/photo-1534438327276-14e5300c3a48?auto=format&fit=crop&w=800&q=80',
+        fallbackPlaceholder: 'https://placehold.co/800x450/121217/FF5E00?text=Фаза+1:+Съем+штанги+со+стоек'
+      },
+      {
+        phaseNumber: 2,
+        badge: 'Фаза 2: Опускание',
+        title: 'Подконтрольный спуск к низу груди',
+        description: 'На глубоком вдохе плавно коснитесь грифом середины или низа грудных мышц.',
+        image: 'https://images.unsplash.com/photo-1583454110551-21f2fa2afe61?auto=format&fit=crop&w=800&q=80',
+        fallbackPlaceholder: 'https://placehold.co/800x450/121217/38BDF8?text=Фаза+2:+Касание+груди'
+      },
+      {
+        phaseNumber: 3,
+        badge: 'Фаза 3: Жим',
+        title: 'Взрывное выжимание штанги вверх',
+        description: 'Мощным толчком грудных и трицепсов выжмите штангу обратно в верхнюю точку без отрыва таза.',
+        image: 'https://images.unsplash.com/photo-1517838277536-f5f99be501cd?auto=format&fit=crop&w=800&q=80',
+        fallbackPlaceholder: 'https://placehold.co/800x450/121217/00FF85?text=Фаза+3:+Жим+вверх'
+      }
+    ],
+    techniqueSteps: [
+      'Держите запястья прямо, без излома под весом грифа.',
+      'Локти направлены под 45-60 градусов к телу, не разводите их перпендикулярно.',
+      'Таз должен оставаться плотно прижатым к скамье на протяжении всего подхода.'
+    ],
+    commonMistakes: [
+      'Отбив грифа от грудной клетки.',
+      'Отрыв ягодиц от скамьи при преодолении мертвого центра.'
+    ],
+    breathingTip: 'Глубокий вдох при опускании штанги, мощный форсированный выдох при прохождении средней трети подъема.'
+  },
+
+  {
+    id: 'ex-gym-lat-pulldown',
+    name: 'Тяга верхнего блока к груди',
+    category: 'Тренажерный зал & Спина',
+    levelKey: 'beginner',
+    level: 'Начинающий',
+    isStatic: false,
+    targetValue: 12,
+    targetUnit: 'раз',
+    accentColor: '#38BDF8',
+    gradient: 'from-sky-950 via-sky-500/20 to-[#0A0A0C]',
+    muscleTags: ['Широчайшие мышцы', 'Круглые мышцы спины', 'Бицепс', 'Брахиалис'],
+    overview: 'Базовый тренажер для развития ширины спины и идеальная подводка к тяжелым подтягиваниям на турнике.',
+    phases: [
+      {
+        phaseNumber: 1,
+        badge: 'Фаза 1: Захват',
+        title: 'Широкий хват и фиксация бедер',
+        description: 'Возьмите рукоять шире плеч, зафиксируйте бедра под валиками, плечи опущены вниз.',
+        image: 'https://images.unsplash.com/photo-1541534741688-6078c6bfb5c5?auto=format&fit=crop&w=800&q=80',
+        fallbackPlaceholder: 'https://placehold.co/800x450/121217/38BDF8?text=Фаза+1:+Захват+рукояти'
+      },
+      {
+        phaseNumber: 2,
+        badge: 'Фаза 2: Тяга',
+        title: 'Тяга локтями к ключицам',
+        description: 'Отклонив корпус на 10-15°, притяните рукоять к ключицам за счет мощного сведения лопаток.',
+        image: 'https://images.unsplash.com/photo-1581009146145-b5ef050c2e1e?auto=format&fit=crop&w=800&q=80',
+        fallbackPlaceholder: 'https://placehold.co/800x450/121217/00FF85?text=Фаза+2:+Тяга+к+ключицам'
+      },
+      {
+        phaseNumber: 3,
+        badge: 'Фаза 3: Контроль',
+        title: 'Плавный подконтрольный подъем вверх',
+        description: 'Медленно верните рукоять вверх, чувствуя растяжение широчайших мышц спины.',
+        image: 'https://images.unsplash.com/photo-1574680096145-d05b474e2155?auto=format&fit=crop&w=800&q=80',
+        fallbackPlaceholder: 'https://placehold.co/800x450/121217/FF5E00?text=Фаза+3:+Плавный+возврат'
+      }
+    ],
+    techniqueSteps: [
+      'Тяните не кистями, а мысленно ведите локти вниз и назад.',
+      'Грудь встречает рукоять, лопатки полностью сведены в нижней точке.',
+      'Не раскачивайтесь корпусом назад дальше 15 градусов.'
+    ],
+    commonMistakes: [
+      'Тяга рукояти за шею (опасно для шейных позвонков и ротаторной манжеты).',
+      'Сильный рывок поясницей назад.'
+    ],
+    breathingTip: 'Выдох при тяге рукояти к груди, вдох при возврате в исходное растяжение.'
+  },
+
+  {
+    id: 'ex-gym-barbell-squat',
+    name: 'Приседания со штангой на плечах',
+    category: 'Тренажерный зал & Ноги',
+    levelKey: 'advanced',
+    level: 'Продвинутый',
+    isStatic: false,
+    targetValue: 8,
+    targetUnit: 'раз',
+    accentColor: '#10B981',
+    gradient: 'from-emerald-950 via-emerald-500/20 to-[#0A0A0C]',
+    muscleTags: ['Квадрицепсы', 'Большая ягодичная', 'Разгибатели спины', 'Приводящие'],
+    overview: 'Король силовых упражнений, развивающий общую анаболическую силу, плотность костей и объем бедер.',
+    phases: [
+      {
+        phaseNumber: 1,
+        badge: 'Фаза 1: Старт',
+        title: 'Штанга на трапециях, жесткий упор',
+        description: 'Гриф лежит на верхних трапециях, лопатки сведены, таз подтянут, стопы устойчиво стоят на ширине плеч.',
+        image: 'https://images.unsplash.com/photo-1517838277536-f5f99be501cd?auto=format&fit=crop&w=800&q=80',
+        fallbackPlaceholder: 'https://placehold.co/800x450/121217/10B981?text=Фаза+1:+Старт+со+штангой'
+      },
+      {
+        phaseNumber: 2,
+        badge: 'Фаза 2: Сед',
+        title: 'Глубокий сед до параллели',
+        description: 'Отводя таз назад и разводя колени, опуститесь до угла 90 градусов в коленях с ровной поясницей.',
+        image: 'https://images.unsplash.com/photo-1574680096145-d05b474e2155?auto=format&fit=crop&w=800&q=80',
+        fallbackPlaceholder: 'https://placehold.co/800x450/121217/38BDF8?text=Фаза+2:+Сед+до+параллели'
+      },
+      {
+        phaseNumber: 3,
+        badge: 'Фаза 3: Взрыв',
+        title: 'Мощный подъем через пятки в исходную',
+        description: 'Мощным толчком через середину стопы и пятки поднимитесь вверх, выдохнув через стиснутые зубы.',
+        image: 'https://images.unsplash.com/photo-1534438327276-14e5300c3a48?auto=format&fit=crop&w=800&q=80',
+        fallbackPlaceholder: 'https://placehold.co/800x450/121217/00FF85?text=Фаза+3:+Подъем+наверх'
+      }
+    ],
+    techniqueSteps: [
+      'Взгляд направлен прямо перед собой или чуть вверх.',
+      'Колени строго следуют проекции носков, не заваливаясь внутрь.',
+      'Глубокий вдох в живот и создание внутрибрюшного давления перед каждым повтором.'
+    ],
+    commonMistakes: [
+      'Клевок тазом (округление поясницы в нижней точке седа).',
+      'Отрыв пяток от пола.'
+    ],
+    breathingTip: 'Вдох перед началом движения, фиксация дыхания на спуске, выдох на преодолении середины подъема.'
   }
 ];
 
@@ -1008,6 +1316,12 @@ export const findExerciseData = (nameOrId) => {
       ex.id.toLowerCase() === query ||
       ex.name.toLowerCase().includes(query) ||
       query.includes(ex.name.toLowerCase()) ||
+      (query.includes('гантел') && (ex.id === 'ex-dumbbell-press' || ex.id === 'ex-dumbbell-goblet')) ||
+      (query.includes('резин') && ex.id === 'ex-band-row') ||
+      (query.includes('эспандер') && ex.id === 'ex-band-row') ||
+      (query.includes('жим штанги') && ex.id === 'ex-gym-bench-press') ||
+      (query.includes('блок') && ex.id === 'ex-gym-lat-pulldown') ||
+      (query.includes('штангой') && ex.id === 'ex-gym-barbell-squat') ||
       (query.includes('lsit') && ex.id === 'ex-lsit') ||
       (query.includes('уголок') && ex.id === 'ex-lsit') ||
       (query.includes('planche') && ex.id === 'ex-tuck-planche') ||
