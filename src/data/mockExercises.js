@@ -24,14 +24,16 @@ export const mockExercisesDatabase = [
     gradient: 'from-emerald-950 via-[#00FF85]/20 to-[#0A0A0C]',
     muscleTags: ['Грудные мышцы', 'Трицепс', 'Передняя дельта', 'Мышцы кора'],
     overview: 'Фундаментальное базовое движение для развития силы верхней части тела, плечевого пояса и стабильности корпуса.',
+    poster: 'https://goodlooker.ru/wp-content/uploads/2017/07/Push-Up-4.jpg',
+    image: 'https://goodlooker.ru/wp-content/uploads/2017/07/Push-Up-4.jpg',
     phases: [
       {
         phaseNumber: 1,
-        badge: 'Фаза 1: Старт',
+        badge: 'Фаза 1: Старт & Техника',
         title: 'Исходное положение (Упор лежа)',
         description: 'Ладони шире плеч, пальцы направлены вперед. Тело вытянуто в прямую струну: ягодицы сжаты, пресс напряжен, таз не провисает.',
-        image: 'https://images.unsplash.com/photo-1598971639058-fab3c3109a00?auto=format&fit=crop&w=800&q=80',
-        fallbackPlaceholder: 'https://placehold.co/800x450/121217/00FF85?text=Фаза+1:+Исходный+упор+лежа'
+        image: 'https://goodlooker.ru/wp-content/uploads/2017/07/Push-Up-4.jpg',
+        fallbackPlaceholder: 'https://images.unsplash.com/photo-1598971639058-fab3c3109a00?auto=format&fit=crop&w=800&q=80'
       },
       {
         phaseNumber: 2,
@@ -46,8 +48,8 @@ export const mockExercisesDatabase = [
         badge: 'Фаза 3: Пик',
         title: 'Пиковое сокращение грудных мышц',
         description: 'Коснитесь грудью пола (1–2 см) и мощным выдохом выжмите тело обратно вверх до полного разгибания локтей и сведения лопаток.',
-        image: 'https://images.unsplash.com/photo-1534438327276-14e5300c3a48?auto=format&fit=crop&w=800&q=80',
-        fallbackPlaceholder: 'https://placehold.co/800x450/121217/FF5E00?text=Фаза+3:+Пиковый+жим+и+фиксация'
+        image: 'https://goodlooker.ru/wp-content/uploads/2017/07/Push-Up-4.jpg',
+        fallbackPlaceholder: 'https://images.unsplash.com/photo-1534438327276-14e5300c3a48?auto=format&fit=crop&w=800&q=80'
       }
     ],
     techniqueSteps: [
@@ -76,14 +78,16 @@ export const mockExercisesDatabase = [
     gradient: 'from-sky-950 via-sky-500/20 to-[#0A0A0C]',
     muscleTags: ['Квадрицепсы', 'Большая ягодичная', 'Подколенные сухожилия', 'Кор'],
     overview: 'Ключевое движение для укрепления ног, коленных суставов и формирования рельефных бедер без осевой нагрузки.',
+    poster: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTRYGXuN8tBDSQF8NLfdArClqc9-FdqJOL2M9WfV3I2vzQKRQlwzDuYVSrL&s=10',
+    image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTRYGXuN8tBDSQF8NLfdArClqc9-FdqJOL2M9WfV3I2vzQKRQlwzDuYVSrL&s=10',
     phases: [
       {
         phaseNumber: 1,
-        badge: 'Фаза 1: Старт',
+        badge: 'Фаза 1: Старт & Стойка',
         title: 'Исходное положение (Стойка)',
         description: 'Стопы на ширине плеч, носки слегка развернуты наружу (15–20°). Грудь раскрыта, взгляд направлен перед собой, руки перед грудью.',
-        image: 'https://images.unsplash.com/photo-1574680096145-d05b474e2155?auto=format&fit=crop&w=800&q=80',
-        fallbackPlaceholder: 'https://placehold.co/800x450/121217/38BDF8?text=Фаза+1:+Исходная+стойка'
+        image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTRYGXuN8tBDSQF8NLfdArClqc9-FdqJOL2M9WfV3I2vzQKRQlwzDuYVSrL&s=10',
+        fallbackPlaceholder: 'https://images.unsplash.com/photo-1574680096145-d05b474e2155?auto=format&fit=crop&w=800&q=80'
       },
       {
         phaseNumber: 2,
@@ -98,8 +102,8 @@ export const mockExercisesDatabase = [
         badge: 'Фаза 3: Пик',
         title: 'Глубокий сед и выталкивание',
         description: 'Опуститесь до параллели бедер полу (или чуть ниже). Сделайте микропаузу и мощно вытолкнитесь пятками вверх, сжимая ягодицы.',
-        image: 'https://images.unsplash.com/photo-1517838277536-f5f99be501cd?auto=format&fit=crop&w=800&q=80',
-        fallbackPlaceholder: 'https://placehold.co/800x450/121217/FF5E00?text=Фаза+3:+Параллель+и+подъем'
+        image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTRYGXuN8tBDSQF8NLfdArClqc9-FdqJOL2M9WfV3I2vzQKRQlwzDuYVSrL&s=10',
+        fallbackPlaceholder: 'https://images.unsplash.com/photo-1517838277536-f5f99be501cd?auto=format&fit=crop&w=800&q=80'
       }
     ],
     techniqueSteps: [
@@ -170,7 +174,7 @@ export const mockExercisesDatabase = [
   // ===================== СРЕДНИЙ УРОВЕНЬ =====================
   {
     id: 'ex-lsit',
-    name: 'L-Sit (Уголок на брусьях / полу)',
+    name: 'Поднятие прямых ног на пресс (L-Sit / Уголок)',
     category: 'Калистеника & Кор',
     levelKey: 'intermediate',
     level: 'Средний',
@@ -181,30 +185,32 @@ export const mockExercisesDatabase = [
     gradient: 'from-emerald-950 via-[#10B981]/20 to-[#0A0A0C]',
     muscleTags: ['Кор', 'Пресс', 'Трицепс', 'Передние дельты', 'Квадрицепсы'],
     overview: 'Фундаментальный гимнастический элемент для развития компрессионной силы пресса, депрессии лопаток и железного хвата.',
+    poster: 'https://photobooth.cdn.sports.ru/preset/post/5/c4/ae95cdc1e4d3cabdbb9d87fffc0f6.jpeg?f=webp&q=90&s=2x&w=730',
+    image: 'https://photobooth.cdn.sports.ru/preset/post/5/c4/ae95cdc1e4d3cabdbb9d87fffc0f6.jpeg?f=webp&q=90&s=2x&w=730',
     phases: [
       {
         phaseNumber: 1,
-        badge: 'Фаза 1: Старт',
+        badge: 'Фаза 1: Старт & Упор',
         title: 'Упор на брусьях (Депрессия лопаток)',
         description: 'Руки заблокированы прямо в локтях. Вытолкните плечи вниз с максимальной силой (депрессия лопаток), удлиняя шею.',
-        image: 'https://images.unsplash.com/photo-1517838277536-f5f99be501cd?auto=format&fit=crop&w=800&q=80',
-        fallbackPlaceholder: 'https://placehold.co/800x450/121217/00FF85?text=Фаза+1:+Активный+упор'
+        image: 'https://photobooth.cdn.sports.ru/preset/post/5/c4/ae95cdc1e4d3cabdbb9d87fffc0f6.jpeg?f=webp&q=90&s=2x&w=730',
+        fallbackPlaceholder: 'https://images.unsplash.com/photo-1517838277536-f5f99be501cd?auto=format&fit=crop&w=800&q=80'
       },
       {
         phaseNumber: 2,
         badge: 'Фаза 2: Подъем',
-        title: 'Подъем прямых ног (Компрессия)',
+        title: 'Поднятие прямых ног на пресс (Компрессия)',
         description: 'Силой нижнего пресса и квадрицепсов поднимите прямые сомкнутые ноги до горизонтали (угол 90° в тазу).',
-        image: 'https://images.unsplash.com/photo-1581009146145-b5ef050c2e1e?auto=format&fit=crop&w=800&q=80',
-        fallbackPlaceholder: 'https://placehold.co/800x450/121217/38BDF8?text=Фаза+2:+Подъем+ног+до+90'
+        image: 'https://photobooth.cdn.sports.ru/preset/post/5/c4/ae95cdc1e4d3cabdbb9d87fffc0f6.jpeg?f=webp&q=90&s=2x&w=730',
+        fallbackPlaceholder: 'https://images.unsplash.com/photo-1581009146145-b5ef050c2e1e?auto=format&fit=crop&w=800&q=80'
       },
       {
         phaseNumber: 3,
         badge: 'Фаза 3: Фиксация',
         title: 'Статическое удержание L-формы',
         description: 'Заблокируйте колени, натяните носки вперед («струна»). Удерживайте параллель пола, дыша через нос.',
-        image: 'https://images.unsplash.com/photo-1534438327276-14e5300c3a48?auto=format&fit=crop&w=800&q=80',
-        fallbackPlaceholder: 'https://placehold.co/800x450/121217/FF5E00?text=Фаза+3:+Фиксация+L-Sit'
+        image: 'https://photobooth.cdn.sports.ru/preset/post/5/c4/ae95cdc1e4d3cabdbb9d87fffc0f6.jpeg?f=webp&q=90&s=2x&w=730',
+        fallbackPlaceholder: 'https://images.unsplash.com/photo-1534438327276-14e5300c3a48?auto=format&fit=crop&w=800&q=80'
       }
     ],
     techniqueSteps: [
@@ -233,14 +239,16 @@ export const mockExercisesDatabase = [
     gradient: 'from-sky-950 via-sky-500/20 to-[#0A0A0C]',
     muscleTags: ['Широчайшие спины', 'Бицепс', 'Трапеции', 'Предплечья'],
     overview: 'Королевское упражнение для развития V-образного силуэта спины, силы предплечий и мощной вертикальной тяги.',
+    poster: 'https://reminder.media/storage/images/posts/2oQ/2oQG8hMoXnu67af4744307af_cover_lg_1x.webp',
+    image: 'https://reminder.media/storage/images/posts/2oQ/2oQG8hMoXnu67af4744307af_cover_lg_1x.webp',
     phases: [
       {
         phaseNumber: 1,
-        badge: 'Фаза 1: Старт',
+        badge: 'Фаза 1: Старт & Вис',
         title: 'Вис и активная ретракция лопаток',
         description: 'Хват шире плеч. Начните движение из прямого виса: опустите лопатки вниз и сведите их вместе до сгибания рук.',
-        image: 'https://images.unsplash.com/photo-1534438327276-14e5300c3a48?auto=format&fit=crop&w=800&q=80',
-        fallbackPlaceholder: 'https://placehold.co/800x450/121217/38BDF8?text=Фаза+1:+Активный+вис'
+        image: 'https://reminder.media/storage/images/posts/2oQ/2oQG8hMoXnu67af4744307af_cover_lg_1x.webp',
+        fallbackPlaceholder: 'https://images.unsplash.com/photo-1534438327276-14e5300c3a48?auto=format&fit=crop&w=800&q=80'
       },
       {
         phaseNumber: 2,
@@ -252,11 +260,11 @@ export const mockExercisesDatabase = [
       },
       {
         phaseNumber: 3,
-        badge: 'Фаза 3: Пик',
+        badge: 'Фаза 3: Пик & Фиксация',
         title: 'Пиковая пауза подбородка над турником',
         description: 'Зафиксируйте подбородок над перекладиной с паузой на 1 секунду, максимально прожимая широчайшие мышцы.',
-        image: 'https://images.unsplash.com/photo-1517838277536-f5f99be501cd?auto=format&fit=crop&w=800&q=80',
-        fallbackPlaceholder: 'https://placehold.co/800x450/121217/FF5E00?text=Фаза+3:+Пиковая+фиксация'
+        image: 'https://reminder.media/storage/images/posts/2oQ/2oQG8hMoXnu67af4744307af_cover_lg_1x.webp',
+        fallbackPlaceholder: 'https://images.unsplash.com/photo-1517838277536-f5f99be501cd?auto=format&fit=crop&w=800&q=80'
       }
     ],
     techniqueSteps: [
@@ -285,14 +293,16 @@ export const mockExercisesDatabase = [
     gradient: 'from-emerald-950 via-[#00FF85]/20 to-[#0A0A0C]',
     muscleTags: ['Грудные мышцы', 'Трицепс', 'Передние дельты', 'Кор'],
     overview: 'Базовое движение со своим весом для построения массивного низа груди и трицепсов.',
+    poster: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS0j75L4TGMq12Mq8nBC9E8IgQ8RUTclYclIUEj4nGZ9P4ZLakYHseJBnu1&s=10',
+    image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS0j75L4TGMq12Mq8nBC9E8IgQ8RUTclYclIUEj4nGZ9P4ZLakYHseJBnu1&s=10',
     phases: [
       {
         phaseNumber: 1,
-        badge: 'Фаза 1: Старт',
+        badge: 'Фаза 1: Старт & Упор',
         title: 'Исходное положение на брусьях',
         description: 'Упор на прямых руках, взгляд вперед. Корпус слегка наклонен вперед (15–20°) для акцента на грудные мышцы.',
-        image: 'https://images.unsplash.com/photo-1583454110551-21f2fa2afe61?auto=format&fit=crop&w=800&q=80',
-        fallbackPlaceholder: 'https://placehold.co/800x450/121217/00FF85?text=Фаза+1:+Упор+на+брусьях'
+        image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS0j75L4TGMq12Mq8nBC9E8IgQ8RUTclYclIUEj4nGZ9P4ZLakYHseJBnu1&s=10',
+        fallbackPlaceholder: 'https://images.unsplash.com/photo-1583454110551-21f2fa2afe61?auto=format&fit=crop&w=800&q=80'
       },
       {
         phaseNumber: 2,
@@ -304,11 +314,11 @@ export const mockExercisesDatabase = [
       },
       {
         phaseNumber: 3,
-        badge: 'Фаза 3: Пик',
+        badge: 'Фаза 3: Пик & Жим',
         title: 'Мощный жим наверх',
         description: 'На выдохе мощным усилием груди и трицепсов выжмите себя обратно вверх до полного выпрямления рук.',
-        image: 'https://images.unsplash.com/photo-1581009146145-b5ef050c2e1e?auto=format&fit=crop&w=800&q=80',
-        fallbackPlaceholder: 'https://placehold.co/800x450/121217/FF5E00?text=Фаза+3:+Верхняя+точка'
+        image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS0j75L4TGMq12Mq8nBC9E8IgQ8RUTclYclIUEj4nGZ9P4ZLakYHseJBnu1&s=10',
+        fallbackPlaceholder: 'https://images.unsplash.com/photo-1581009146145-b5ef050c2e1e?auto=format&fit=crop&w=800&q=80'
       }
     ],
     techniqueSteps: [
@@ -1324,6 +1334,9 @@ export const findExerciseData = (nameOrId) => {
       (query.includes('штангой') && ex.id === 'ex-gym-barbell-squat') ||
       (query.includes('lsit') && ex.id === 'ex-lsit') ||
       (query.includes('уголок') && ex.id === 'ex-lsit') ||
+      (query.includes('поднятие') && ex.id === 'ex-lsit') ||
+      (query.includes('прямых ног') && ex.id === 'ex-lsit') ||
+      (query.includes('пресс') && ex.id === 'ex-lsit') ||
       (query.includes('planche') && ex.id === 'ex-tuck-planche') ||
       (query.includes('горизонт') && ex.id === 'ex-tuck-planche') ||
       (query.includes('отжимания') && ex.id === 'ex-pushups-classic') ||

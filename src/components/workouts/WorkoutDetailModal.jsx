@@ -1,6 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { X, Clock, Flame, Zap, Dumbbell, Play, Shield, Check } from 'lucide-react';
+import { findExerciseData } from '../../data/mockExercises';
 
 export const WorkoutDetailModal = ({ workout, isOpen, onClose, onStart, onSelectExercise }) => {
   if (!isOpen || !workout) return null;
@@ -84,38 +85,54 @@ export const WorkoutDetailModal = ({ workout, isOpen, onClose, onStart, onSelect
             План тренировки ({workout.exercises?.length || 0} упражнений)
           </h4>
 
-          {workout.exercises?.map((ex, idx) => (
-            <div
-              key={ex.id || idx}
-              onClick={() => onSelectExercise && onSelectExercise(ex)}
-              className="p-3.5 rounded-2xl bg-[#1A1A24] hover:bg-[#20202e] border border-white/5 hover:border-[#00FF85]/40 transition-all cursor-pointer flex items-start gap-3.5 group"
-            >
-              <div className="w-7 h-7 rounded-lg bg-white/5 group-hover:bg-[#00FF85]/20 text-neutral-400 group-hover:text-[#00FF85] font-bold text-xs flex items-center justify-center shrink-0 transition-colors">
-                {idx + 1}
-              </div>
-              <div className="flex-1 min-w-0">
-                <div className="flex items-center justify-between">
-                  <h5 className="text-sm font-bold text-white group-hover:text-[#00FF85] transition-colors truncate">
-                    {ex.name}
-                  </h5>
-                  <span className="text-xs font-bold text-[#00FF85] shrink-0 ml-2">
-                    {ex.sets} × {ex.reps}
-                  </span>
-                </div>
-                <div className="flex items-center justify-between gap-2 text-xs text-neutral-400 mt-1">
-                  <span>Фокус: <strong className="text-neutral-200">{ex.muscle}</strong></span>
-                  <span className="text-[11px] text-[#00FF85] font-semibold opacity-0 group-hover:opacity-100 transition-opacity flex items-center gap-1">
-                    Техника ➔
-                  </span>
-                </div>
-                {ex.tip && (
-                  <p className="text-[11px] text-neutral-400 italic mt-1.5 border-t border-white/5 pt-1">
-                    💡 {ex.tip}
-                  </p>
+          {workout.exercises?.map((ex, idx) => {
+            const exData = findExerciseData(ex.name);
+            const thumbUrl = exData?.image || exData?.phases?.[0]?.image;
+
+            return (
+              <div
+                key={ex.id || idx}
+                onClick={() => onSelectExercise && onSelectExercise(ex)}
+                className="p-3.5 rounded-2xl bg-[#1A1A24] hover:bg-[#20202e] border border-white/5 hover:border-[#00FF85]/40 transition-all cursor-pointer flex items-center gap-3.5 group"
+              >
+                {thumbUrl ? (
+                  <img
+                    src={thumbUrl}
+                    alt={ex.name}
+                    className="w-12 h-12 rounded-xl object-cover shrink-0 border border-white/10 group-hover:scale-105 transition-transform"
+                    onError={(e) => {
+                      e.currentTarget.style.display = 'none';
+                    }}
+                  />
+                ) : (
+                  <div className="w-10 h-10 rounded-xl bg-white/5 group-hover:bg-[#00FF85]/20 text-neutral-400 group-hover:text-[#00FF85] font-bold text-xs flex items-center justify-center shrink-0 transition-colors">
+                    {idx + 1}
+                  </div>
                 )}
+                <div className="flex-1 min-w-0">
+                  <div className="flex items-center justify-between">
+                    <h5 className="text-sm font-bold text-white group-hover:text-[#00FF85] transition-colors truncate">
+                      {ex.name}
+                    </h5>
+                    <span className="text-xs font-bold text-[#00FF85] shrink-0 ml-2">
+                      {ex.sets} × {ex.reps}
+                    </span>
+                  </div>
+                  <div className="flex items-center justify-between gap-2 text-xs text-neutral-400 mt-1">
+                    <span>Фокус: <strong className="text-neutral-200">{ex.muscle}</strong></span>
+                    <span className="text-[11px] text-[#00FF85] font-semibold opacity-0 group-hover:opacity-100 transition-opacity flex items-center gap-1">
+                      Техника ➔
+                    </span>
+                  </div>
+                  {ex.tip && (
+                    <p className="text-[11px] text-neutral-400 italic mt-1.5 border-t border-white/5 pt-1">
+                      💡 {ex.tip}
+                    </p>
+                  )}
+                </div>
               </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
 
         {/* Footer Action */}

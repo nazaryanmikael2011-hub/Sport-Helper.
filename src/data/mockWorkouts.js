@@ -16,7 +16,7 @@ export const mockWorkouts = [
     caloriesBurned: 220,
     xpReward: 100,
     accentColor: '#38BDF8',
-    image: 'https://images.unsplash.com/photo-1598971639058-fab3c3109a00?auto=format&fit=crop&w=800&q=80',
+    image: 'https://goodlooker.ru/wp-content/uploads/2017/07/Push-Up-4.jpg',
     description: 'Идеальная вводная программа со своим весом для дома. Укрепляет связочный аппарат, плечи, пресс и ноги правильной биомеханикой.',
     exercises: [
       {
@@ -442,7 +442,7 @@ export const mockWorkouts = [
     caloriesBurned: 280,
     xpReward: 125,
     accentColor: '#00FF85',
-    image: 'https://images.unsplash.com/photo-1541534741688-6078c6bfb5c5?auto=format&fit=crop&w=800&q=80',
+    image: 'https://reminder.media/storage/images/posts/2oQ/2oQG8hMoXnu67af4744307af_cover_lg_1x.webp',
     description: 'Начальная уличная тренировка на спортивной площадке: австралийские подтягивания на низком турнике, упоры на брусьях и приседы.',
     exercises: [
       {
@@ -489,7 +489,7 @@ export const mockWorkouts = [
     caloriesBurned: 350,
     xpReward: 140,
     accentColor: '#00FF85',
-    image: 'https://images.unsplash.com/photo-1581009146145-b5ef050c2e1e?auto=format&fit=crop&w=800&q=80',
+    image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS0j75L4TGMq12Mq8nBC9E8IgQ8RUTclYclIUEj4nGZ9P4ZLakYHseJBnu1&s=10',
     description: 'Золотой стандарт калистеники: глубокие отжимания на параллельных брусьях и подтягивания широким хватом для мышечного объема.',
     exercises: [
       {
@@ -536,7 +536,7 @@ export const mockWorkouts = [
     caloriesBurned: 260,
     xpReward: 120,
     accentColor: '#00FF85',
-    image: 'https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?auto=format&fit=crop&w=800&q=80',
+    image: 'https://photobooth.cdn.sports.ru/preset/post/5/c4/ae95cdc1e4d3cabdbb9d87fffc0f6.jpeg?f=webp&q=90&s=2x&w=730',
     description: 'Развитие компрессионной силы пресса и удержание ног под углом 90 градусов. Ключевой элемент для прогресса в калистенике.',
     exercises: [
       {

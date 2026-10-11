@@ -457,22 +457,36 @@ export const WorkoutsView = () => {
                 key={item.id}
                 whileHover={{ scale: 1.02 }}
                 onClick={() => setSelectedExerciseForDemo(item)}
-                className="p-4 rounded-2xl bg-white/[0.02] hover:bg-white/[0.06] border border-white/5 hover:border-[#00FF85]/40 transition-all cursor-pointer flex flex-col justify-between group"
+                className="p-3.5 rounded-2xl bg-white/[0.02] hover:bg-white/[0.06] border border-white/5 hover:border-[#00FF85]/40 transition-all cursor-pointer flex flex-col justify-between group overflow-hidden"
               >
                 <div>
-                  <div className="flex items-center justify-between mb-2">
-                    <div className="flex items-center gap-1.5">
+                  {/* Photo Thumbnail */}
+                  <div className="relative aspect-video rounded-xl overflow-hidden mb-3 bg-neutral-900 border border-white/10 group-hover:border-[#00FF85]/30 transition-all">
+                    <img
+                      src={item.image || item.phases?.[0]?.image}
+                      alt={item.name}
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                      loading="lazy"
+                      onError={(e) => {
+                        if (item.phases?.[0]?.fallbackPlaceholder) {
+                          e.currentTarget.src = item.phases[0].fallbackPlaceholder;
+                        }
+                      }}
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-80" />
+                    <div className="absolute bottom-2 left-2 right-2 flex items-center justify-between">
                       <span
-                        className="text-[10px] font-bold px-2 py-0.5 rounded-md"
+                        className="text-[10px] font-bold px-2 py-0.5 rounded-md backdrop-blur-md"
                         style={{
-                          backgroundColor: `${item.accentColor}15`,
-                          color: item.accentColor
+                          backgroundColor: `${item.accentColor}25`,
+                          color: item.accentColor,
+                          border: `1px solid ${item.accentColor}50`
                         }}
                       >
                         {item.isStatic ? 'Изометрия' : 'Динамика'}
                       </span>
                       <span
-                        className="text-[9px] font-bold px-1.5 py-0.5 rounded-md border"
+                        className="text-[9px] font-black px-1.5 py-0.5 rounded-md border backdrop-blur-md"
                         style={{
                           backgroundColor: lvlColor.bg,
                           color: lvlColor.text,
@@ -482,17 +496,18 @@ export const WorkoutsView = () => {
                         {item.level}
                       </span>
                     </div>
+                  </div>
 
-                    <span className="text-[11px] font-semibold text-neutral-400">
+                  <div className="flex items-center justify-between mb-1.5">
+                    <h4 className="text-sm font-bold text-white group-hover:text-[#00FF85] transition-colors truncate">
+                      {item.name}
+                    </h4>
+                    <span className="text-[11px] font-semibold text-neutral-400 shrink-0 ml-1">
                       {item.isStatic ? `⏱️ ${item.targetValue} сек` : `🎯 ${item.targetValue} раз`}
                     </span>
                   </div>
 
-                  <h4 className="text-sm font-bold text-white group-hover:text-[#00FF85] transition-colors">
-                    {item.name}
-                  </h4>
-
-                  <div className="flex flex-wrap gap-1 mt-2">
+                  <div className="flex flex-wrap gap-1 mt-1.5">
                     {item.muscleTags.slice(0, 3).map((tag, i) => (
                       <span key={i} className="text-[10px] text-neutral-400 bg-white/5 px-1.5 py-0.5 rounded">
                         {tag}
@@ -501,7 +516,7 @@ export const WorkoutsView = () => {
                   </div>
                 </div>
 
-                <div className="mt-3.5 pt-2.5 border-t border-white/5 flex items-center justify-between text-xs font-bold text-[#00FF85]">
+                <div className="mt-3 pt-2.5 border-t border-white/5 flex items-center justify-between text-xs font-bold text-[#00FF85]">
                   <span className="flex items-center gap-1.5">
                     <Layers className="w-3.5 h-3.5" />
                     <span>3 фазы выполнения</span>

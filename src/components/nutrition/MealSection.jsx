@@ -2,6 +2,7 @@ import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Plus, Trash2 } from 'lucide-react';
 import { useFitness } from '../../context/FitnessContext';
+import { getCalorieLoadInfo } from '../../data/mockFoods';
 
 export const MealSection = ({ mealKey, title, icon, items = [], onOpenAdd }) => {
   const { removeMealItem } = useFitness();
@@ -10,6 +11,7 @@ export const MealSection = ({ mealKey, title, icon, items = [], onOpenAdd }) => 
   const totalProtein = +items.reduce((sum, item) => sum + (item.protein || 0), 0).toFixed(1);
   const totalFats = +items.reduce((sum, item) => sum + (item.fats || 0), 0).toFixed(1);
   const totalCarbs = +items.reduce((sum, item) => sum + (item.carbs || 0), 0).toFixed(1);
+  const mealLoadInfo = getCalorieLoadInfo(totalCalories);
 
   return (
     <div className="glass-card rounded-3xl p-5 sm:p-6 border border-white/5 relative overflow-hidden">
@@ -20,9 +22,14 @@ export const MealSection = ({ mealKey, title, icon, items = [], onOpenAdd }) => 
             {icon}
           </div>
           <div>
-            <h4 className="font-bold text-white text-base sm:text-lg">
-              {title}
-            </h4>
+            <div className="flex items-center gap-2">
+              <h4 className="font-bold text-white text-base sm:text-lg">
+                {title}
+              </h4>
+              {totalCalories > 0 && (
+                <span className={`w-2 h-2 rounded-full ${mealLoadInfo.dotClass} shrink-0`} title={mealLoadInfo.label} />
+              )}
+            </div>
             <span className="text-xs text-neutral-400">
               Б: <strong className="text-sky-400">{totalProtein}г</strong> • Ж:{' '}
               <strong className="text-[#FF5E00]">{totalFats}г</strong> • У:{' '}
@@ -41,7 +48,7 @@ export const MealSection = ({ mealKey, title, icon, items = [], onOpenAdd }) => 
 
           <button
             onClick={() => onOpenAdd(mealKey)}
-            className="p-2 rounded-xl bg-[#00FF85]/15 hover:bg-[#00FF85]/25 text-[#00FF85] border border-[#00FF85]/30 transition-all group"
+            className="p-2 rounded-xl bg-[#00FF85]/15 hover:bg-[#00FF85]/25 text-[#00FF85] border border-[#00FF85]/30 transition-all group cursor-pointer"
             title="Добавить блюдо"
           >
             <Plus className="w-4 h-4 group-hover:scale-110 transition-transform stroke-[2.5]" />
@@ -57,43 +64,69 @@ export const MealSection = ({ mealKey, title, icon, items = [], onOpenAdd }) => 
               Пока ничего не добавлено. Нажми «+» чтобы записать прием пищи.
             </div>
           ) : (
-            items.map((item) => (
-              <motion.div
-                key={item.id}
-                initial={{ opacity: 0, y: 5 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, x: -10 }}
-                className="flex items-center justify-between p-3 rounded-2xl bg-white/[0.02] hover:bg-white/[0.05] border border-white/5 transition-colors group"
-              >
-                <div className="flex items-center gap-2.5 min-w-0">
-                  <span className="text-lg">{item.icon || '🥗'}</span>
-                  <div className="min-w-0">
-                    <h5 className="text-xs sm:text-sm font-semibold text-white truncate">
-                      {item.name}
-                    </h5>
-                    <span className="text-[11px] text-neutral-400">
-                      {item.portionGrams}г • Б: {item.protein}г • Ж: {item.fats}г • У: {item.carbs}г
-                    </span>
+            items.map((item) => {
+              const loadInfo = getCalorieLoadInfo(item.calories || 0);
+              return (
+                <motion.div
+                  key={item.id}
+                  initial={{ opacity: 0, y: 5 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, x: -10 }}
+                  className="flex items-center justify-between p-3 rounded-2xl bg-white/[0.02] hover:bg-white/[0.05] border border-white/5 transition-colors group"
+                >
+                  <div className="flex items-center gap-2.5 min-w-0">
+                    {item.image ? (
+                      <img
+                        src={item.image}
+                        alt={item.name}
+                        className="w-10 h-10 rounded-xl object-cover shrink-0 border border-white/10"
+                        onError={(e) => {
+                          e.currentTarget.style.display = 'none';
+                        }}
+                      />
+                    ) : (
+                      <span className="text-lg shrink-0">{item.icon || '🥗'}</span>
+                    )}
+                    <div className="min-w-0">
+                      <div className="flex items-center gap-1.5">
+                        <h5 className="text-xs sm:text-sm font-semibold text-white truncate">
+                          {item.name}
+                        </h5>
+                        <span
+                          className={`w-2 h-2 rounded-full ${loadInfo.dotClass} shrink-0`}
+                          title={`Нагрузка: ${loadInfo.label}`}
+                        />
+                      </div>
+                      <span className="text-[11px] text-neutral-400">
+                        {item.portionGrams}г • Б: {item.protein}г • Ж: {item.fats}г • У: {item.carbs}г
+                      </span>
+                    </div>
                   </div>
-                </div>
 
-                <div className="flex items-center gap-3 shrink-0 ml-2">
-                  <span className="text-xs font-bold text-neutral-200">
-                    {item.calories} ккал
-                  </span>
-                  <button
-                    onClick={() => removeMealItem(mealKey, item.id)}
-                    className="opacity-0 group-hover:opacity-100 p-1.5 rounded-lg text-neutral-500 hover:text-red-400 hover:bg-red-500/10 transition-all"
-                    title="Удалить"
-                  >
-                    <Trash2 className="w-3.5 h-3.5" />
-                  </button>
-                </div>
-              </motion.div>
-            ))
+                  <div className="flex items-center gap-2 sm:gap-3 shrink-0 ml-2">
+                    <div className="text-right">
+                      <span className="text-xs font-bold text-neutral-200 block">
+                        {item.calories} ккал
+                      </span>
+                      <span className={`text-[9px] font-bold px-1.5 py-0.5 rounded border inline-block ${loadInfo.badgeClass}`}>
+                        {loadInfo.label}
+                      </span>
+                    </div>
+                    <button
+                      onClick={() => removeMealItem(mealKey, item.id)}
+                      className="opacity-0 group-hover:opacity-100 p-1.5 rounded-lg text-neutral-500 hover:text-red-400 hover:bg-red-500/10 transition-all cursor-pointer"
+                      title="Удалить"
+                    >
+                      <Trash2 className="w-3.5 h-3.5" />
+                    </button>
+                  </div>
+                </motion.div>
+              );
+            })
           )}
         </AnimatePresence>
       </div>
     </div>
   );
 };
+
