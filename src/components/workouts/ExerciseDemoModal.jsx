@@ -164,10 +164,10 @@ export const ExerciseDemoModal = ({ exercise, isOpen, onClose }) => {
         initial={{ opacity: 0, scale: 0.94, y: 15 }}
         animate={{ opacity: 1, scale: 1, y: 0 }}
         exit={{ opacity: 0, scale: 0.94, y: 15 }}
-        className="relative w-full max-w-2xl bg-[#121217] border border-white/10 rounded-3xl shadow-2xl flex flex-col my-auto max-h-[92vh] overflow-hidden"
+        className="relative w-full max-w-2xl bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-3xl shadow-2xl flex flex-col my-auto max-h-[92vh] overflow-hidden"
       >
         {/* Top Header Bar */}
-        <div className="p-4 sm:p-5 border-b border-white/5 flex items-center justify-between gap-3 shrink-0 bg-[#121217]/90 backdrop-blur-md z-10">
+        <div className="p-4 sm:p-5 border-b border-gray-200 dark:border-gray-700 flex items-center justify-between gap-3 shrink-0 bg-white/90 dark:bg-gray-800/90 backdrop-blur-md z-10">
           <div>
             <div className="flex items-center gap-2">
               <span
@@ -180,18 +180,18 @@ export const ExerciseDemoModal = ({ exercise, isOpen, onClose }) => {
               >
                 {exercise.category || (isStatic ? 'Статический элемент' : 'Динамика')}
               </span>
-              <span className="text-xs text-neutral-400">
-                Уровень: <strong className="text-white">{exercise.level || 'Средний'}</strong>
+              <span className="text-xs text-gray-600 dark:text-gray-400">
+                Уровень: <strong className="text-gray-900 dark:text-white">{exercise.level || 'Средний'}</strong>
               </span>
             </div>
-            <h3 className="text-lg sm:text-2xl font-black text-white mt-1 leading-tight">
+            <h3 className="text-lg sm:text-2xl font-black text-gray-900 dark:text-white mt-1 leading-tight">
               {exercise.name}
             </h3>
           </div>
 
           <button
             onClick={onClose}
-            className="p-2 rounded-xl text-neutral-400 hover:text-white bg-white/5 border border-white/10 transition-colors"
+            className="p-2 rounded-xl text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white bg-gray-100 hover:bg-gray-200 dark:bg-gray-700 dark:hover:bg-gray-600 border border-gray-200 dark:border-gray-600 transition-colors cursor-pointer"
             title="Закрыть"
           >
             <X className="w-5 h-5" />
@@ -214,7 +214,7 @@ export const ExerciseDemoModal = ({ exercise, isOpen, onClose }) => {
                       className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 whitespace-nowrap ${
                         isSelected
                           ? 'bg-[#00FF85] text-black shadow-neon-green font-black'
-                          : 'bg-white/5 text-neutral-400 hover:text-white hover:bg-white/10'
+                          : 'bg-gray-100 dark:bg-white/5 text-gray-600 dark:text-neutral-400 hover:text-gray-900 dark:hover:text-white hover:bg-gray-200 dark:hover:bg-white/10 border border-gray-200 dark:border-transparent'
                       }`}
                     >
                       <span>Фаза {idx + 1}</span>
@@ -227,14 +227,14 @@ export const ExerciseDemoModal = ({ exercise, isOpen, onClose }) => {
               <div className="flex items-center gap-1 shrink-0">
                 <button
                   onClick={handlePrevPhase}
-                  className="p-1.5 rounded-xl bg-white/5 hover:bg-white/10 text-neutral-300 hover:text-white transition-colors"
+                  className="p-1.5 rounded-xl bg-gray-100 hover:bg-gray-200 dark:bg-white/5 dark:hover:bg-white/10 text-gray-600 dark:text-neutral-300 hover:text-gray-900 dark:hover:text-white border border-gray-200 dark:border-transparent transition-colors"
                   title="Предыдущая фаза"
                 >
                   <ChevronLeft className="w-4 h-4" />
                 </button>
                 <button
                   onClick={handleNextPhase}
-                  className="p-1.5 rounded-xl bg-white/5 hover:bg-white/10 text-neutral-300 hover:text-white transition-colors"
+                  className="p-1.5 rounded-xl bg-gray-100 hover:bg-gray-200 dark:bg-white/5 dark:hover:bg-white/10 text-gray-600 dark:text-neutral-300 hover:text-gray-900 dark:hover:text-white border border-gray-200 dark:border-transparent transition-colors"
                   title="Следующая фаза"
                 >
                   <ChevronRight className="w-4 h-4" />
@@ -306,15 +306,15 @@ export const ExerciseDemoModal = ({ exercise, isOpen, onClose }) => {
             </div>
 
             {/* Active Phase Detailed Bio-mechanical Guide */}
-            <div className="p-3.5 sm:p-4 rounded-2xl bg-[#1A1A24] border border-white/5 flex items-start gap-3">
-              <div className="p-2 rounded-xl bg-[#00FF85]/15 text-[#00FF85] shrink-0 mt-0.5">
+            <div className="p-3.5 sm:p-4 rounded-2xl bg-gray-50 dark:bg-gray-900/60 border border-gray-200 dark:border-gray-700 flex items-start gap-3">
+              <div className="p-2 rounded-xl bg-[#00FF85]/15 text-emerald-600 dark:text-[#00FF85] shrink-0 mt-0.5">
                 <Layers className="w-4 h-4" />
               </div>
               <div className="space-y-0.5">
-                <span className="text-[10px] font-bold text-neutral-400 uppercase tracking-wider block">
+                <span className="text-[10px] font-bold text-gray-600 dark:text-gray-400 uppercase tracking-wider block">
                   Инструкция к текущей фазе:
                 </span>
-                <p className="text-xs sm:text-sm text-neutral-200 leading-relaxed">
+                <p className="text-xs sm:text-sm text-gray-800 dark:text-gray-200 leading-relaxed">
                   {currentPhase.description}
                 </p>
               </div>
@@ -328,19 +328,19 @@ export const ExerciseDemoModal = ({ exercise, isOpen, onClose }) => {
                   onClick={() => setActivePhaseIndex(idx)}
                   className={`p-2 rounded-xl border transition-all cursor-pointer flex flex-col justify-between ${
                     activePhaseIndex === idx
-                      ? 'bg-white/[0.08] border-[#00FF85] shadow-neon-green'
-                      : 'bg-white/[0.02] border-white/5 hover:border-white/20'
+                      ? 'bg-[#00FF85]/10 dark:bg-white/[0.08] border-[#00FF85] shadow-neon-green'
+                      : 'bg-gray-50 dark:bg-gray-900/60 border-gray-200 dark:border-gray-700 hover:border-gray-300 dark:hover:border-gray-600'
                   }`}
                 >
                   <div className="flex items-center justify-between mb-1">
-                    <span className="text-[9px] font-black uppercase text-neutral-400">
+                    <span className="text-[9px] font-black uppercase text-gray-600 dark:text-gray-400">
                       Этап {idx + 1}
                     </span>
                     {activePhaseIndex === idx && (
                       <span className="w-1.5 h-1.5 rounded-full bg-[#00FF85]" />
                     )}
                   </div>
-                  <span className="text-[11px] font-bold text-white line-clamp-1">
+                  <span className="text-[11px] font-bold text-gray-900 dark:text-white line-clamp-1">
                     {idx === 0 ? 'Старт' : idx === 1 ? 'Движение' : 'Пик'}
                   </span>
                 </div>
@@ -350,14 +350,14 @@ export const ExerciseDemoModal = ({ exercise, isOpen, onClose }) => {
 
           {/* MUSCLE TAGS */}
           <div>
-            <span className="text-xs font-bold text-neutral-400 uppercase tracking-wider block mb-2">
+            <span className="text-xs font-bold text-gray-600 dark:text-gray-400 uppercase tracking-wider block mb-2">
               Задействованные мышечные группы
             </span>
             <div className="flex flex-wrap gap-2">
               {exercise.muscleTags?.map((tag, i) => (
                 <span
                   key={i}
-                  className="px-3 py-1 rounded-xl text-xs font-bold bg-[#1A1A24] text-neutral-200 border border-white/10 hover:border-[#00FF85]/40 transition-colors flex items-center gap-1.5"
+                  className="px-3 py-1 rounded-xl text-xs font-bold bg-gray-100 dark:bg-gray-900 text-gray-800 dark:text-gray-200 border border-gray-200 dark:border-gray-700 hover:border-[#00FF85]/40 transition-colors flex items-center gap-1.5"
                 >
                   <span className="w-1.5 h-1.5 rounded-full bg-[#00FF85]" />
                   [{tag}]
@@ -367,29 +367,29 @@ export const ExerciseDemoModal = ({ exercise, isOpen, onClose }) => {
           </div>
 
           {/* STEP-BY-STEP TECHNIQUE INSTRUCTION */}
-          <div className="p-4 sm:p-5 rounded-2xl bg-[#1A1A24]/70 border border-white/5 space-y-3">
+          <div className="p-4 sm:p-5 rounded-2xl bg-gray-50 dark:bg-gray-900/60 border border-gray-200 dark:border-gray-700 space-y-3">
             <div className="flex items-center gap-2">
               <Sparkles className="w-4 h-4 text-[#00FF85]" />
-              <h4 className="text-sm font-bold text-white uppercase tracking-wider">
+              <h4 className="text-sm font-bold text-gray-900 dark:text-white uppercase tracking-wider">
                 Пошаговая техника упражнения
               </h4>
             </div>
 
-            <div className="space-y-2.5 text-xs sm:text-sm text-neutral-300">
+            <div className="space-y-2.5 text-xs sm:text-sm text-gray-700 dark:text-gray-300">
               {exercise.techniqueSteps?.map((step, idx) => (
                 <div key={idx} className="flex items-start gap-3">
-                  <div className="w-5 h-5 rounded-lg bg-white/5 text-[#00FF85] font-black text-xs flex items-center justify-center shrink-0 mt-0.5 border border-white/5">
+                  <div className="w-5 h-5 rounded-lg bg-gray-200 dark:bg-gray-800 text-emerald-600 dark:text-[#00FF85] font-black text-xs flex items-center justify-center shrink-0 mt-0.5 border border-gray-300 dark:border-gray-700">
                     {idx + 1}
                   </div>
-                  <p className="leading-relaxed text-neutral-200">{step}</p>
+                  <p className="leading-relaxed text-gray-800 dark:text-gray-200">{step}</p>
                 </div>
               ))}
             </div>
 
             {/* Breathing & Advice */}
             {exercise.breathingTip && (
-              <div className="mt-3 pt-3 border-t border-white/5 flex items-start gap-2 text-xs text-neutral-400">
-                <Info className="w-4 h-4 text-sky-400 shrink-0 mt-0.5" />
+              <div className="mt-3 pt-3 border-t border-gray-200 dark:border-gray-700 flex items-start gap-2 text-xs text-gray-600 dark:text-gray-400">
+                <Info className="w-4 h-4 text-sky-500 dark:text-sky-400 shrink-0 mt-0.5" />
                 <span>
                   <strong>Дыхание:</strong> {exercise.breathingTip}
                 </span>
@@ -398,18 +398,18 @@ export const ExerciseDemoModal = ({ exercise, isOpen, onClose }) => {
           </div>
 
           {/* EXECUTION INTERFACE: Dynamic reps counter OR Static hold timer */}
-          <div className="p-5 rounded-3xl bg-gradient-to-b from-white/[0.04] to-transparent border border-white/10 space-y-4">
+          <div className="p-5 rounded-3xl bg-gray-50 dark:bg-gray-900/60 border border-gray-200 dark:border-gray-700 space-y-4">
             <div className="flex items-center justify-between">
               <div>
-                <span className="text-xs font-bold text-neutral-400 uppercase tracking-wider">
+                <span className="text-xs font-bold text-gray-600 dark:text-gray-400 uppercase tracking-wider">
                   Интерфейс выполнения
                 </span>
-                <h4 className="text-sm sm:text-base font-bold text-white">
+                <h4 className="text-sm sm:text-base font-bold text-gray-900 dark:text-white">
                   Подход {currentSet} из {totalSets}
                 </h4>
               </div>
 
-              <span className="text-xs font-bold text-[#00FF85] px-2.5 py-1 rounded-full bg-[#00FF85]/10 border border-[#00FF85]/30">
+              <span className="text-xs font-bold text-emerald-700 dark:text-[#00FF85] px-2.5 py-1 rounded-full bg-[#00FF85]/10 border border-[#00FF85]/30">
                 {isStatic ? `Цель: ${targetVal} сек` : `Цель: ${targetVal} повторений`}
               </span>
             </div>
@@ -418,13 +418,13 @@ export const ExerciseDemoModal = ({ exercise, isOpen, onClose }) => {
             {isStatic ? (
               <div className="flex flex-col items-center justify-center py-2">
                 <div className="relative flex items-center justify-center mb-3">
-                  <div className="text-5xl sm:text-6xl font-black font-mono tracking-wider text-white">
-                    {staticSeconds} <span className="text-xl font-normal text-neutral-400">/ {targetVal}с</span>
+                  <div className="text-5xl sm:text-6xl font-black font-mono tracking-wider text-gray-900 dark:text-white">
+                    {staticSeconds} <span className="text-xl font-normal text-gray-500 dark:text-neutral-400">/ {targetVal}с</span>
                   </div>
                 </div>
 
                 {/* Progress bar */}
-                <div className="w-full max-w-xs h-2 bg-neutral-800 rounded-full overflow-hidden mb-4">
+                <div className="w-full max-w-xs h-2 bg-gray-200 dark:bg-neutral-800 rounded-full overflow-hidden mb-4">
                   <motion.div
                     className="h-full bg-gradient-to-r from-[#00FF85] to-[#10B981]"
                     style={{ width: `${progressPercent}%` }}
@@ -436,10 +436,10 @@ export const ExerciseDemoModal = ({ exercise, isOpen, onClose }) => {
                 <div className="flex items-center gap-3">
                   <button
                     onClick={() => setIsTimerRunning(!isTimerRunning)}
-                    className={`px-6 py-2.5 rounded-xl font-black text-xs flex items-center gap-2 transition-all ${
+                    className={`px-6 py-2.5 rounded-xl font-black text-xs flex items-center gap-2 transition-all cursor-pointer ${
                       isTimerRunning
                         ? 'bg-[#FF5E00] text-white shadow-neon-orange'
-                        : 'bg-[#00FF85] text-black shadow-neon-green'
+                        : 'bg-[#00FF85] text-black shadow-neon-green hover:brightness-105'
                     }`}
                   >
                     {isTimerRunning ? <Pause className="w-4 h-4" /> : <Play className="w-4 h-4 fill-black" />}
@@ -451,7 +451,7 @@ export const ExerciseDemoModal = ({ exercise, isOpen, onClose }) => {
                       setIsTimerRunning(false);
                       setStaticSeconds(0);
                     }}
-                    className="p-2.5 rounded-xl bg-white/5 hover:bg-white/10 text-neutral-400 hover:text-white transition-colors"
+                    className="p-2.5 rounded-xl bg-gray-100 hover:bg-gray-200 dark:bg-gray-700 dark:hover:bg-gray-600 text-gray-600 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white border border-gray-300 dark:border-gray-600 transition-colors cursor-pointer"
                     title="Сбросить"
                   >
                     <RotateCcw className="w-4 h-4" />
@@ -464,23 +464,23 @@ export const ExerciseDemoModal = ({ exercise, isOpen, onClose }) => {
                 <div className="flex items-center gap-4 sm:gap-6 my-2">
                   <button
                     onClick={() => setCurrentReps((prev) => Math.max(0, prev - 1))}
-                    className="w-12 h-12 rounded-2xl bg-white/5 hover:bg-white/10 text-white flex items-center justify-center transition-colors border border-white/10"
+                    className="w-12 h-12 rounded-2xl bg-gray-100 hover:bg-gray-200 dark:bg-gray-700 dark:hover:bg-gray-600 text-gray-900 dark:text-white flex items-center justify-center transition-colors border border-gray-300 dark:border-gray-600 cursor-pointer"
                   >
                     <Minus className="w-5 h-5" />
                   </button>
 
                   <div className="text-center">
-                    <span className="text-5xl sm:text-6xl font-black text-white font-mono">
+                    <span className="text-5xl sm:text-6xl font-black text-gray-900 dark:text-white font-mono">
                       {currentReps}
                     </span>
-                    <span className="text-xs text-neutral-400 block font-bold uppercase mt-1">
+                    <span className="text-xs text-gray-600 dark:text-gray-400 block font-bold uppercase mt-1">
                       повторений сделано
                     </span>
                   </div>
 
                   <button
                     onClick={() => setCurrentReps((prev) => prev + 1)}
-                    className="w-12 h-12 rounded-2xl bg-[#00FF85]/15 hover:bg-[#00FF85]/25 text-[#00FF85] flex items-center justify-center transition-colors border border-[#00FF85]/30"
+                    className="w-12 h-12 rounded-2xl bg-[#00FF85]/15 hover:bg-[#00FF85]/25 text-emerald-700 dark:text-[#00FF85] flex items-center justify-center transition-colors border border-[#00FF85]/30 cursor-pointer"
                   >
                     <Plus className="w-5 h-5 stroke-[2.5]" />
                   </button>
@@ -492,7 +492,7 @@ export const ExerciseDemoModal = ({ exercise, isOpen, onClose }) => {
                     <button
                       key={amt}
                       onClick={() => setCurrentReps((prev) => prev + amt)}
-                      className="px-3 py-1 rounded-lg text-xs font-semibold bg-white/5 hover:bg-white/10 text-neutral-300 border border-white/5 transition-colors"
+                      className="px-3 py-1 rounded-lg text-xs font-semibold bg-gray-100 hover:bg-gray-200 dark:bg-gray-700 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-200 border border-gray-300 dark:border-gray-600 transition-colors cursor-pointer"
                     >
                       +{amt}
                     </button>
@@ -504,8 +504,8 @@ export const ExerciseDemoModal = ({ exercise, isOpen, onClose }) => {
         </div>
 
         {/* BOTTOM ACTION: Big Complete Set Button */}
-        <div className="p-4 sm:p-5 border-t border-white/10 bg-[#121217] flex flex-col sm:flex-row items-center justify-between gap-3 shrink-0">
-          <div className="text-xs text-neutral-400">
+        <div className="p-4 sm:p-5 border-t border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 flex flex-col sm:flex-row items-center justify-between gap-3 shrink-0">
+          <div className="text-xs text-gray-600 dark:text-gray-400">
             Награда за подход: <strong className="text-[#00FF85]">+25 XP</strong>
           </div>
 

@@ -30,21 +30,21 @@ export const NutritionView = () => {
   return (
     <div className="space-y-6 sm:space-y-8 pb-10">
       {/* Dynamic Goal Rationale Card & Fast AI Action */}
-      <div className="glass-card rounded-3xl p-5 sm:p-6 border border-white/5 relative overflow-hidden">
+      <div className="bg-white dark:bg-gray-800 rounded-3xl p-5 sm:p-6 border border-gray-200 dark:border-gray-700 shadow-sm relative overflow-hidden">
         <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
           <div className="max-w-xl">
             <div className="flex items-center gap-2 mb-2">
               <span className="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-[#00FF85]/15 text-[#00FF85] border border-[#00FF85]/30">
                 {profile.goal === 'gain_muscle' ? 'Профицит: Набор силы' : 'Дефицит: Сжигание жира'}
               </span>
-              <span className="text-xs text-neutral-400">Формула Миффлина-Сан Жеора</span>
+              <span className="text-xs text-gray-600 dark:text-gray-400">Формула Миффлина-Сан Жеора</span>
             </div>
-            <h2 className="text-xl sm:text-2xl font-black text-white">
+            <h2 className="text-xl sm:text-2xl font-black text-gray-900 dark:text-white">
               {profile.goal === 'gain_muscle'
                 ? 'Анаболическая норма: +15% энергии для роста'
                 : 'Дефицит калорий: -20% для сжигания жира'}
             </h2>
-            <p className="text-xs sm:text-sm text-neutral-400 mt-1">
+            <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-400 mt-1">
               {profile.goal === 'gain_muscle'
                 ? `Дневная норма рассчитана на вес ${profile.weight} кг с повышенной долей белка (2.2 г/кг) для восстановления мышечных волокон.`
                 : `Безопасный дефицит сохраняет мышечную массу благодаря высокому уровню белка (2.2 г/кг) и стабильно уменьшает жировую прослойку.`}
@@ -62,7 +62,7 @@ export const NutritionView = () => {
 
             <button
               onClick={() => openAddModal('lunch')}
-              className="px-3.5 py-2.5 rounded-xl bg-white/5 hover:bg-white/10 text-white font-bold text-xs flex items-center gap-1.5 border border-white/10 transition-all cursor-pointer"
+              className="px-3.5 py-2.5 rounded-xl bg-gray-100 hover:bg-gray-200 dark:bg-gray-700 dark:hover:bg-gray-600 text-gray-800 dark:text-white font-bold text-xs flex items-center gap-1.5 border border-gray-200 dark:border-gray-600 transition-all cursor-pointer"
             >
               <Plus className="w-4 h-4 stroke-[2.5]" />
               <span>Вручную</span>
@@ -72,7 +72,7 @@ export const NutritionView = () => {
       </div>
 
       {/* Visual Calorie & Macro Progress Rings Overview */}
-      <div className="glass-card rounded-3xl p-6 sm:p-8 border border-white/5 relative overflow-hidden">
+      <div className="bg-white dark:bg-gray-800 rounded-3xl p-6 sm:p-8 border border-gray-200 dark:border-gray-700 shadow-sm relative overflow-hidden">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
           {/* Main Calorie Ring (Center on mobile/tablet) */}
           <div className="lg:col-span-5 flex flex-col items-center justify-center text-center">
@@ -83,13 +83,13 @@ export const NutritionView = () => {
                 progress={calPct}
                 color={calPct > 105 ? '#FF5E00' : '#00FF85'}
               >
-                <span className="text-xs font-bold text-neutral-400 uppercase tracking-wider">
+                <span className="text-xs font-bold text-gray-600 dark:text-gray-400 uppercase tracking-wider">
                   Калории
                 </span>
-                <span className="text-3xl sm:text-4xl font-black text-white tracking-tight mt-0.5">
+                <span className="text-3xl sm:text-4xl font-black text-gray-900 dark:text-white tracking-tight mt-0.5">
                   {todayNutrients.calories}
                 </span>
-                <span className="text-xs text-neutral-400">
+                <span className="text-xs text-gray-600 dark:text-gray-400">
                   из {dailyTargets.calories} ккал
                 </span>
               </ProgressRing>
@@ -106,22 +106,22 @@ export const NutritionView = () => {
 
           {/* Three Macro Rings / Bars (Белки, Жиры, Углеводы) */}
           <div className="lg:col-span-7 flex flex-col justify-center space-y-5">
-            <h4 className="text-sm font-bold text-neutral-300 uppercase tracking-wider">
+            <h4 className="text-sm font-bold text-gray-700 dark:text-neutral-300 uppercase tracking-wider">
               Баланс макронутриентов (БЖУ)
             </h4>
 
             {/* Protein */}
-            <div className="bg-white/[0.02] border border-white/5 rounded-2xl p-4">
+            <div className="bg-gray-50 dark:bg-gray-900/60 border border-gray-200 dark:border-gray-700 rounded-2xl p-4">
               <div className="flex items-center justify-between mb-2">
                 <div className="flex items-center gap-2">
                   <div className="w-3 h-3 rounded-full bg-sky-400 shadow-[0_0_8px_rgba(56,189,248,0.5)]" />
-                  <span className="text-sm font-bold text-white">Белки</span>
+                  <span className="text-sm font-bold text-gray-900 dark:text-white">Белки</span>
                 </div>
-                <div className="text-xs font-semibold text-neutral-300">
-                  <span className="text-sky-400 font-bold">{todayNutrients.protein}г</span> / {dailyTargets.protein}г ({proteinPct}%)
+                <div className="text-xs font-semibold text-gray-600 dark:text-neutral-300">
+                  <span className="text-sky-500 dark:text-sky-400 font-bold">{todayNutrients.protein}г</span> / {dailyTargets.protein}г ({proteinPct}%)
                 </div>
               </div>
-              <div className="w-full h-2.5 bg-neutral-900 rounded-full overflow-hidden">
+              <div className="w-full h-2.5 bg-gray-200 dark:bg-neutral-900 rounded-full overflow-hidden">
                 <motion.div
                   className="h-full rounded-full bg-sky-400"
                   initial={{ width: 0 }}
@@ -132,17 +132,17 @@ export const NutritionView = () => {
             </div>
 
             {/* Fats */}
-            <div className="bg-white/[0.02] border border-white/5 rounded-2xl p-4">
+            <div className="bg-gray-50 dark:bg-gray-900/60 border border-gray-200 dark:border-gray-700 rounded-2xl p-4">
               <div className="flex items-center justify-between mb-2">
                 <div className="flex items-center gap-2">
                   <div className="w-3 h-3 rounded-full bg-[#FF5E00] shadow-[0_0_8px_rgba(255,94,0,0.5)]" />
-                  <span className="text-sm font-bold text-white">Жиры</span>
+                  <span className="text-sm font-bold text-gray-900 dark:text-white">Жиры</span>
                 </div>
-                <div className="text-xs font-semibold text-neutral-300">
+                <div className="text-xs font-semibold text-gray-600 dark:text-neutral-300">
                   <span className="text-[#FF5E00] font-bold">{todayNutrients.fats}г</span> / {dailyTargets.fats}г ({fatsPct}%)
                 </div>
               </div>
-              <div className="w-full h-2.5 bg-neutral-900 rounded-full overflow-hidden">
+              <div className="w-full h-2.5 bg-gray-200 dark:bg-neutral-900 rounded-full overflow-hidden">
                 <motion.div
                   className="h-full rounded-full bg-[#FF5E00]"
                   initial={{ width: 0 }}
@@ -153,17 +153,17 @@ export const NutritionView = () => {
             </div>
 
             {/* Carbs */}
-            <div className="bg-white/[0.02] border border-white/5 rounded-2xl p-4">
+            <div className="bg-gray-50 dark:bg-gray-900/60 border border-gray-200 dark:border-gray-700 rounded-2xl p-4">
               <div className="flex items-center justify-between mb-2">
                 <div className="flex items-center gap-2">
                   <div className="w-3 h-3 rounded-full bg-[#00FF85] shadow-[0_0_8px_rgba(0,255,133,0.5)]" />
-                  <span className="text-sm font-bold text-white">Углеводы</span>
+                  <span className="text-sm font-bold text-gray-900 dark:text-white">Углеводы</span>
                 </div>
-                <div className="text-xs font-semibold text-neutral-300">
+                <div className="text-xs font-semibold text-gray-600 dark:text-neutral-300">
                   <span className="text-[#00FF85] font-bold">{todayNutrients.carbs}г</span> / {dailyTargets.carbs}г ({carbsPct}%)
                 </div>
               </div>
-              <div className="w-full h-2.5 bg-neutral-900 rounded-full overflow-hidden">
+              <div className="w-full h-2.5 bg-gray-200 dark:bg-neutral-900 rounded-full overflow-hidden">
                 <motion.div
                   className="h-full rounded-full bg-[#00FF85]"
                   initial={{ width: 0 }}
@@ -178,7 +178,7 @@ export const NutritionView = () => {
 
       {/* Meals Sections: Breakfast, Lunch, Dinner, Snack */}
       <div className="space-y-4">
-        <h3 className="text-lg font-black text-white tracking-tight">
+        <h3 className="text-lg font-black text-gray-900 dark:text-white tracking-tight">
           Приемы пищи за сегодня
         </h3>
 

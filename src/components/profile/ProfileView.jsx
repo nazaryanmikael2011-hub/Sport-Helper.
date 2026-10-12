@@ -226,7 +226,7 @@ export const ProfileView = ({ onOpenOnboarding, onOpenAuth }) => {
   return (
     <div className="space-y-6 sm:space-y-8 pb-10">
       {/* Profile Header Card */}
-      <div className="glass-card rounded-3xl p-6 sm:p-8 border border-white/5 relative overflow-hidden">
+      <div className="glass-card rounded-3xl p-6 sm:p-8 border border-gray-200 dark:border-gray-700 relative overflow-hidden">
         <div className="absolute top-0 right-0 w-72 h-72 bg-[#00FF85]/10 rounded-full blur-3xl pointer-events-none" />
 
         <div className="flex flex-col sm:flex-row items-center justify-between gap-6">
@@ -235,10 +235,10 @@ export const ProfileView = ({ onOpenOnboarding, onOpenAuth }) => {
 
             <div>
               <div className="flex flex-wrap items-center justify-center sm:justify-start gap-2">
-                <h2 className="text-xl sm:text-2xl font-black text-white">
+                <h2 className="text-xl sm:text-2xl font-black text-gray-900 dark:text-white">
                   {user.name}
                 </h2>
-                <span className="text-[10px] font-bold px-2.5 py-0.5 rounded-full bg-[#00FF85]/15 text-[#00FF85] border border-[#00FF85]/30">
+                <span className="text-[10px] font-bold px-2.5 py-0.5 rounded-full bg-[#00FF85]/15 text-emerald-600 dark:text-[#00FF85] border border-[#00FF85]/30">
                   {levelInfo.title}
                 </span>
                 <span 
@@ -252,7 +252,7 @@ export const ProfileView = ({ onOpenOnboarding, onOpenAuth }) => {
                   Уровень: {currentLevelBadge.name}
                 </span>
               </div>
-              <p className="text-xs text-neutral-400 mt-0.5">
+              <p className="text-xs text-gray-600 dark:text-neutral-400 mt-0.5">
                 {user.email}
               </p>
 
@@ -261,13 +261,13 @@ export const ProfileView = ({ onOpenOnboarding, onOpenAuth }) => {
                   <Flame className="w-3.5 h-3.5 fill-[#FF5E00]" />
                   {streak} дней стрик
                 </span>
-                <span className="text-neutral-500">•</span>
-                <span className="text-[#00FF85] flex items-center gap-1">
+                <span className="text-gray-400 dark:text-neutral-500">•</span>
+                <span className="text-emerald-600 dark:text-[#00FF85] flex items-center gap-1">
                   <Zap className="w-3.5 h-3.5" />
                   Уровень {levelInfo.level}
                 </span>
-                <span className="text-neutral-500">•</span>
-                <span className="text-neutral-300">
+                <span className="text-gray-400 dark:text-neutral-500">•</span>
+                <span className="text-gray-700 dark:text-neutral-300">
                   {profile.age} лет
                 </span>
               </div>
@@ -275,13 +275,13 @@ export const ProfileView = ({ onOpenOnboarding, onOpenAuth }) => {
           </div>
 
           {/* Quick buttons */}
-          <div className="flex items-center gap-2 w-full sm:w-auto">
+          <div className="flex flex-wrap gap-3 w-full sm:w-auto">
             <button
               onClick={() => setIsEditing(!isEditing)}
-              className={`flex-1 sm:flex-none px-4 py-2.5 rounded-xl font-bold text-xs flex items-center justify-center gap-1.5 border transition-all ${
+              className={`w-full sm:w-auto px-4 py-2.5 rounded-xl font-bold text-xs flex items-center justify-center gap-1.5 border transition-all cursor-pointer ${
                 isEditing
-                  ? 'bg-white/10 text-white border-white/20'
-                  : 'bg-gradient-to-r from-[#00FF85]/20 to-[#10B981]/20 hover:brightness-125 text-[#00FF85] border-[#00FF85]/40 shadow-neon-green'
+                  ? 'bg-gray-100 dark:bg-white/10 text-gray-900 dark:text-white border-gray-300 dark:border-white/20'
+                  : 'bg-gradient-to-r from-[#00FF85]/20 to-[#10B981]/20 hover:brightness-125 text-emerald-600 dark:text-[#00FF85] border-emerald-500/40 dark:border-[#00FF85]/40 shadow-neon-green'
               }`}
             >
               {isEditing ? <X className="w-3.5 h-3.5" /> : <Edit2 className="w-3.5 h-3.5" />}
@@ -290,7 +290,7 @@ export const ProfileView = ({ onOpenOnboarding, onOpenAuth }) => {
 
             <button
               onClick={onOpenOnboarding}
-              className="flex-1 sm:flex-none px-4 py-2.5 rounded-xl bg-white/5 hover:bg-white/10 text-neutral-300 font-bold text-xs border border-white/10 transition-colors"
+              className="w-full sm:w-auto px-4 py-2.5 rounded-xl bg-gray-100 hover:bg-gray-200 dark:bg-white/5 dark:hover:bg-white/10 text-gray-700 dark:text-neutral-300 font-bold text-xs border border-gray-200 dark:border-white/10 transition-colors text-center cursor-pointer"
             >
               Пройти опрос заново
             </button>
@@ -305,16 +305,16 @@ export const ProfileView = ({ onOpenOnboarding, onOpenAuth }) => {
               animate={{ opacity: 1, height: 'auto' }}
               exit={{ opacity: 0, height: 0 }}
               onSubmit={handleSave}
-              className="mt-6 pt-6 border-t border-white/10 space-y-4"
+              className="mt-6 pt-6 border-t border-gray-200 dark:border-white/10 space-y-4"
             >
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
-                  <Edit2 className="w-4 h-4 text-[#00FF85]" />
-                  <h3 className="text-sm font-black text-white uppercase tracking-wider">
+                  <Edit2 className="w-4 h-4 text-emerald-600 dark:text-[#00FF85]" />
+                  <h3 className="text-sm font-black text-gray-900 dark:text-white uppercase tracking-wider">
                     Полное редактирование данных профиля
                   </h3>
                 </div>
-                <span className="text-[11px] text-neutral-400">
+                <span className="text-[11px] text-gray-500 dark:text-neutral-400">
                   Возраст доступен от 5 лет • Мгновенный пересчет калорий
                 </span>
               </div>
@@ -322,7 +322,7 @@ export const ProfileView = ({ onOpenOnboarding, onOpenAuth }) => {
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5">
                 {/* 1. Name */}
                 <div>
-                  <label className="text-[10px] uppercase font-bold text-neutral-300 block mb-1">
+                  <label className="text-[10px] uppercase font-bold text-gray-700 dark:text-neutral-300 block mb-1">
                     Имя пользователя
                   </label>
                   <input
@@ -331,14 +331,14 @@ export const ProfileView = ({ onOpenOnboarding, onOpenAuth }) => {
                     value={editForm.name}
                     onChange={(e) => setEditForm({ ...editForm, name: e.target.value })}
                     placeholder="Ваше имя"
-                    className="w-full bg-[#1A1A24] border border-white/10 rounded-xl px-3 py-2 text-sm text-white focus:outline-none focus:border-[#00FF85]"
+                    className="w-full bg-gray-100 dark:bg-gray-900 border border-gray-300 dark:border-gray-700 rounded-xl px-3 py-2 text-sm text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:border-[#00FF85]"
                   />
                 </div>
 
                 {/* 2. Age (from 5 years old) */}
                 <div>
-                  <label className="text-[10px] uppercase font-bold text-neutral-300 block mb-1">
-                    Возраст (лет) <span className="text-emerald-400 font-normal">от 5 лет</span>
+                  <label className="text-[10px] uppercase font-bold text-gray-700 dark:text-neutral-300 block mb-1">
+                    Возраст (лет) <span className="text-emerald-500 font-normal">от 5 лет</span>
                   </label>
                   <input
                     type="number"
@@ -350,13 +350,13 @@ export const ProfileView = ({ onOpenOnboarding, onOpenAuth }) => {
                       const val = parseInt(e.target.value, 10);
                       setEditForm({ ...editForm, age: isNaN(val) ? 5 : Math.max(5, val) });
                     }}
-                    className="w-full bg-[#1A1A24] border border-white/10 rounded-xl px-3 py-2 text-sm text-white focus:outline-none focus:border-[#00FF85]"
+                    className="w-full bg-gray-100 dark:bg-gray-900 border border-gray-300 dark:border-gray-700 rounded-xl px-3 py-2 text-sm text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:border-[#00FF85]"
                   />
                 </div>
 
                 {/* 3. Height */}
                 <div>
-                  <label className="text-[10px] uppercase font-bold text-neutral-300 block mb-1">
+                  <label className="text-[10px] uppercase font-bold text-gray-700 dark:text-neutral-300 block mb-1">
                     Рост (см)
                   </label>
                   <input
@@ -366,13 +366,13 @@ export const ProfileView = ({ onOpenOnboarding, onOpenAuth }) => {
                     required
                     value={editForm.height}
                     onChange={(e) => setEditForm({ ...editForm, height: parseInt(e.target.value, 10) || 170 })}
-                    className="w-full bg-[#1A1A24] border border-white/10 rounded-xl px-3 py-2 text-sm text-white focus:outline-none focus:border-[#00FF85]"
+                    className="w-full bg-gray-100 dark:bg-gray-900 border border-gray-300 dark:border-gray-700 rounded-xl px-3 py-2 text-sm text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:border-[#00FF85]"
                   />
                 </div>
 
                 {/* 4. Current Weight */}
                 <div>
-                  <label className="text-[10px] uppercase font-bold text-neutral-300 block mb-1">
+                  <label className="text-[10px] uppercase font-bold text-gray-700 dark:text-neutral-300 block mb-1">
                     Текущий вес (кг)
                   </label>
                   <input
@@ -383,13 +383,13 @@ export const ProfileView = ({ onOpenOnboarding, onOpenAuth }) => {
                     required
                     value={editForm.weight}
                     onChange={(e) => setEditForm({ ...editForm, weight: parseFloat(e.target.value) || 70 })}
-                    className="w-full bg-[#1A1A24] border border-white/10 rounded-xl px-3 py-2 text-sm text-white focus:outline-none focus:border-[#00FF85]"
+                    className="w-full bg-gray-100 dark:bg-gray-900 border border-gray-300 dark:border-gray-700 rounded-xl px-3 py-2 text-sm text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:border-[#00FF85]"
                   />
                 </div>
 
                 {/* 5. Target Weight */}
                 <div>
-                  <label className="text-[10px] uppercase font-bold text-neutral-300 block mb-1">
+                  <label className="text-[10px] uppercase font-bold text-gray-700 dark:text-neutral-300 block mb-1">
                     Целевой вес (кг)
                   </label>
                   <input
@@ -400,19 +400,19 @@ export const ProfileView = ({ onOpenOnboarding, onOpenAuth }) => {
                     required
                     value={editForm.targetWeight}
                     onChange={(e) => setEditForm({ ...editForm, targetWeight: parseFloat(e.target.value) || 70 })}
-                    className="w-full bg-[#1A1A24] border border-white/10 rounded-xl px-3 py-2 text-sm text-white focus:outline-none focus:border-[#00FF85]"
+                    className="w-full bg-gray-100 dark:bg-gray-900 border border-gray-300 dark:border-gray-700 rounded-xl px-3 py-2 text-sm text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:border-[#00FF85]"
                   />
                 </div>
 
                 {/* 6. Main Goal */}
                 <div>
-                  <label className="text-[10px] uppercase font-bold text-neutral-300 block mb-1">
+                  <label className="text-[10px] uppercase font-bold text-gray-700 dark:text-neutral-300 block mb-1">
                     Главная цель
                   </label>
                   <select
                     value={editForm.goal}
                     onChange={(e) => setEditForm({ ...editForm, goal: e.target.value })}
-                    className="w-full bg-[#1A1A24] border border-white/10 rounded-xl px-3 py-2.5 text-xs text-white focus:outline-none focus:border-[#00FF85]"
+                    className="w-full bg-gray-100 dark:bg-gray-900 border border-gray-300 dark:border-gray-700 rounded-xl px-3 py-2.5 text-xs text-gray-900 dark:text-white focus:outline-none focus:border-[#00FF85]"
                   >
                     <option value="gain_muscle">Набор массы & Гипертрофия (+15% ккал)</option>
                     <option value="lose_weight">Похудение & Рельеф (-20% ккал)</option>
@@ -422,13 +422,13 @@ export const ProfileView = ({ onOpenOnboarding, onOpenAuth }) => {
 
                 {/* 7. Fitness Level */}
                 <div className="lg:col-span-2">
-                  <label className="text-[10px] uppercase font-bold text-neutral-300 block mb-1">
+                  <label className="text-[10px] uppercase font-bold text-gray-700 dark:text-neutral-300 block mb-1">
                     Уровень подготовки
                   </label>
                   <select
                     value={editForm.fitnessLevel}
                     onChange={(e) => setEditForm({ ...editForm, fitnessLevel: e.target.value })}
-                    className="w-full bg-[#1A1A24] border border-white/10 rounded-xl px-3 py-2.5 text-xs text-white focus:outline-none focus:border-[#00FF85]"
+                    className="w-full bg-gray-100 dark:bg-gray-900 border border-gray-300 dark:border-gray-700 rounded-xl px-3 py-2.5 text-xs text-gray-900 dark:text-white focus:outline-none focus:border-[#00FF85]"
                   >
                     <option value="beginner">Начинающий (Базовые отжимания, приседания, планка)</option>
                     <option value="intermediate">Средний (Подтягивания, брусья, L-sit, алмазные отжимания)</option>
@@ -438,7 +438,7 @@ export const ProfileView = ({ onOpenOnboarding, onOpenAuth }) => {
 
                 {/* 8. Available Equipment */}
                 <div className="lg:col-span-2">
-                  <label className="text-[10px] uppercase font-bold text-neutral-300 block mb-1.5">
+                  <label className="text-[10px] uppercase font-bold text-gray-700 dark:text-neutral-300 block mb-1.5">
                     Доступный инвентарь (для подбора тренировок)
                   </label>
                   <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
@@ -451,15 +451,15 @@ export const ProfileView = ({ onOpenOnboarding, onOpenAuth }) => {
                           onClick={() => toggleEquipmentItem(item.id)}
                           className={`p-2.5 rounded-xl border text-xs font-semibold flex items-center justify-between gap-1.5 transition-all text-left cursor-pointer ${
                             isSelected
-                              ? 'bg-[#00FF85]/15 border-[#00FF85] text-white shadow-[0_0_10px_rgba(0,255,133,0.15)]'
-                              : 'bg-white/[0.02] border-white/10 text-neutral-400 hover:text-white hover:border-white/20'
+                              ? 'bg-[#00FF85]/15 border-emerald-500/50 dark:border-[#00FF85] text-gray-900 dark:text-white shadow-sm'
+                              : 'bg-gray-100 dark:bg-gray-900 border-gray-300 dark:border-gray-700 text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white hover:border-gray-400 dark:hover:border-gray-600'
                           }`}
                         >
                           <span className="flex items-center gap-1.5">
                             <span>{item.icon}</span>
                             <span>{item.label}</span>
                           </span>
-                          {isSelected && <Check className="w-3.5 h-3.5 text-[#00FF85]" />}
+                          {isSelected && <Check className="w-3.5 h-3.5 text-emerald-600 dark:text-[#00FF85]" />}
                         </button>
                       );
                     })}
@@ -468,17 +468,17 @@ export const ProfileView = ({ onOpenOnboarding, onOpenAuth }) => {
               </div>
 
               {/* Dynamic Live Nutrients Preview */}
-              <div className="p-3.5 rounded-2xl bg-white/[0.03] border border-white/5 flex flex-wrap items-center justify-between gap-3 text-xs">
+              <div className="p-3.5 rounded-2xl bg-gray-100 dark:bg-white/[0.03] border border-gray-200 dark:border-white/5 flex flex-wrap items-center justify-between gap-3 text-xs">
                 <div className="flex items-center gap-2">
-                  <Sparkles className="w-4 h-4 text-[#00FF85]" />
-                  <span className="text-neutral-300">
-                    Пересчитанная дневная норма: <strong className="text-white">{previewTargets.calories} ккал</strong>
+                  <Sparkles className="w-4 h-4 text-emerald-600 dark:text-[#00FF85]" />
+                  <span className="text-gray-700 dark:text-neutral-300">
+                    Пересчитанная дневная норма: <strong className="text-gray-900 dark:text-white">{previewTargets.calories} ккал</strong>
                   </span>
                 </div>
-                <div className="flex items-center gap-3 text-neutral-400">
-                  <span>Белки: <strong className="text-sky-400">{previewTargets.protein}г</strong></span>
+                <div className="flex items-center gap-3 text-gray-600 dark:text-neutral-400">
+                  <span>Белки: <strong className="text-sky-500 dark:text-sky-400">{previewTargets.protein}г</strong></span>
                   <span>Жиры: <strong className="text-[#FF5E00]">{previewTargets.fats}г</strong></span>
-                  <span>Углеводы: <strong className="text-[#00FF85]">{previewTargets.carbs}г</strong></span>
+                  <span>Углеводы: <strong className="text-emerald-600 dark:text-[#00FF85]">{previewTargets.carbs}г</strong></span>
                 </div>
               </div>
 
@@ -487,14 +487,14 @@ export const ProfileView = ({ onOpenOnboarding, onOpenAuth }) => {
                 <button
                   type="button"
                   onClick={() => setIsEditing(false)}
-                  className="px-4 py-2.5 rounded-xl bg-white/5 hover:bg-white/10 text-neutral-300 font-bold text-xs transition-colors"
+                  className="px-4 py-2.5 rounded-xl bg-gray-100 hover:bg-gray-200 dark:bg-white/5 dark:hover:bg-white/10 text-gray-700 dark:text-neutral-300 font-bold text-xs transition-colors cursor-pointer"
                 >
                   Отмена
                 </button>
 
                 <button
                   type="submit"
-                  className="px-6 py-2.5 rounded-xl bg-gradient-to-r from-[#00FF85] to-[#10B981] hover:brightness-110 text-black font-black text-xs flex items-center gap-1.5 shadow-neon-green transition-all"
+                  className="px-6 py-2.5 rounded-xl bg-gradient-to-r from-[#00FF85] to-[#10B981] hover:brightness-110 text-black font-black text-xs flex items-center gap-1.5 shadow-neon-green transition-all cursor-pointer"
                 >
                   <Save className="w-4 h-4 stroke-[2.5]" />
                   <span>Сохранить изменения</span>
@@ -507,34 +507,34 @@ export const ProfileView = ({ onOpenOnboarding, onOpenAuth }) => {
 
       {/* Metrics Cards Grid */}
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-        <div className="p-4 rounded-2xl glass-card border border-white/5">
-          <div className="flex items-center gap-1.5 text-xs text-neutral-400 mb-1">
-            <Scale className="w-4 h-4 text-[#00FF85]" />
+        <div className="p-4 rounded-2xl glass-card border border-gray-200 dark:border-gray-700">
+          <div className="flex items-center gap-1.5 text-xs text-gray-600 dark:text-neutral-400 mb-1">
+            <Scale className="w-4 h-4 text-emerald-600 dark:text-[#00FF85]" />
             <span>Вес / Цель</span>
           </div>
-          <div className="text-xl font-black text-white">
-            {profile.weight} <span className="text-xs text-neutral-400">→ {profile.targetWeight} кг</span>
+          <div className="text-xl font-black text-gray-900 dark:text-white">
+            {profile.weight} <span className="text-xs text-gray-500 dark:text-neutral-400">→ {profile.targetWeight} кг</span>
           </div>
-          <span className="text-[11px] text-[#00FF85] font-semibold mt-1 block">
+          <span className="text-[11px] text-emerald-600 dark:text-[#00FF85] font-semibold mt-1 block">
             {profile.goal === 'gain_muscle' ? 'Набор мышечной массы' : profile.goal === 'calisthenics_strength' ? 'Калистеника & Сила' : 'Снижение жира'}
           </span>
         </div>
 
-        <div className="p-4 rounded-2xl glass-card border border-white/5">
-          <div className="flex items-center gap-1.5 text-xs text-neutral-400 mb-1">
-            <Ruler className="w-4 h-4 text-sky-400" />
+        <div className="p-4 rounded-2xl glass-card border border-gray-200 dark:border-gray-700">
+          <div className="flex items-center gap-1.5 text-xs text-gray-600 dark:text-neutral-400 mb-1">
+            <Ruler className="w-4 h-4 text-sky-500" />
             <span>Рост & Возраст</span>
           </div>
-          <div className="text-xl font-black text-white">
+          <div className="text-xl font-black text-gray-900 dark:text-white">
             {profile.height} см
           </div>
-          <span className="text-[11px] text-neutral-400 font-medium mt-1 block">
+          <span className="text-[11px] text-gray-600 dark:text-neutral-400 font-medium mt-1 block">
             {profile.age} лет • ИМТ {bmi.bmi} ({bmi.label})
           </span>
         </div>
 
-        <div className="p-4 rounded-2xl glass-card border border-white/5">
-          <div className="flex items-center gap-1.5 text-xs text-neutral-400 mb-1">
+        <div className="p-4 rounded-2xl glass-card border border-gray-200 dark:border-gray-700">
+          <div className="flex items-center gap-1.5 text-xs text-gray-600 dark:text-neutral-400 mb-1">
             <Trophy className="w-4 h-4 text-[#FF5E00]" />
             <span>Уровень подготовки</span>
           </div>
@@ -544,20 +544,20 @@ export const ProfileView = ({ onOpenOnboarding, onOpenAuth }) => {
           >
             {currentLevelBadge.name}
           </div>
-          <span className="text-[11px] text-neutral-400 font-medium mt-1 block">
+          <span className="text-[11px] text-gray-600 dark:text-neutral-400 font-medium mt-1 block">
             TDEE расход: {dailyTargets.tdee} ккал
           </span>
         </div>
 
-        <div className="p-4 rounded-2xl glass-card border border-white/5">
-          <div className="flex items-center gap-1.5 text-xs text-neutral-400 mb-1">
-            <Zap className="w-4 h-4 text-[#00FF85]" />
+        <div className="p-4 rounded-2xl glass-card border border-gray-200 dark:border-gray-700">
+          <div className="flex items-center gap-1.5 text-xs text-gray-600 dark:text-neutral-400 mb-1">
+            <Zap className="w-4 h-4 text-emerald-600 dark:text-[#00FF85]" />
             <span>Норма на день</span>
           </div>
-          <div className="text-xl font-black text-[#00FF85]">
-            {dailyTargets.calories} <span className="text-xs text-neutral-400">ккал</span>
+          <div className="text-xl font-black text-emerald-600 dark:text-[#00FF85]">
+            {dailyTargets.calories} <span className="text-xs text-gray-500 dark:text-neutral-400">ккал</span>
           </div>
-          <span className="text-[11px] text-neutral-400 font-medium mt-1 block">
+          <span className="text-[11px] text-gray-600 dark:text-neutral-400 font-medium mt-1 block">
             Б: {dailyTargets.protein}г • Ж: {dailyTargets.fats}г • У: {dailyTargets.carbs}г
           </span>
         </div>
@@ -566,20 +566,20 @@ export const ProfileView = ({ onOpenOnboarding, onOpenAuth }) => {
       {/* Equipment & Theme Row */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         {/* User Equipment Card */}
-        <div className="glass-card rounded-3xl p-5 sm:p-6 border border-white/5 flex flex-col justify-between">
+        <div className="glass-card rounded-3xl p-5 sm:p-6 border border-gray-200 dark:border-gray-700 flex flex-col justify-between">
           <div className="flex items-center justify-between mb-3">
             <div className="flex items-center gap-2">
-              <div className="p-2 rounded-xl bg-[#00FF85]/15 text-[#00FF85]">
+              <div className="p-2 rounded-xl bg-[#00FF85]/15 text-emerald-600 dark:text-[#00FF85]">
                 <Layers className="w-5 h-5" />
               </div>
               <div>
-                <h4 className="text-sm font-bold text-white">Спортивный инвентарь</h4>
-                <p className="text-[11px] text-neutral-400">Учитывается при умном подборе тренировок</p>
+                <h4 className="text-sm font-bold text-gray-900 dark:text-white">Спортивный инвентарь</h4>
+                <p className="text-[11px] text-gray-600 dark:text-neutral-400">Учитывается при умном подборе тренировок</p>
               </div>
             </div>
             <button
               onClick={() => setIsEditing(true)}
-              className="text-[11px] text-[#00FF85] hover:underline font-bold flex items-center gap-1 cursor-pointer"
+              className="text-[11px] text-emerald-600 dark:text-[#00FF85] hover:underline font-bold flex items-center gap-1 cursor-pointer"
             >
               <Edit2 className="w-3 h-3" />
               <span>Изменить</span>
@@ -592,7 +592,7 @@ export const ProfileView = ({ onOpenOnboarding, onOpenAuth }) => {
               return (
                 <span
                   key={eqId}
-                  className="px-2.5 py-1 rounded-xl bg-white/5 border border-white/10 text-xs text-neutral-200 font-medium flex items-center gap-1.5"
+                  className="px-2.5 py-1 rounded-xl bg-gray-100 dark:bg-white/5 border border-gray-200 dark:border-white/10 text-xs text-gray-800 dark:text-neutral-200 font-medium flex items-center gap-1.5"
                 >
                   <span>{eq.icon}</span>
                   <span>{eq.label}</span>
@@ -603,15 +603,15 @@ export const ProfileView = ({ onOpenOnboarding, onOpenAuth }) => {
         </div>
 
         {/* Theme Settings Card */}
-        <div className="glass-card rounded-3xl p-5 sm:p-6 border border-white/5 flex flex-col justify-between">
+        <div className="glass-card rounded-3xl p-5 sm:p-6 border border-gray-200 dark:border-gray-700 flex flex-col justify-between">
           <div className="flex items-center justify-between mb-3">
             <div className="flex items-center gap-2">
               <div className={`p-2 rounded-xl ${theme === 'dark' ? 'bg-[#00FF85]/15 text-[#00FF85]' : 'bg-amber-500/15 text-amber-500'}`}>
                 {theme === 'dark' ? <Moon className="w-5 h-5" /> : <Sun className="w-5 h-5" />}
               </div>
               <div>
-                <h4 className="text-sm font-bold text-white">Тема оформления</h4>
-                <p className="text-[11px] text-neutral-400">
+                <h4 className="text-sm font-bold text-gray-900 dark:text-white">Тема оформления</h4>
+                <p className="text-[11px] text-gray-600 dark:text-neutral-400">
                   {theme === 'dark' ? 'Темная неоновая (OLED Dark)' : 'Светлая минималистичная (Clean Light)'}
                 </p>
               </div>
@@ -625,7 +625,7 @@ export const ProfileView = ({ onOpenOnboarding, onOpenAuth }) => {
               className={`flex-1 py-2 px-3 rounded-xl text-xs font-bold flex items-center justify-center gap-2 transition-all cursor-pointer ${
                 theme === 'light'
                   ? 'bg-amber-400 text-black shadow-md'
-                  : 'bg-white/5 border border-white/10 text-neutral-300 hover:text-white'
+                  : 'bg-gray-100 hover:bg-gray-200 dark:bg-white/5 dark:hover:bg-white/10 border border-gray-200 dark:border-white/10 text-gray-700 dark:text-neutral-300'
               }`}
             >
               <Sun className="w-4 h-4" />
@@ -638,7 +638,7 @@ export const ProfileView = ({ onOpenOnboarding, onOpenAuth }) => {
               className={`flex-1 py-2 px-3 rounded-xl text-xs font-bold flex items-center justify-center gap-2 transition-all cursor-pointer ${
                 theme === 'dark'
                   ? 'bg-[#00FF85] text-black shadow-neon-green'
-                  : 'bg-white/5 border border-white/10 text-neutral-300 hover:text-white'
+                  : 'bg-gray-100 hover:bg-gray-200 dark:bg-white/5 dark:hover:bg-white/10 border border-gray-200 dark:border-white/10 text-gray-700 dark:text-neutral-300'
               }`}
             >
               <Moon className="w-4 h-4" />
@@ -649,17 +649,17 @@ export const ProfileView = ({ onOpenOnboarding, onOpenAuth }) => {
       </div>
 
       {/* Achievements Gallery */}
-      <div className="glass-card rounded-3xl p-6 sm:p-8 border border-white/5">
+      <div className="glass-card rounded-3xl p-6 sm:p-8 border border-gray-200 dark:border-gray-700">
         <div className="flex items-center justify-between mb-6">
           <div className="flex items-center gap-2.5">
             <div className="p-2.5 rounded-xl bg-[#FF5E00]/15 text-[#FF5E00]">
               <Award className="w-6 h-6" />
             </div>
             <div>
-              <h3 className="text-lg font-black text-white">
+              <h3 className="text-lg font-black text-gray-900 dark:text-white">
                 Зал славы и достижения
               </h3>
-              <p className="text-xs text-neutral-400">
+              <p className="text-xs text-gray-600 dark:text-neutral-400">
                 Разблокировано {unlockedBadgeIds.length} из {mockBadges.length} наград
               </p>
             </div>
@@ -675,34 +675,34 @@ export const ProfileView = ({ onOpenOnboarding, onOpenAuth }) => {
                 key={badge.id}
                 className={`p-4 rounded-2xl border transition-all flex flex-col justify-between ${
                   isUnlocked
-                    ? 'bg-white/[0.04] border-[#00FF85]/30 shadow-[0_0_15px_-5px_rgba(0,255,133,0.15)]'
-                    : 'bg-white/[0.01] border-white/5 opacity-40 grayscale'
+                    ? 'bg-emerald-500/5 dark:bg-white/[0.04] border-emerald-500/30 dark:border-[#00FF85]/30 shadow-sm dark:shadow-[0_0_15px_-5px_rgba(0,255,133,0.15)]'
+                    : 'bg-gray-100 dark:bg-white/[0.01] border-gray-200 dark:border-white/5 opacity-40 grayscale'
                 }`}
               >
                 <div>
                   <div className="flex items-center justify-between mb-3">
                     <span className="text-3xl">{badge.icon}</span>
                     {isUnlocked ? (
-                      <span className="text-[10px] font-black uppercase tracking-wider px-2 py-0.5 rounded-full bg-[#00FF85]/15 text-[#00FF85] border border-[#00FF85]/30">
+                      <span className="text-[10px] font-black uppercase tracking-wider px-2 py-0.5 rounded-full bg-[#00FF85]/15 text-emerald-600 dark:text-[#00FF85] border border-[#00FF85]/30">
                         Получено
                       </span>
                     ) : (
-                      <div className="p-1 rounded-full bg-white/5 text-neutral-400">
+                      <div className="p-1 rounded-full bg-gray-200 dark:bg-white/5 text-gray-500 dark:text-neutral-400">
                         <Lock className="w-3.5 h-3.5" />
                       </div>
                     )}
                   </div>
 
-                  <h5 className="font-bold text-white text-sm">
+                  <h5 className="font-bold text-gray-900 dark:text-white text-sm">
                     {badge.title}
                   </h5>
-                  <p className="text-xs text-neutral-400 mt-1 leading-relaxed">
+                  <p className="text-xs text-gray-600 dark:text-neutral-400 mt-1 leading-relaxed">
                     {badge.description}
                   </p>
                 </div>
 
-                <div className="mt-3 pt-2 border-t border-white/5 text-right">
-                  <span className="text-[11px] font-bold text-[#00FF85]">
+                <div className="mt-3 pt-2 border-t border-gray-200 dark:border-white/5 text-right">
+                  <span className="text-[11px] font-bold text-emerald-600 dark:text-[#00FF85]">
                     +{badge.xpReward} XP
                   </span>
                 </div>
@@ -714,22 +714,22 @@ export const ProfileView = ({ onOpenOnboarding, onOpenAuth }) => {
 
       {/* Orders History if any */}
       {orderHistory && orderHistory.length > 0 && (
-        <div className="glass-card rounded-3xl p-6 border border-white/5">
+        <div className="glass-card rounded-3xl p-6 border border-gray-200 dark:border-gray-700">
           <div className="flex items-center gap-2 mb-4">
-            <ShoppingBag className="w-5 h-5 text-[#00FF85]" />
-            <h3 className="text-base font-bold text-white">История заказов в магазине</h3>
+            <ShoppingBag className="w-5 h-5 text-emerald-600 dark:text-[#00FF85]" />
+            <h3 className="text-base font-bold text-gray-900 dark:text-white">История заказов в магазине</h3>
           </div>
           <div className="space-y-3">
             {orderHistory.map((order) => (
               <div
                 key={order.id}
-                className="p-3.5 rounded-2xl bg-white/[0.02] border border-white/5 flex items-center justify-between text-xs"
+                className="p-3.5 rounded-2xl bg-gray-50 dark:bg-white/[0.02] border border-gray-200 dark:border-white/5 flex items-center justify-between text-xs"
               >
                 <div>
-                  <span className="font-bold text-white">Заказ №{order.id.slice(-6)}</span>
-                  <p className="text-neutral-400 mt-0.5">{order.date} • {order.items.length} поз.</p>
+                  <span className="font-bold text-gray-900 dark:text-white">Заказ №{order.id.slice(-6)}</span>
+                  <p className="text-gray-500 dark:text-neutral-400 mt-0.5">{order.date} • {order.items.length} поз.</p>
                 </div>
-                <span className="text-sm font-black text-[#00FF85]">
+                <span className="text-sm font-black text-emerald-600 dark:text-[#00FF85]">
                   {formatCurrency(order.total)}
                 </span>
               </div>
@@ -739,24 +739,24 @@ export const ProfileView = ({ onOpenOnboarding, onOpenAuth }) => {
       )}
 
       {/* Support / Premium 1$ Donation Card */}
-      <div className="glass-card rounded-3xl p-6 sm:p-8 border border-white/5 relative overflow-hidden">
+      <div className="glass-card rounded-3xl p-6 sm:p-8 border border-gray-200 dark:border-gray-700 relative overflow-hidden">
         <div className="absolute top-0 right-0 w-80 h-40 bg-gradient-to-bl from-amber-500/10 to-transparent rounded-full blur-3xl pointer-events-none" />
 
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
           <div className="flex items-center gap-3">
-            <div className="p-3 rounded-2xl bg-amber-500/15 text-amber-400 border border-amber-500/25">
+            <div className="p-3 rounded-2xl bg-amber-500/15 text-amber-500 dark:text-amber-400 border border-amber-500/25">
               <Heart className="w-6 h-6 fill-amber-400/20" />
             </div>
             <div>
               <div className="flex items-center gap-2">
-                <h3 className="text-lg sm:text-xl font-black text-white">
+                <h3 className="text-lg sm:text-xl font-black text-gray-900 dark:text-white">
                   Помощь сайту & Премиум-доступ
                 </h3>
                 <span className="text-[11px] font-black px-2.5 py-0.5 rounded-full bg-amber-400 text-black shadow-[0_0_12px_rgba(251,191,36,0.4)]">
                   1$
                 </span>
               </div>
-              <p className="text-xs text-neutral-400 mt-1 max-w-xl">
+              <p className="text-xs text-gray-600 dark:text-neutral-400 mt-1 max-w-xl">
                 Поддержите развитие проекта символическим взносом в 1$. В знак благодарности вы получите постоянный статус «Премиум атлет» и снимете все ограничения.
               </p>
             </div>
@@ -766,36 +766,36 @@ export const ProfileView = ({ onOpenOnboarding, onOpenAuth }) => {
         {isPremium ? (
           <div className="p-5 sm:p-6 rounded-2xl bg-gradient-to-r from-amber-500/15 via-yellow-500/10 to-amber-500/5 border border-amber-400/40 flex flex-col sm:flex-row items-center justify-between gap-4">
             <div className="flex items-center gap-3.5">
-              <div className="p-3 rounded-xl bg-amber-400/20 text-amber-300">
+              <div className="p-3 rounded-xl bg-amber-400/20 text-amber-500 dark:text-amber-300">
                 <Crown className="w-7 h-7 fill-amber-300/40" />
               </div>
               <div>
                 <div className="flex items-center gap-2">
-                  <span className="text-sm font-black text-white">
+                  <span className="text-sm font-black text-gray-900 dark:text-white">
                     Премиум активирован навсегда! 🏆
                   </span>
-                  <CheckCircle2 className="w-4 h-4 text-[#00FF85]" />
+                  <CheckCircle2 className="w-4 h-4 text-emerald-600 dark:text-[#00FF85]" />
                 </div>
-                <p className="text-xs text-amber-200/80 mt-0.5">
+                <p className="text-xs text-amber-800 dark:text-amber-200/80 mt-0.5">
                   Огромное спасибо за поддержку! Ваш вклад помогает SPORT HELPER непрерывно развиваться и добавлять новые тренировки.
                 </p>
               </div>
             </div>
-            <div className="px-3.5 py-1.5 rounded-full bg-amber-400/20 border border-amber-400/40 text-amber-300 text-xs font-black shrink-0">
+            <div className="px-3.5 py-1.5 rounded-full bg-amber-400/20 border border-amber-400/40 text-amber-600 dark:text-amber-300 text-xs font-black shrink-0">
               PRO статус активен
             </div>
           </div>
         ) : (
           <form onSubmit={handlePaySupport} className="space-y-4 max-w-xl">
-            <div className="p-4 rounded-2xl bg-white/[0.02] border border-white/5 space-y-3.5">
+            <div className="p-4 sm:p-5 rounded-2xl bg-gray-50 dark:bg-gray-800/80 border border-gray-200 dark:border-gray-700 space-y-3.5">
               {/* Card Number */}
               <div>
-                <label className="block text-xs font-bold text-neutral-300 mb-1.5 flex items-center justify-between">
+                <label className="block text-xs font-bold text-gray-700 dark:text-neutral-300 mb-1.5 flex items-center justify-between">
                   <span>Номер карты</span>
-                  <span className="text-[10px] text-neutral-500 font-normal">16 цифр Visa / Mastercard / МИР</span>
+                  <span className="text-[10px] text-gray-500 dark:text-neutral-500 font-normal">16 цифр Visa / Mastercard / МИР</span>
                 </label>
                 <div className="relative">
-                  <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-neutral-400">
+                  <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-gray-400 dark:text-neutral-400">
                     <CreditCard className="w-4 h-4" />
                   </div>
                   <input
@@ -804,20 +804,20 @@ export const ProfileView = ({ onOpenOnboarding, onOpenAuth }) => {
                     value={cardData.number}
                     onChange={handleCardNumberChange}
                     placeholder="0000 0000 0000 0000"
-                    className={`w-full pl-10 pr-4 py-2.5 rounded-xl bg-black/40 border text-xs font-mono tracking-wider text-white placeholder-neutral-600 focus:outline-none transition-all ${
-                      paymentErrors.number ? 'border-red-500 ring-1 ring-red-500/50' : 'border-white/10 focus:border-[#00FF85]/50'
+                    className={`w-full pl-10 pr-4 py-2.5 rounded-xl bg-gray-100 dark:bg-gray-900 border text-xs font-mono tracking-wider text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none transition-all ${
+                      paymentErrors.number ? 'border-red-500 ring-1 ring-red-500/50' : 'border-gray-300 dark:border-gray-700 focus:border-[#00FF85]'
                     }`}
                   />
                 </div>
                 {paymentErrors.number && (
-                  <p className="text-[10px] text-red-400 mt-1 font-medium">{paymentErrors.number}</p>
+                  <p className="text-[10px] text-red-500 dark:text-red-400 mt-1 font-medium">{paymentErrors.number}</p>
                 )}
               </div>
 
               {/* Expiry and CVC */}
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="block text-xs font-bold text-neutral-300 mb-1.5">
+                  <label className="block text-xs font-bold text-gray-700 dark:text-neutral-300 mb-1.5">
                     Срок действия
                   </label>
                   <input
@@ -826,17 +826,17 @@ export const ProfileView = ({ onOpenOnboarding, onOpenAuth }) => {
                     value={cardData.expiry}
                     onChange={handleExpiryChange}
                     placeholder="ММ/ГГ"
-                    className={`w-full px-3.5 py-2.5 rounded-xl bg-black/40 border text-xs font-mono text-center tracking-wider text-white placeholder-neutral-600 focus:outline-none transition-all ${
-                      paymentErrors.expiry ? 'border-red-500 ring-1 ring-red-500/50' : 'border-white/10 focus:border-[#00FF85]/50'
+                    className={`w-full px-3.5 py-2.5 rounded-xl bg-gray-100 dark:bg-gray-900 border text-xs font-mono text-center tracking-wider text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none transition-all ${
+                      paymentErrors.expiry ? 'border-red-500 ring-1 ring-red-500/50' : 'border-gray-300 dark:border-gray-700 focus:border-[#00FF85]'
                     }`}
                   />
                   {paymentErrors.expiry && (
-                    <p className="text-[10px] text-red-400 mt-1 font-medium">{paymentErrors.expiry}</p>
+                    <p className="text-[10px] text-red-500 dark:text-red-400 mt-1 font-medium">{paymentErrors.expiry}</p>
                   )}
                 </div>
 
                 <div>
-                  <label className="block text-xs font-bold text-neutral-300 mb-1.5">
+                  <label className="block text-xs font-bold text-gray-700 dark:text-neutral-300 mb-1.5">
                     CVC / CVV
                   </label>
                   <input
@@ -846,19 +846,19 @@ export const ProfileView = ({ onOpenOnboarding, onOpenAuth }) => {
                     onChange={handleCvcChange}
                     placeholder="•••"
                     maxLength={3}
-                    className={`w-full px-3.5 py-2.5 rounded-xl bg-black/40 border text-xs font-mono text-center tracking-wider text-white placeholder-neutral-600 focus:outline-none transition-all ${
-                      paymentErrors.cvc ? 'border-red-500 ring-1 ring-red-500/50' : 'border-white/10 focus:border-[#00FF85]/50'
+                    className={`w-full px-3.5 py-2.5 rounded-xl bg-gray-100 dark:bg-gray-900 border text-xs font-mono text-center tracking-wider text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none transition-all ${
+                      paymentErrors.cvc ? 'border-red-500 ring-1 ring-red-500/50' : 'border-gray-300 dark:border-gray-700 focus:border-[#00FF85]'
                     }`}
                   />
                   {paymentErrors.cvc && (
-                    <p className="text-[10px] text-red-400 mt-1 font-medium">{paymentErrors.cvc}</p>
+                    <p className="text-[10px] text-red-500 dark:text-red-400 mt-1 font-medium">{paymentErrors.cvc}</p>
                   )}
                 </div>
               </div>
 
               {/* Cardholder name */}
               <div>
-                <label className="block text-xs font-bold text-neutral-300 mb-1.5">
+                <label className="block text-xs font-bold text-gray-700 dark:text-neutral-300 mb-1.5">
                   Имя владельца карты
                 </label>
                 <input
@@ -866,20 +866,20 @@ export const ProfileView = ({ onOpenOnboarding, onOpenAuth }) => {
                   value={cardData.name}
                   onChange={handleNameChange}
                   placeholder="IVAN IVANOV"
-                  className={`w-full px-3.5 py-2.5 rounded-xl bg-black/40 border text-xs uppercase font-medium text-white placeholder-neutral-600 focus:outline-none transition-all ${
-                    paymentErrors.name ? 'border-red-500 ring-1 ring-red-500/50' : 'border-white/10 focus:border-[#00FF85]/50'
+                  className={`w-full px-3.5 py-2.5 rounded-xl bg-gray-100 dark:bg-gray-900 border text-xs uppercase font-medium text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none transition-all ${
+                    paymentErrors.name ? 'border-red-500 ring-1 ring-red-500/50' : 'border-gray-300 dark:border-gray-700 focus:border-[#00FF85]'
                   }`}
                 />
                 {paymentErrors.name && (
-                  <p className="text-[10px] text-red-400 mt-1 font-medium">{paymentErrors.name}</p>
+                  <p className="text-[10px] text-red-500 dark:text-red-400 mt-1 font-medium">{paymentErrors.name}</p>
                 )}
               </div>
             </div>
 
             {/* Bottom info and submit */}
             <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 pt-1">
-              <div className="flex items-center gap-1.5 text-[11px] text-neutral-400">
-                <Shield className="w-3.5 h-3.5 text-[#00FF85]" />
+              <div className="flex items-center gap-1.5 text-[11px] text-gray-500 dark:text-neutral-400">
+                <Shield className="w-3.5 h-3.5 text-emerald-600 dark:text-[#00FF85]" />
                 <span>Защищенный SSL 256-bit платеж</span>
               </div>
 
@@ -906,12 +906,12 @@ export const ProfileView = ({ onOpenOnboarding, onOpenAuth }) => {
       </div>
 
       {/* Danger / Demo reset zone */}
-      <div className="p-6 rounded-3xl bg-red-950/20 border border-red-500/20 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+      <div className="p-6 rounded-3xl bg-red-50 dark:bg-red-950/20 border border-red-200 dark:border-red-500/20 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
         <div>
-          <h4 className="text-sm font-bold text-red-300">
+          <h4 className="text-sm font-bold text-red-700 dark:text-red-300">
             Управление данными и аккаунтом
           </h4>
-          <p className="text-xs text-neutral-400 mt-0.5">
+          <p className="text-xs text-gray-600 dark:text-neutral-400 mt-0.5">
             Сбросить сохраненный прогресс и запустить приложение с начальными демо-данными.
           </p>
         </div>
@@ -919,7 +919,7 @@ export const ProfileView = ({ onOpenOnboarding, onOpenAuth }) => {
         <div className="flex items-center gap-2">
           <button
             onClick={resetDemoState}
-            className="px-4 py-2 rounded-xl bg-red-500/15 hover:bg-red-500/25 text-red-400 border border-red-500/30 text-xs font-bold transition-colors flex items-center gap-1.5"
+            className="px-4 py-2 rounded-xl bg-red-500/10 hover:bg-red-500/20 text-red-600 dark:text-red-400 border border-red-500/30 text-xs font-bold transition-colors flex items-center gap-1.5 cursor-pointer"
           >
             <RotateCcw className="w-3.5 h-3.5" />
             <span>Сбросить демо</span>
@@ -927,7 +927,7 @@ export const ProfileView = ({ onOpenOnboarding, onOpenAuth }) => {
 
           <button
             onClick={logout}
-            className="px-4 py-2 rounded-xl bg-white/5 hover:bg-white/10 text-neutral-400 hover:text-white border border-white/10 text-xs font-bold transition-colors flex items-center gap-1.5"
+            className="px-4 py-2 rounded-xl bg-gray-100 hover:bg-gray-200 text-gray-700 dark:bg-white/5 dark:hover:bg-white/10 dark:text-neutral-400 dark:hover:text-white border border-gray-200 dark:border-white/10 text-xs font-bold transition-colors flex items-center gap-1.5 cursor-pointer"
           >
             <LogOut className="w-3.5 h-3.5" />
             <span>Выйти</span>

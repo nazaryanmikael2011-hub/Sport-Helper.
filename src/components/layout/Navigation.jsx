@@ -22,9 +22,9 @@ export const DesktopSidebar = ({ activeTab, setActiveTab }) => {
   const { profile } = useFitness();
 
   return (
-    <aside className="hidden md:flex flex-col w-56 lg:w-64 glass-panel border-r border-white/5 min-h-[calc(100vh-65px)] p-4 shrink-0">
+    <aside className="hidden md:flex flex-col w-56 lg:w-64 glass-panel border-r border-gray-200 dark:border-gray-800 min-h-[calc(100vh-65px)] p-4 shrink-0">
       <div className="space-y-1.5 flex-1">
-        <div className="text-[11px] font-bold text-neutral-500 uppercase px-3 py-2 tracking-wider">
+        <div className="text-[11px] font-bold text-gray-500 dark:text-neutral-500 uppercase px-3 py-2 tracking-wider">
           Навигация
         </div>
         {navItems.map((item) => {
@@ -35,15 +35,15 @@ export const DesktopSidebar = ({ activeTab, setActiveTab }) => {
             <button
               key={item.id}
               onClick={() => setActiveTab(item.id)}
-              className={`w-full flex items-center gap-3.5 px-3.5 py-3 rounded-xl font-medium text-sm transition-all duration-200 relative group ${
+              className={`w-full flex items-center gap-3.5 px-3.5 py-3 rounded-xl font-medium text-sm transition-all duration-200 relative group cursor-pointer ${
                 isActive
-                  ? 'bg-gradient-to-r from-[#00FF85]/15 to-transparent text-white border-l-2 border-[#00FF85]'
-                  : 'text-neutral-400 hover:text-white hover:bg-white/5'
+                  ? 'bg-[#00FF85]/15 text-gray-900 dark:text-white border-l-2 border-[#00FF85] font-bold'
+                  : 'text-gray-600 dark:text-neutral-400 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-white/5'
               }`}
             >
               <Icon
                 className={`w-5 h-5 transition-colors ${
-                  isActive ? 'text-[#00FF85]' : 'text-neutral-400 group-hover:text-neutral-200'
+                  isActive ? 'text-emerald-600 dark:text-[#00FF85]' : 'text-gray-500 dark:text-neutral-400 group-hover:text-gray-900 dark:group-hover:text-neutral-200'
                 }`}
               />
               <span className="tracking-wide">{item.label}</span>
@@ -61,18 +61,18 @@ export const DesktopSidebar = ({ activeTab, setActiveTab }) => {
       </div>
 
       {/* Target Goal Summary Card in Sidebar */}
-      <div className="p-4 rounded-2xl bg-gradient-to-b from-white/[0.04] to-transparent border border-white/5 mt-auto">
+      <div className="p-4 rounded-2xl bg-gray-100 dark:bg-white/[0.04] border border-gray-200 dark:border-white/5 mt-auto">
         <div className="flex items-center gap-2 mb-2">
-          <Sparkles className="w-4 h-4 text-[#00FF85]" />
-          <span className="text-xs font-bold text-neutral-300">
+          <Sparkles className="w-4 h-4 text-emerald-600 dark:text-[#00FF85]" />
+          <span className="text-xs font-bold text-gray-700 dark:text-neutral-300">
             Текущая цель
           </span>
         </div>
-        <p className="text-sm font-semibold text-white">
+        <p className="text-sm font-semibold text-gray-900 dark:text-white">
           {profile.goal === 'gain_muscle' ? 'Набор массы & Сила' : profile.goal === 'calisthenics_strength' ? 'Калистеника & Сила' : 'Снижение веса'}
         </p>
-        <p className="text-[11px] text-neutral-400 mt-1">
-          Целевой вес: <span className="text-[#00FF85] font-semibold">{profile.targetWeight} кг</span>
+        <p className="text-[11px] text-gray-500 dark:text-neutral-400 mt-1">
+          Целевой вес: <span className="text-emerald-600 dark:text-[#00FF85] font-semibold">{profile.targetWeight} кг</span>
         </p>
       </div>
     </aside>
@@ -83,7 +83,7 @@ export const MobileBottomNav = ({ activeTab, setActiveTab }) => {
   return (
     <nav
       aria-label="Мобильная навигация"
-      className="md:hidden fixed bottom-0 left-0 right-0 w-full z-[60] bg-[#0A0A0E] border-t border-white/10 shadow-[0_-10px_35px_rgba(0,0,0,0.85)] backdrop-blur-xl pb-[max(0.6rem,env(safe-area-inset-bottom))]"
+      className="md:hidden fixed bottom-0 left-0 right-0 w-full z-[60] bg-white/95 dark:bg-[#0A0A0E]/95 border-t border-gray-200 dark:border-white/10 shadow-[0_-10px_35px_rgba(0,0,0,0.08)] dark:shadow-[0_-10px_35px_rgba(0,0,0,0.85)] backdrop-blur-xl pb-[max(0.6rem,env(safe-area-inset-bottom))]"
     >
       <div className="flex items-center justify-around w-full max-w-lg mx-auto px-1 pt-1.5">
         {navItems.map((item) => {
@@ -94,7 +94,7 @@ export const MobileBottomNav = ({ activeTab, setActiveTab }) => {
             <button
               key={item.id}
               onClick={() => setActiveTab(item.id)}
-              className="flex-1 flex flex-col items-center justify-center py-1 px-1 relative transition-all duration-200 active:scale-95 group focus:outline-none"
+              className="flex-1 flex flex-col items-center justify-center py-1 px-1 relative transition-all duration-200 active:scale-95 group focus:outline-none cursor-pointer"
             >
               {/* Active top line indicator */}
               {isActive && (
@@ -110,8 +110,8 @@ export const MobileBottomNav = ({ activeTab, setActiveTab }) => {
                 <Icon
                   className={`w-5 h-5 transition-all duration-200 ${
                     isActive 
-                      ? 'text-[#00FF85] scale-110 drop-shadow-[0_0_8px_rgba(0,255,133,0.6)]' 
-                      : 'text-neutral-400 group-hover:text-neutral-200'
+                      ? 'text-emerald-600 dark:text-[#00FF85] scale-110 drop-shadow-[0_0_8px_rgba(0,255,133,0.6)]' 
+                      : 'text-gray-500 dark:text-neutral-400 group-hover:text-gray-800 dark:group-hover:text-neutral-200'
                   }`}
                 />
                 {isActive && (
@@ -126,7 +126,7 @@ export const MobileBottomNav = ({ activeTab, setActiveTab }) => {
               {/* Label */}
               <span
                 className={`text-[10px] mt-0.5 tracking-tight transition-colors duration-200 ${
-                  isActive ? 'text-[#00FF85] font-black' : 'text-neutral-400 font-medium group-hover:text-neutral-300'
+                  isActive ? 'text-emerald-600 dark:text-[#00FF85] font-black' : 'text-gray-500 dark:text-neutral-400 font-medium group-hover:text-gray-800 dark:group-hover:text-neutral-300'
                 }`}
               >
                 {item.label}

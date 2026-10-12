@@ -16,7 +16,7 @@ export const StatCard = ({
     <motion.div
       whileHover={{ y: -3, transition: { duration: 0.2 } }}
       onClick={onClick}
-      className={`glass-card p-4 sm:p-5 rounded-2xl relative overflow-hidden group transition-all duration-300 border border-white/5 hover:border-white/15 ${
+      className={`glass-card p-4 sm:p-5 rounded-2xl relative overflow-hidden group transition-all duration-300 border border-gray-200 dark:border-gray-700 hover:border-gray-300 dark:hover:border-white/15 ${
         onClick ? 'cursor-pointer' : ''
       } ${className}`}
     >
@@ -41,7 +41,7 @@ export const StatCard = ({
               <Icon className="w-5 h-5" />
             </div>
           )}
-          <span className="text-xs sm:text-sm font-medium text-neutral-400">
+          <span className="text-xs sm:text-sm font-medium text-gray-600 dark:text-neutral-400">
             {title}
           </span>
         </div>
@@ -61,10 +61,10 @@ export const StatCard = ({
       </div>
 
       <div className="mt-2">
-        <div className="text-2xl sm:text-3xl font-black text-white tracking-tight flex items-baseline gap-1.5">
+        <div className="text-2xl sm:text-3xl font-black text-gray-900 dark:text-white tracking-tight flex items-baseline gap-1.5">
           {value}
           {subvalue && (
-            <span className="text-xs sm:text-sm font-normal text-neutral-400">
+            <span className="text-xs sm:text-sm font-normal text-gray-500 dark:text-neutral-400">
               {subvalue}
             </span>
           )}
@@ -72,7 +72,7 @@ export const StatCard = ({
 
         {typeof progress === 'number' && (
           <div className="mt-3">
-            <div className="w-full h-1.5 bg-neutral-800 rounded-full overflow-hidden">
+            <div className="w-full h-1.5 bg-gray-200 dark:bg-neutral-800 rounded-full overflow-hidden">
               <motion.div
                 className="h-full rounded-full"
                 style={{ backgroundColor: accentColor }}
@@ -81,9 +81,9 @@ export const StatCard = ({
                 transition={{ duration: 1, ease: 'easeOut' }}
               />
             </div>
-            <div className="flex justify-between items-center text-[11px] text-neutral-500 mt-1">
+            <div className="flex justify-between items-center text-[11px] text-gray-500 dark:text-neutral-500 mt-1">
               <span>Прогресс</span>
-              <span className="text-neutral-300 font-medium">{Math.round(progress)}%</span>
+              <span className="text-gray-700 dark:text-neutral-300 font-medium">{Math.round(progress)}%</span>
             </div>
           </div>
         )}

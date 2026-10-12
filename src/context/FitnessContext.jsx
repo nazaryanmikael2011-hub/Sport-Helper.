@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
+import React, { createContext, useContext, useState, useEffect, useCallback, useRef } from 'react';
 import confetti from 'canvas-confetti';
 import { calculateDailyTargets, calculateLevel } from '../utils/calculations';
 import { mockBadges } from '../data/mockBadges';
@@ -105,9 +105,6 @@ export const FitnessProvider = ({ children }) => {
     }
   }, [theme]);
 
-  // Active toast notifications list
-  const [toasts, setToasts] = useState([]);
-
   const toggleTheme = useCallback(() => {
     setTheme((prev) => {
       const next = prev === 'dark' ? 'light' : 'dark';
@@ -124,19 +121,46 @@ export const FitnessProvider = ({ children }) => {
     }
   }, [state]);
 
-  // Toast notifier helper
-  const addToast = useCallback((title, message, type = 'info', duration = 4000) => {
-    const id = Date.now() + Math.random().toString(36).substring(2, 6);
-    setToasts((prev) => [...prev, { id, title, message, type }]);
-
-    setTimeout(() => {
-      setToasts((prev) => prev.filter((t) => t.id !== id));
-    }, duration);
-  }, []);
+  // Active toast notifications list (capped at max 3 items)
+  const [toasts, setToasts] = useState([]);
+  const toastTimersRef = useRef(new Map());
 
   const removeToast = useCallback((id) => {
+    if (toastTimersRef.current.has(id)) {
+      clearTimeout(toastTimersRef.current.get(id));
+      toastTimersRef.current.delete(id);
+    }
     setToasts((prev) => prev.filter((t) => t.id !== id));
   }, []);
+
+  // Toast notifier helper: limit to max 3 toasts, auto-dismiss in 3000-4000ms, evicts oldest on overflow
+  const addToast = useCallback((title, message, type = 'info', duration = 3500) => {
+    const id = Date.now() + Math.random().toString(36).substring(2, 6);
+    // Enforce 3000-4000ms duration range for consistent UX
+    const effectiveDuration = Math.min(Math.max(duration || 3500, 3000), 4000);
+
+    setToasts((prev) => {
+      const next = [...prev, { id, title, message, type }];
+      if (next.length > 3) {
+        // Drop oldest toasts when limit (3) is exceeded
+        const droppedCount = next.length - 3;
+        const dropped = next.slice(0, droppedCount);
+        dropped.forEach((d) => {
+          if (toastTimersRef.current.has(d.id)) {
+            clearTimeout(toastTimersRef.current.get(d.id));
+            toastTimersRef.current.delete(d.id);
+          }
+        });
+        return next.slice(-3);
+      }
+      return next;
+    });
+
+    const timer = setTimeout(() => {
+      removeToast(id);
+    }, effectiveDuration);
+    toastTimersRef.current.set(id, timer);
+  }, [removeToast]);
 
   // Award XP and check level up
   const awardXp = useCallback((amount, reason = '') => {

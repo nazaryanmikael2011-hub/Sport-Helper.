@@ -50,7 +50,7 @@ function AppContent() {
   // First-time visitor experience: Welcome screen + Step-by-step Onboarding
   if (isFirstTime) {
     return (
-      <div className="min-h-screen bg-[#0A0A0C] text-slate-100 flex flex-col selection:bg-[#00FF85] selection:text-black">
+      <div className="min-h-screen bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-white flex flex-col selection:bg-[#00FF85] selection:text-black">
         <ToastContainer />
         
         <WelcomeScreen
@@ -76,7 +76,7 @@ function AppContent() {
   }
 
   return (
-    <div className="min-h-screen bg-[#0A0A0C] text-slate-100 flex flex-col selection:bg-[#00FF85] selection:text-black">
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-white flex flex-col selection:bg-[#00FF85] selection:text-black">
       {/* Toast notifications */}
       <ToastContainer />
 

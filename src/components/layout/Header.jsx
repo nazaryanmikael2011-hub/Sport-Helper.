@@ -8,7 +8,7 @@ export const Header = ({ activeTab, setActiveTab, onOpenCart, onOpenAuth }) => {
   const totalCartCount = cart.reduce((sum, item) => sum + item.quantity, 0);
 
   return (
-    <header className="sticky top-0 z-40 w-full glass-panel border-b border-white/5 px-3.5 sm:px-6 py-2 sm:py-3 transition-all overflow-hidden">
+    <header className="sticky top-0 z-40 w-full glass-panel border-b border-gray-200 dark:border-gray-800 px-3.5 sm:px-6 py-2.5 sm:py-3 transition-all">
       <div className="max-w-7xl mx-auto">
         {/* ================= DESKTOP LAYOUT (>= 768px) ================= */}
         <div className="hidden md:flex items-center justify-between gap-4">
@@ -24,14 +24,14 @@ export const Header = ({ activeTab, setActiveTab, onOpenCart, onOpenAuth }) => {
             </div>
             <div>
               <div className="flex items-center gap-1.5">
-                <span className="font-black text-xl tracking-wider text-white">
+                <span className="font-black text-xl tracking-wider text-gray-900 dark:text-white">
                   SPORT<span className="text-[#00FF85]">HELPER</span>
                 </span>
-                <span className="text-[10px] bg-[#00FF85]/20 text-[#00FF85] font-bold px-1.5 py-0.2 rounded border border-[#00FF85]/30">
+                <span className="text-[10px] bg-[#00FF85]/20 text-emerald-600 dark:text-[#00FF85] font-bold px-1.5 py-0.2 rounded border border-[#00FF85]/30">
                   PRO
                 </span>
               </div>
-              <p className="text-[10px] text-neutral-400 font-medium tracking-widest uppercase">
+              <p className="text-[10px] text-gray-500 dark:text-neutral-400 font-medium tracking-widest uppercase">
                 Элитный фитнес & воркаут
               </p>
             </div>
@@ -44,18 +44,18 @@ export const Header = ({ activeTab, setActiveTab, onOpenCart, onOpenAuth }) => {
               <button
                 onClick={() => setActiveTab('profile')}
                 title="Премиум статус активен"
-                className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-gradient-to-r from-amber-500/15 to-yellow-500/15 border border-amber-400/40 text-amber-300 text-xs font-black shadow-[0_0_15px_-3px_rgba(251,191,36,0.25)] hover:border-amber-400/70 transition-all cursor-pointer"
+                className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-gradient-to-r from-amber-500/15 to-yellow-500/15 border border-amber-400/40 text-amber-600 dark:text-amber-300 text-xs font-black shadow-[0_0_15px_-3px_rgba(251,191,36,0.25)] hover:border-amber-400/70 transition-all cursor-pointer"
               >
-                <Crown className="w-3.5 h-3.5 text-amber-400 fill-amber-400/30" />
+                <Crown className="w-3.5 h-3.5 text-amber-500 fill-amber-400/30" />
                 <span>Премиум активирован</span>
               </button>
             ) : (
               <button
                 onClick={() => setActiveTab('profile')}
                 title="Бесплатный период 90 дней. Нажмите для перехода к поддержке и премиуму."
-                className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-cyan-500/10 border border-cyan-500/30 text-cyan-300 text-xs font-bold hover:bg-cyan-500/20 transition-all cursor-pointer"
+                className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-cyan-500/10 border border-cyan-500/30 text-cyan-600 dark:text-cyan-300 text-xs font-bold hover:bg-cyan-500/20 transition-all cursor-pointer"
               >
-                <Clock className="w-3.5 h-3.5 text-cyan-400 animate-pulse" />
+                <Clock className="w-3.5 h-3.5 text-cyan-500 animate-pulse" />
                 <span>Бесплатный период: {trialDaysLeft || 90} дней</span>
               </button>
             )}
@@ -73,16 +73,16 @@ export const Header = ({ activeTab, setActiveTab, onOpenCart, onOpenAuth }) => {
             <div
               onClick={() => setActiveTab('profile')}
               title="Текущий уровень и прогресс"
-              className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/5 border border-white/10 hover:border-[#00FF85]/40 transition-colors cursor-pointer"
+              className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-gray-100 hover:bg-gray-200 dark:bg-white/5 dark:hover:bg-white/10 border border-gray-200 dark:border-white/10 hover:border-[#00FF85]/40 transition-colors cursor-pointer"
             >
-              <div className="w-5 h-5 rounded-full bg-[#00FF85]/20 text-[#00FF85] flex items-center justify-center text-[10px] font-black border border-[#00FF85]/40">
+              <div className="w-5 h-5 rounded-full bg-[#00FF85]/20 text-emerald-600 dark:text-[#00FF85] flex items-center justify-center text-[10px] font-black border border-[#00FF85]/40">
                 {levelInfo.level}
               </div>
               <div className="flex flex-col">
-                <span className="text-xs font-bold text-neutral-200">
+                <span className="text-xs font-bold text-gray-900 dark:text-neutral-200">
                   Ур. {levelInfo.level}
                 </span>
-                <span className="text-[10px] text-neutral-400">
+                <span className="text-[10px] text-gray-500 dark:text-neutral-400">
                   {levelInfo.title}
                 </span>
               </div>
@@ -93,10 +93,10 @@ export const Header = ({ activeTab, setActiveTab, onOpenCart, onOpenAuth }) => {
               onClick={toggleTheme}
               title={theme === 'dark' ? 'Включить светлую тему' : 'Включить темную тему'}
               aria-label="Смена темы оформления"
-              className="p-2.5 rounded-xl bg-white/5 border border-white/10 hover:border-[#00FF85]/40 text-neutral-300 hover:text-white transition-all group cursor-pointer"
+              className="p-2.5 rounded-xl bg-gray-100 hover:bg-gray-200 dark:bg-white/5 dark:hover:bg-white/10 border border-gray-200 dark:border-white/10 hover:border-[#00FF85]/40 text-gray-700 dark:text-neutral-300 hover:text-gray-900 dark:hover:text-white transition-all group cursor-pointer"
             >
               {theme === 'dark' ? (
-                <Sun className="w-5 h-5 text-amber-400 group-hover:rotate-45 transition-transform" />
+                <Sun className="w-5 h-5 text-amber-500 group-hover:rotate-45 transition-transform" />
               ) : (
                 <Moon className="w-5 h-5 text-indigo-500 group-hover:-rotate-12 transition-transform" />
               )}
@@ -106,28 +106,28 @@ export const Header = ({ activeTab, setActiveTab, onOpenCart, onOpenAuth }) => {
             <button
               onClick={onOpenCart}
               aria-label="Корзина покупок"
-              className="relative p-2.5 rounded-xl bg-white/5 border border-white/10 hover:border-[#00FF85]/40 text-neutral-300 hover:text-white transition-all group cursor-pointer"
+              className="relative p-2.5 rounded-xl bg-gray-100 hover:bg-gray-200 dark:bg-white/5 dark:hover:bg-white/10 border border-gray-200 dark:border-white/10 hover:border-[#00FF85]/40 text-gray-700 dark:text-neutral-300 hover:text-gray-900 dark:hover:text-white transition-all group cursor-pointer"
             >
               {totalCartCount > 0 && (
                 <span className="absolute -top-1 -right-1 min-w-[20px] h-5 bg-[#00FF85] text-black font-black text-xs rounded-full flex items-center justify-center px-1 shadow-neon-green">
                   {totalCartCount}
                 </span>
               )}
-              <ShoppingBag className="w-5 h-5 group-hover:text-[#00FF85] transition-colors" />
+              <ShoppingBag className="w-5 h-5 group-hover:text-emerald-600 dark:group-hover:text-[#00FF85] transition-colors" />
             </button>
 
             {/* User Profile / Auth Toggle */}
             {user.isLoggedIn ? (
               <button
                 onClick={() => setActiveTab('profile')}
-                className="flex items-center gap-2 p-1 pl-1.5 pr-3 rounded-full bg-white/5 border border-white/10 hover:border-white/20 transition-all cursor-pointer"
+                className="flex items-center gap-2 p-1 pl-1.5 pr-3 rounded-full bg-gray-100 hover:bg-gray-200 dark:bg-white/5 dark:hover:bg-white/10 border border-gray-200 dark:border-white/10 hover:border-gray-300 dark:hover:border-white/20 transition-all cursor-pointer"
               >
                 <img
                   src={user.avatar}
                   alt={user.name}
                   className="w-8 h-8 rounded-full object-cover border border-[#00FF85]/50"
                 />
-                <span className="text-xs font-semibold text-neutral-200 max-w-[100px] truncate">
+                <span className="text-xs font-semibold text-gray-800 dark:text-neutral-200 max-w-[100px] truncate">
                   {user.name}
                 </span>
               </button>
@@ -143,10 +143,10 @@ export const Header = ({ activeTab, setActiveTab, onOpenCart, onOpenAuth }) => {
         </div>
 
         {/* ================= MOBILE 2-ROW RESPONSIVE LAYOUT (< 768px) ================= */}
-        <div className="flex md:hidden flex-col gap-2">
-          {/* Mobile Top Row: Logo (Left) + Theme/Cart/Profile (Right) */}
-          <div className="flex items-center justify-between gap-2">
-            {/* Logo */}
+        <div className="flex md:hidden flex-col">
+          {/* Строка 1 (Верхняя): Логотип слева и кнопка таймера (90 дн. триал) справа */}
+          <div className="w-full flex justify-between items-center">
+            {/* Логотип слева */}
             <div
               onClick={() => setActiveTab('dashboard')}
               className="flex items-center gap-2 cursor-pointer shrink-0"
@@ -157,106 +157,77 @@ export const Header = ({ activeTab, setActiveTab, onOpenCart, onOpenAuth }) => {
                 </div>
               </div>
               <div className="flex items-center gap-1">
-                <span className="font-black text-base tracking-wider text-white">
+                <span className="font-black text-base tracking-wider text-gray-900 dark:text-white">
                   SPORT<span className="text-[#00FF85]">HELPER</span>
                 </span>
-                <span className="text-[9px] bg-[#00FF85]/20 text-[#00FF85] font-black px-1 py-0.2 rounded border border-[#00FF85]/30">
+                <span className="text-[9px] bg-[#00FF85]/20 text-emerald-600 dark:text-[#00FF85] font-black px-1 py-0.2 rounded border border-[#00FF85]/30">
                   PRO
                 </span>
               </div>
             </div>
 
-            {/* Mobile Actions: Theme, Cart, Profile */}
-            <div className="flex items-center gap-1.5 shrink-0">
-              {/* Theme toggle */}
+            {/* Кнопка таймера (90 дн. триал) справа (+ кнопка смены темы) */}
+            <div className="flex items-center gap-2 shrink-0">
               <button
                 onClick={toggleTheme}
-                title="Смена темы"
+                title={theme === 'dark' ? 'Включить светлую тему' : 'Включить темную тему'}
                 aria-label="Смена темы"
-                className="p-1.5 rounded-lg bg-white/5 border border-white/10 text-neutral-300 hover:text-white transition-all cursor-pointer"
+                className="p-1.5 rounded-xl bg-gray-100 hover:bg-gray-200 dark:bg-white/5 dark:hover:bg-white/10 border border-gray-200 dark:border-white/10 text-gray-700 dark:text-neutral-300 transition-colors"
               >
                 {theme === 'dark' ? (
-                  <Sun className="w-4 h-4 text-amber-400" />
+                  <Sun className="w-4 h-4 text-amber-500" />
                 ) : (
-                  <Moon className="w-4 h-4 text-indigo-400" />
+                  <Moon className="w-4 h-4 text-indigo-500" />
                 )}
               </button>
 
-              {/* Cart button */}
-              <button
-                onClick={onOpenCart}
-                aria-label="Корзина покупок"
-                className="relative p-1.5 rounded-lg bg-white/5 border border-white/10 text-neutral-300 hover:text-white transition-all cursor-pointer"
-              >
-                <ShoppingBag className="w-4 h-4" />
-                {totalCartCount > 0 && (
-                  <span className="absolute -top-1 -right-1 min-w-[16px] h-4 bg-[#00FF85] text-black font-black text-[10px] rounded-full flex items-center justify-center px-0.5 shadow-neon-green">
-                    {totalCartCount}
-                  </span>
-                )}
-              </button>
-
-              {/* User profile / auth */}
-              {user.isLoggedIn ? (
+              {isPremium ? (
                 <button
                   onClick={() => setActiveTab('profile')}
-                  className="p-0.5 rounded-full bg-white/5 border border-white/10 hover:border-[#00FF85]/50 transition-all cursor-pointer"
-                  title="Профиль"
+                  className="flex items-center gap-1 px-3 py-1.5 rounded-full bg-gradient-to-r from-amber-500/15 to-yellow-500/15 border border-amber-400/40 text-amber-600 dark:text-amber-300 text-xs font-black cursor-pointer shadow-sm"
                 >
-                  <img
-                    src={user.avatar}
-                    alt={user.name}
-                    className="w-7 h-7 rounded-full object-cover border border-[#00FF85]/40"
-                  />
+                  <Crown className="w-3.5 h-3.5 text-amber-500 fill-amber-400/30" />
+                  <span>Премиум 👑</span>
                 </button>
               ) : (
                 <button
-                  onClick={onOpenAuth}
-                  className="px-2.5 py-1 rounded-lg bg-[#00FF85] text-black font-bold text-xs shadow-neon-green transition-all cursor-pointer"
+                  onClick={() => setActiveTab('profile')}
+                  className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-cyan-500/10 border border-cyan-500/30 text-cyan-600 dark:text-cyan-300 text-xs font-bold cursor-pointer"
                 >
-                  Войти
+                  <Clock className="w-3.5 h-3.5 text-cyan-500 animate-pulse" />
+                  <span>{trialDaysLeft || 90} дн. триал</span>
                 </button>
               )}
             </div>
           </div>
 
-          {/* Mobile Bottom Row: Badges bar (horizontal swipeable, no page wrap) */}
-          <div className="flex items-center gap-1.5 overflow-x-auto scrollbar-none py-0.5 w-full">
-            {/* Trial / Premium Pill */}
-            {isPremium ? (
-              <button
-                onClick={() => setActiveTab('profile')}
-                className="shrink-0 flex items-center gap-1 px-2.5 py-1 rounded-full bg-gradient-to-r from-amber-500/15 to-yellow-500/15 border border-amber-400/40 text-amber-300 text-[11px] font-black cursor-pointer shadow-sm"
-              >
-                <Crown className="w-3 h-3 text-amber-400 fill-amber-400/30" />
-                <span>Премиум 👑</span>
-              </button>
-            ) : (
-              <button
-                onClick={() => setActiveTab('profile')}
-                className="shrink-0 flex items-center gap-1 px-2.5 py-1 rounded-full bg-cyan-500/10 border border-cyan-500/30 text-cyan-300 text-[11px] font-bold cursor-pointer"
-              >
-                <Clock className="w-3 h-3 text-cyan-400 animate-pulse" />
-                <span>{trialDaysLeft || 90} дн. триал</span>
-              </button>
-            )}
+          {/* Строка 2 (Нижняя, под логотипом): Бейджи опыта (XP), стрик дней и уровень */}
+          <div className="mt-3 flex justify-start gap-4 overflow-x-auto no-scrollbar py-0.5 w-full">
+            {/* XP Badge */}
+            <div
+              onClick={() => setActiveTab('profile')}
+              className="shrink-0 flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-600 dark:text-[#00FF85] text-xs font-bold cursor-pointer"
+            >
+              <Zap className="w-3.5 h-3.5 fill-current" />
+              <span>{levelInfo.xpCurrentInLevel} / {levelInfo.xpNeeded} XP</span>
+            </div>
 
             {/* Streak Pill */}
-            <div className="shrink-0 flex items-center gap-1 px-2.5 py-1 rounded-full bg-[#FF5E00]/10 border border-[#FF5E00]/25 text-[#FF5E00] text-[11px] font-bold">
-              <Flame className="w-3 h-3 fill-[#FF5E00]" />
+            <div className="shrink-0 flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#FF5E00]/10 border border-[#FF5E00]/25 text-[#FF5E00] text-xs font-bold">
+              <Flame className="w-3.5 h-3.5 fill-[#FF5E00]" />
               <span>{streak} {streak === 1 ? 'день' : streak < 5 ? 'дня' : 'дней'}</span>
             </div>
 
-            {/* Level & XP Pill */}
+            {/* Level & Title Pill */}
             <div
               onClick={() => setActiveTab('profile')}
-              className="shrink-0 flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-white/5 border border-white/10 text-neutral-200 text-[11px] font-bold cursor-pointer hover:border-[#00FF85]/30"
+              className="shrink-0 flex items-center gap-2 px-3 py-1 rounded-full bg-gray-100 dark:bg-white/5 border border-gray-200 dark:border-white/10 text-gray-800 dark:text-neutral-200 text-xs font-bold cursor-pointer hover:border-[#00FF85]/30"
             >
-              <div className="w-4 h-4 rounded-full bg-[#00FF85]/20 text-[#00FF85] flex items-center justify-center text-[9px] font-black border border-[#00FF85]/40">
+              <div className="w-4 h-4 rounded-full bg-[#00FF85]/20 text-emerald-600 dark:text-[#00FF85] flex items-center justify-center text-[10px] font-black border border-[#00FF85]/40">
                 {levelInfo.level}
               </div>
-              <span className="truncate max-w-[120px]">
-                {levelInfo.title}
+              <span className="truncate max-w-[140px]">
+                Ур. {levelInfo.level} • {levelInfo.title}
               </span>
             </div>
           </div>

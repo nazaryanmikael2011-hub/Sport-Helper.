@@ -62,11 +62,11 @@ export const MotivationBanner = () => {
     <motion.div
       initial={{ opacity: 0, y: 10 }}
       animate={{ opacity: 1, y: 0 }}
-      className="relative overflow-hidden rounded-3xl p-5 sm:p-7 glass-card border border-white/10"
+      className="relative overflow-hidden rounded-3xl p-5 sm:p-7 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 shadow-sm"
     >
       {/* Background glow orb */}
       <div
-        className="absolute -right-12 -top-12 w-64 h-64 rounded-full blur-3xl pointer-events-none opacity-30"
+        className="absolute -right-12 -top-12 w-64 h-64 rounded-full blur-3xl pointer-events-none opacity-20 dark:opacity-30"
         style={{ backgroundColor: motivationalMessage.accent }}
       />
 
@@ -84,41 +84,41 @@ export const MotivationBanner = () => {
               {motivationalMessage.badge}
             </span>
 
-            <div className="flex items-center gap-1 text-xs font-bold text-neutral-400">
+            <div className="flex items-center gap-1 text-xs font-bold text-gray-600 dark:text-gray-400">
               <Flame className="w-3.5 h-3.5 text-[#FF5E00]" />
               <span>{streak} дней подряд</span>
             </div>
           </div>
 
-          <h3 className="text-lg sm:text-2xl font-black text-white tracking-tight leading-snug">
+          <h3 className="text-lg sm:text-2xl font-black text-gray-900 dark:text-white tracking-tight leading-snug">
             {motivationalMessage.title}
           </h3>
 
-          <p className="text-xs sm:text-sm text-neutral-300 mt-1.5 leading-relaxed">
+          <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-400 mt-1.5 leading-relaxed">
             {motivationalMessage.subtitle}
           </p>
 
-          <div className="mt-3 text-xs italic text-neutral-400 flex items-center gap-1.5">
+          <div className="mt-3 text-xs italic text-gray-600 dark:text-gray-400 flex items-center gap-1.5">
             <Sparkles className="w-3.5 h-3.5 text-[#00FF85] shrink-0" />
             <span>{dailyQuote}</span>
           </div>
         </div>
 
         {/* Quick status pill */}
-        <div className="flex flex-col flex-wrap items-start sm:items-end justify-center p-3 rounded-2xl bg-white/5 border border-white/5 w-full sm:w-auto h-auto gap-1">
-          <span className="text-[10px] sm:text-[11px] text-neutral-400 font-semibold uppercase tracking-wider">
+        <div className="flex flex-col flex-wrap items-start sm:items-end justify-center p-3 rounded-2xl bg-gray-50 dark:bg-gray-900/60 border border-gray-200 dark:border-gray-700 w-full sm:w-auto h-auto gap-1">
+          <span className="text-[10px] sm:text-[11px] text-gray-600 dark:text-gray-400 font-semibold uppercase tracking-wider">
             Целевой показатель
           </span>
           <div className="flex flex-wrap items-baseline gap-2 mt-0.5">
-            <span className="text-lg sm:text-xl font-black text-white">
+            <span className="text-lg sm:text-xl font-black text-gray-900 dark:text-white">
               {profile.weight} кг
             </span>
-            <span className="text-xs text-neutral-400">→</span>
+            <span className="text-xs text-gray-600 dark:text-gray-400">→</span>
             <span className="text-lg sm:text-xl font-black" style={{ color: motivationalMessage.accent }}>
               {profile.targetWeight} кг
             </span>
           </div>
-          <span className="text-[10px] sm:text-[11px] text-neutral-400">
+          <span className="text-[10px] sm:text-[11px] text-gray-600 dark:text-gray-400">
             {profile.goal === 'gain_muscle' ? 'Набор мышечной массы' : 'Снижение жировой массы'}
           </span>
         </div>

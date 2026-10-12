@@ -1,16 +1,20 @@
 import React from 'react';
 import { motion } from 'framer-motion';
+import { useFitness } from '../../context/FitnessContext';
 
 export const ProgressRing = ({
   radius = 60,
   strokeWidth = 10,
   progress = 0, // 0 to 100
   color = '#00FF85',
-  bgColor = '#1F1F28',
+  bgColor,
   children,
   className = '',
   glow = true
 }) => {
+  const { theme } = useFitness();
+  const resolvedBgColor = bgColor || (theme === 'dark' ? '#1F1F28' : '#E5E7EB');
+
   const normalizedRadius = radius - strokeWidth * 0.5;
   const circumference = normalizedRadius * 2 * Math.PI;
   const strokeDashoffset = circumference - (Math.min(100, Math.max(0, progress)) / 100) * circumference;
@@ -29,7 +33,7 @@ export const ProgressRing = ({
         </defs>
         {/* Background track */}
         <circle
-          stroke={bgColor}
+          stroke={resolvedBgColor}
           fill="transparent"
           strokeWidth={strokeWidth}
           r={normalizedRadius}

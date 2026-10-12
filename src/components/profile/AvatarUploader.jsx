@@ -140,24 +140,24 @@ export const AvatarUploader = ({ className = '', size = 'md' }) => {
               animate={{ y: 0 }}
               exit={{ y: '100%' }}
               transition={{ type: 'spring', damping: 26, stiffness: 300 }}
-              className="relative w-full max-w-md bg-[#14141B] border-t border-white/10 rounded-t-3xl p-5 shadow-2xl flex flex-col gap-3 z-10 pb-safe"
+              className="relative w-full max-w-md bg-white dark:bg-[#14141B] border-t border-gray-200 dark:border-white/10 rounded-t-3xl p-5 shadow-2xl flex flex-col gap-3 z-10 pb-safe"
             >
               {/* Drag Handle Bar */}
-              <div className="w-12 h-1.5 rounded-full bg-neutral-700 mx-auto -mt-1 mb-2" />
+              <div className="w-12 h-1.5 rounded-full bg-gray-300 dark:bg-neutral-700 mx-auto -mt-1 mb-2" />
 
               {/* Title & Close */}
-              <div className="flex items-center justify-between pb-2 border-b border-white/5">
+              <div className="flex items-center justify-between pb-2 border-b border-gray-100 dark:border-white/5">
                 <div>
-                  <h4 className="text-base font-black text-white">
+                  <h4 className="text-base font-black text-gray-900 dark:text-white">
                     Фотография профиля
                   </h4>
-                  <p className="text-xs text-neutral-400">
+                  <p className="text-xs text-gray-600 dark:text-gray-400">
                     Выберите источник для нового аватара
                   </p>
                 </div>
                 <button
                   onClick={() => setIsBottomSheetOpen(false)}
-                  className="p-1.5 rounded-xl bg-white/5 text-neutral-400 hover:text-white"
+                  className="p-1.5 rounded-xl bg-gray-100 dark:bg-white/5 text-gray-500 hover:text-gray-900 dark:text-neutral-400 dark:hover:text-white"
                 >
                   <X className="w-4 h-4" />
                 </button>
@@ -172,14 +172,14 @@ export const AvatarUploader = ({ className = '', size = 'md' }) => {
                     cameraInputRef.current?.click();
                     setIsBottomSheetOpen(false);
                   }}
-                  className="w-full p-3.5 rounded-2xl bg-white/5 hover:bg-white/10 border border-white/5 text-white font-bold text-sm flex items-center gap-3 transition-colors text-left"
+                  className="w-full p-3.5 rounded-2xl bg-gray-50 hover:bg-gray-100 dark:bg-white/5 dark:hover:bg-white/10 border border-gray-200 dark:border-white/5 text-gray-900 dark:text-white font-bold text-sm flex items-center gap-3 transition-colors text-left"
                 >
-                  <div className="p-2.5 rounded-xl bg-sky-500/15 text-sky-400">
+                  <div className="p-2.5 rounded-xl bg-sky-500/15 text-sky-500 dark:text-sky-400">
                     <Camera className="w-5 h-5" />
                   </div>
                   <div>
                     <span>Сделать фото</span>
-                    <span className="block text-[11px] text-neutral-400 font-normal">
+                    <span className="block text-[11px] text-gray-600 dark:text-gray-400 font-normal">
                       Использовать камеру телефона
                     </span>
                   </div>
@@ -192,14 +192,14 @@ export const AvatarUploader = ({ className = '', size = 'md' }) => {
                     fileInputRef.current?.click();
                     setIsBottomSheetOpen(false);
                   }}
-                  className="w-full p-3.5 rounded-2xl bg-gradient-to-r from-[#00FF85]/20 to-[#10B981]/15 hover:from-[#00FF85]/30 hover:to-[#10B981]/25 border border-[#00FF85]/50 text-white font-bold text-sm flex items-center gap-3 shadow-neon-green/20 transition-all text-left"
+                  className="w-full p-3.5 rounded-2xl bg-gradient-to-r from-[#00FF85]/20 to-[#10B981]/15 hover:from-[#00FF85]/30 hover:to-[#10B981]/25 border border-[#00FF85]/50 text-gray-900 dark:text-white font-bold text-sm flex items-center gap-3 shadow-neon-green/20 transition-all text-left"
                 >
                   <div className="p-2.5 rounded-xl bg-[#00FF85] text-black">
                     <Image className="w-5 h-5 stroke-[2.5]" />
                   </div>
                   <div className="flex-1">
-                    <span className="text-[#00FF85] font-black">Выбрать из галереи</span>
-                    <span className="block text-[11px] text-neutral-300 font-normal">
+                    <span className="text-emerald-600 dark:text-[#00FF85] font-black">Выбрать из галереи</span>
+                    <span className="block text-[11px] text-gray-600 dark:text-neutral-300 font-normal">
                       Загрузить фото из памяти устройства
                     </span>
                   </div>
@@ -209,14 +209,14 @@ export const AvatarUploader = ({ className = '', size = 'md' }) => {
                 <button
                   type="button"
                   onClick={handleRemove}
-                  className="w-full p-3.5 rounded-2xl bg-red-500/10 hover:bg-red-500/15 border border-red-500/25 text-red-400 font-bold text-sm flex items-center gap-3 transition-colors text-left"
+                  className="w-full p-3.5 rounded-2xl bg-red-500/10 hover:bg-red-500/15 border border-red-500/25 text-red-500 dark:text-red-400 font-bold text-sm flex items-center gap-3 transition-colors text-left"
                 >
-                  <div className="p-2.5 rounded-xl bg-red-500/20 text-red-400">
+                  <div className="p-2.5 rounded-xl bg-red-500/20 text-red-500 dark:text-red-400">
                     <Trash2 className="w-5 h-5" />
                   </div>
                   <div>
                     <span>Удалить текущее</span>
-                    <span className="block text-[11px] text-neutral-400 font-normal">
+                    <span className="block text-[11px] text-gray-600 dark:text-gray-400 font-normal">
                       Сбросить до стандартного аватара
                     </span>
                   </div>
@@ -227,7 +227,7 @@ export const AvatarUploader = ({ className = '', size = 'md' }) => {
               <button
                 type="button"
                 onClick={() => setIsBottomSheetOpen(false)}
-                className="w-full mt-2 py-3 rounded-2xl bg-white/5 text-neutral-300 font-bold text-xs hover:bg-white/10 transition-colors"
+                className="w-full mt-2 py-3 rounded-2xl bg-gray-100 hover:bg-gray-200 dark:bg-white/5 text-gray-700 dark:text-neutral-300 font-bold text-xs dark:hover:bg-white/10 transition-colors"
               >
                 Отмена
               </button>

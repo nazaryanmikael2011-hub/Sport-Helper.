@@ -43,7 +43,7 @@ export const ShopView = ({ onOpenCart }) => {
   return (
     <div className="space-y-6 sm:space-y-8 pb-10">
       {/* Smart Recommendations Section */}
-      <div className="relative rounded-3xl p-6 sm:p-8 glass-card border border-[#00FF85]/30 overflow-hidden shadow-[0_0_30px_-10px_rgba(0,255,133,0.15)]">
+      <div className="relative rounded-3xl p-6 sm:p-8 bg-white dark:bg-gray-800 border border-emerald-500/30 dark:border-[#00FF85]/30 overflow-hidden shadow-sm shadow-[0_0_30px_-10px_rgba(0,255,133,0.15)]">
         <div className="absolute -right-16 -top-16 w-72 h-72 bg-[#00FF85]/15 rounded-full blur-3xl pointer-events-none" />
 
         <div className="relative z-10 flex flex-col md:flex-row items-start md:items-center justify-between gap-4 mb-6">
@@ -52,18 +52,18 @@ export const ShopView = ({ onOpenCart }) => {
               <span className="text-[10px] font-black uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-[#00FF85] text-black shadow-neon-green">
                 Умная рекомендация
               </span>
-              <span className="text-xs text-neutral-400 font-semibold">
+              <span className="text-xs text-gray-600 dark:text-gray-400 font-semibold">
                 Под цель: {profile.goal === 'gain_muscle' ? 'Набор массы & Воркаут' : profile.goal === 'boxing' ? 'Бокс & Выносливость' : 'Похудение & Рельеф'}
               </span>
             </div>
 
-            <h2 className="text-xl sm:text-2xl font-black text-white tracking-tight">
+            <h2 className="text-xl sm:text-2xl font-black text-gray-900 dark:text-white tracking-tight">
               {profile.goal === 'gain_muscle'
                 ? 'Рекомендуем для калистеники, турников и набора массы'
                 : 'Рекомендуем для жиросжигания, бокса и взрывного кардио'}
             </h2>
 
-            <p className="text-xs sm:text-sm text-neutral-300 mt-1 max-w-xl">
+            <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-400 mt-1 max-w-xl">
               {profile.goal === 'gain_muscle'
                 ? 'Прогрессируй в подтягиваниях, L-sit и Tuck Planche с надежным турником, петлями сопротивления и качественным протеином.'
                 : 'Увеличивай выносливость и расход калорий со скоростной скакалкой Pro, матом для растяжки и термогенным L-карнитином.'}
@@ -72,7 +72,7 @@ export const ShopView = ({ onOpenCart }) => {
 
           <button
             onClick={onOpenCart}
-            className="px-4 py-2.5 rounded-xl bg-white/5 hover:bg-white/10 text-neutral-200 border border-white/10 text-xs font-bold transition-all shrink-0 flex items-center gap-2"
+            className="px-4 py-2.5 rounded-xl bg-gray-100 hover:bg-gray-200 dark:bg-white/5 dark:hover:bg-white/10 text-gray-800 dark:text-neutral-200 border border-gray-200 dark:border-white/10 text-xs font-bold transition-all shrink-0 flex items-center gap-2"
           >
             <ShoppingBag className="w-4 h-4 text-[#00FF85]" />
             <span>Корзина ({totalCartCount})</span>
@@ -100,7 +100,7 @@ export const ShopView = ({ onOpenCart }) => {
                 className={`px-4 py-2 rounded-xl text-xs font-bold whitespace-nowrap transition-all ${
                   isActive
                     ? 'bg-[#00FF85] text-black shadow-neon-green font-black'
-                    : 'bg-white/5 text-neutral-400 hover:text-white hover:bg-white/10'
+                    : 'bg-gray-100 dark:bg-white/5 text-gray-600 dark:text-neutral-400 hover:text-gray-900 dark:hover:text-white hover:bg-gray-200 dark:hover:bg-white/10 border border-gray-200 dark:border-transparent'
                 }`}
               >
                 {cat.label}
@@ -111,13 +111,13 @@ export const ShopView = ({ onOpenCart }) => {
 
         {/* Search Input */}
         <div className="relative w-full sm:w-64">
-          <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-neutral-400" />
+          <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-500 dark:text-gray-400" />
           <input
             type="text"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             placeholder="Поиск по магазину..."
-            className="w-full bg-[#1A1A24] border border-white/10 rounded-xl pl-10 pr-4 py-2 text-xs sm:text-sm text-white placeholder-neutral-500 focus:outline-none focus:border-[#00FF85]"
+            className="w-full bg-gray-100 dark:bg-gray-900 border border-gray-300 dark:border-gray-700 rounded-xl pl-10 pr-4 py-2 text-xs sm:text-sm text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:border-[#00FF85]"
           />
         </div>
       </div>

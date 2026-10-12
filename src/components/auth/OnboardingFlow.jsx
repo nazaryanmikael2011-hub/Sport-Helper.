@@ -403,7 +403,7 @@ export const OnboardingFlow = ({ isOpen, onClose }) => {
         initial={{ opacity: 0, scale: 0.95 }}
         animate={{ opacity: 1, scale: 1 }}
         exit={{ opacity: 0, scale: 0.95 }}
-        className="relative w-full max-w-xl bg-[#121217] border border-white/10 rounded-3xl p-5 sm:p-8 shadow-2xl flex flex-col my-auto overflow-hidden"
+        className="relative w-full max-w-xl bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-3xl p-5 sm:p-8 shadow-2xl flex flex-col my-auto overflow-hidden text-gray-900 dark:text-white"
       >
         {/* Glow ambient */}
         <div className="absolute -top-24 right-0 w-72 h-72 bg-[#00FF85]/15 rounded-full blur-3xl pointer-events-none" />
@@ -419,13 +419,13 @@ export const OnboardingFlow = ({ isOpen, onClose }) => {
                     ? 'w-8 bg-[#00FF85] shadow-neon-green'
                     : s < step
                     ? 'w-4 bg-emerald-600'
-                    : 'w-4 bg-neutral-800'
+                    : 'w-4 bg-gray-200 dark:bg-gray-700'
                 }`}
               />
             ))}
           </div>
 
-          <span className="text-xs font-bold text-neutral-400">
+          <span className="text-xs font-bold text-gray-500 dark:text-gray-400">
             Шаг {step} из 5 • {
               step === 1 ? 'Аккаунт' : 
               step === 2 ? 'Параметры' : 
@@ -450,10 +450,10 @@ export const OnboardingFlow = ({ isOpen, onClose }) => {
                 className="space-y-4"
               >
                 <div>
-                  <h2 className="text-xl sm:text-2xl font-black text-white tracking-tight">
+                  <h2 className="text-xl sm:text-2xl font-black text-gray-900 dark:text-white tracking-tight">
                     Шаг 1: Создание аккаунта атлета
                   </h2>
-                  <p className="text-xs sm:text-sm text-neutral-400 mt-1">
+                  <p className="text-xs sm:text-sm text-gray-600 dark:text-neutral-400 mt-1">
                     Заполните форму для регистрации личного кабинета
                   </p>
                 </div>
@@ -461,11 +461,11 @@ export const OnboardingFlow = ({ isOpen, onClose }) => {
                 <div className="space-y-3.5 pt-1">
                   {/* Name field */}
                   <div>
-                    <label className="block text-xs font-bold text-neutral-300 mb-1.5 uppercase tracking-wider">
+                    <label className="block text-xs font-bold text-gray-700 dark:text-gray-300 mb-1.5 uppercase tracking-wider">
                       Имя / Никнейм <span className="text-red-400">*</span>
                     </label>
                     <div className="relative">
-                      <User className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-neutral-400" />
+                      <User className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 dark:text-gray-500" />
                       <input
                         type="text"
                         value={accountData.name}
@@ -474,10 +474,10 @@ export const OnboardingFlow = ({ isOpen, onClose }) => {
                           if (errors.name) setErrors((prev) => ({ ...prev, name: null }));
                         }}
                         placeholder="Введите имя"
-                        className={`w-full bg-[#1A1A24] rounded-xl pl-10 pr-4 py-2.5 text-sm text-white placeholder-neutral-500/80 focus:outline-none transition-all ${
+                        className={`w-full bg-gray-100 dark:bg-gray-900 rounded-xl pl-10 pr-4 py-2.5 text-sm text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none transition-all ${
                           errors.name
                             ? 'border-2 border-red-500/90 focus:border-red-500 ring-2 ring-red-500/20 shadow-[0_0_12px_rgba(239,68,68,0.2)]'
-                            : 'border border-white/10 focus:border-[#00FF85] focus:ring-1 focus:ring-[#00FF85]/30'
+                            : 'border border-gray-300 dark:border-gray-700 focus:border-[#00FF85] focus:ring-1 focus:ring-[#00FF85]/30'
                         }`}
                       />
                     </div>
@@ -495,11 +495,11 @@ export const OnboardingFlow = ({ isOpen, onClose }) => {
 
                   {/* Email field */}
                   <div>
-                    <label className="block text-xs font-bold text-neutral-300 mb-1.5 uppercase tracking-wider">
+                    <label className="block text-xs font-bold text-gray-700 dark:text-gray-300 mb-1.5 uppercase tracking-wider">
                       Электронная почта <span className="text-red-400">*</span>
                     </label>
                     <div className="relative">
-                      <Mail className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-neutral-400" />
+                      <Mail className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 dark:text-gray-500" />
                       <input
                         type="email"
                         value={accountData.email}
@@ -508,10 +508,10 @@ export const OnboardingFlow = ({ isOpen, onClose }) => {
                           if (errors.email) setErrors((prev) => ({ ...prev, email: null }));
                         }}
                         placeholder="Введите почту"
-                        className={`w-full bg-[#1A1A24] rounded-xl pl-10 pr-4 py-2.5 text-sm text-white placeholder-neutral-500/80 focus:outline-none transition-all ${
+                        className={`w-full bg-gray-100 dark:bg-gray-900 rounded-xl pl-10 pr-4 py-2.5 text-sm text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none transition-all ${
                           errors.email
                             ? 'border-2 border-red-500/90 focus:border-red-500 ring-2 ring-red-500/20 shadow-[0_0_12px_rgba(239,68,68,0.2)]'
-                            : 'border border-white/10 focus:border-[#00FF85] focus:ring-1 focus:ring-[#00FF85]/30'
+                            : 'border border-gray-300 dark:border-gray-700 focus:border-[#00FF85] focus:ring-1 focus:ring-[#00FF85]/30'
                         }`}
                       />
                     </div>
@@ -529,11 +529,11 @@ export const OnboardingFlow = ({ isOpen, onClose }) => {
 
                   {/* Password field with show/hide toggle */}
                   <div>
-                    <label className="block text-xs font-bold text-neutral-300 mb-1.5 uppercase tracking-wider">
+                    <label className="block text-xs font-bold text-gray-700 dark:text-gray-300 mb-1.5 uppercase tracking-wider">
                       Пароль <span className="text-red-400">*</span>
                     </label>
                     <div className="relative">
-                      <Lock className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-neutral-400" />
+                      <Lock className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 dark:text-gray-500" />
                       <input
                         type={showPassword ? 'text' : 'password'}
                         value={accountData.password}
@@ -542,22 +542,22 @@ export const OnboardingFlow = ({ isOpen, onClose }) => {
                           if (errors.password) setErrors((prev) => ({ ...prev, password: null }));
                         }}
                         placeholder="Введите пароль"
-                        className={`w-full bg-[#1A1A24] rounded-xl pl-10 pr-11 py-2.5 text-sm text-white placeholder-neutral-500/80 focus:outline-none transition-all ${
+                        className={`w-full bg-gray-100 dark:bg-gray-900 rounded-xl pl-10 pr-11 py-2.5 text-sm text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none transition-all ${
                           errors.password
                             ? 'border-2 border-red-500/90 focus:border-red-500 ring-2 ring-red-500/20 shadow-[0_0_12px_rgba(239,68,68,0.2)]'
-                            : 'border border-white/10 focus:border-[#00FF85] focus:ring-1 focus:ring-[#00FF85]/30'
+                            : 'border border-gray-300 dark:border-gray-700 focus:border-[#00FF85] focus:ring-1 focus:ring-[#00FF85]/30'
                         }`}
                       />
                       <button
                         type="button"
                         onClick={() => setShowPassword(!showPassword)}
-                        className="absolute right-3.5 top-1/2 -translate-y-1/2 p-1 text-neutral-400 hover:text-white transition-colors focus:outline-none"
+                        className="absolute right-3.5 top-1/2 -translate-y-1/2 p-1 text-gray-400 hover:text-gray-700 dark:text-neutral-400 dark:hover:text-white transition-colors focus:outline-none"
                         title={showPassword ? 'Скрыть пароль' : 'Показать пароль'}
                       >
                         {showPassword ? (
-                          <EyeOff className="w-4 h-4 text-neutral-300" />
+                          <EyeOff className="w-4 h-4 text-gray-600 dark:text-neutral-300" />
                         ) : (
-                          <Eye className="w-4 h-4 text-neutral-400" />
+                          <Eye className="w-4 h-4 text-gray-400 dark:text-neutral-400" />
                         )}
                       </button>
                     </div>
@@ -571,7 +571,7 @@ export const OnboardingFlow = ({ isOpen, onClose }) => {
                         <span>{errors.password}</span>
                       </motion.div>
                     )}
-                    <div className="flex items-center gap-1.5 mt-2 text-[11px] text-emerald-400 font-semibold">
+                    <div className="flex items-center gap-1.5 mt-2 text-[11px] text-emerald-600 dark:text-emerald-400 font-semibold">
                       <ShieldCheck className="w-3.5 h-3.5" />
                       <span>Пароль сохраняется локально и защищен</span>
                     </div>
@@ -593,7 +593,7 @@ export const OnboardingFlow = ({ isOpen, onClose }) => {
               >
                 <div>
                   <div className="flex items-center justify-between">
-                    <h2 className="text-xl sm:text-2xl font-black text-white tracking-tight">
+                    <h2 className="text-xl sm:text-2xl font-black text-gray-900 dark:text-white tracking-tight">
                       Шаг 2: Физические показатели
                     </h2>
                     {metricsData.weight && metricsData.height ? (
@@ -608,25 +608,25 @@ export const OnboardingFlow = ({ isOpen, onClose }) => {
                         ИМТ: {liveBmi.bmi} ({liveBmi.label})
                       </span>
                     ) : (
-                      <span className="text-[11px] font-semibold text-neutral-400">
+                      <span className="text-[11px] font-semibold text-gray-500 dark:text-neutral-400">
                         Возраст от 5 лет
                       </span>
                     )}
                   </div>
-                  <p className="text-xs text-neutral-400 mt-0.5">
+                  <p className="text-xs text-gray-600 dark:text-neutral-400 mt-0.5">
                     Заполните ваши физические данные для точного расчета калорий
                   </p>
                 </div>
 
                 <div className="space-y-3 pt-1 max-h-[300px] overflow-y-auto pr-1">
                   {/* Age Input & Slider (MIN 5 YEARS) */}
-                  <div className={`p-3 rounded-2xl bg-[#1A1A24] transition-all ${
-                    errors.age ? 'border-2 border-red-500/90 ring-2 ring-red-500/20' : 'border border-white/5'
+                  <div className={`p-3 rounded-2xl bg-gray-50 dark:bg-gray-900/60 transition-all ${
+                    errors.age ? 'border-2 border-red-500/90 ring-2 ring-red-500/20' : 'border border-gray-200 dark:border-gray-700'
                   }`}>
                     <div className="flex justify-between items-center mb-1.5">
                       <div>
-                        <span className="text-xs font-bold text-neutral-300 uppercase">Возраст</span>
-                        <span className="text-[10px] text-emerald-400 ml-2 font-medium">от 5 лет</span>
+                        <span className="text-xs font-bold text-gray-700 dark:text-gray-300 uppercase">Возраст</span>
+                        <span className="text-[10px] text-emerald-600 dark:text-emerald-400 ml-2 font-medium">от 5 лет</span>
                       </div>
                       <div className="flex items-center gap-1.5">
                         <input
@@ -639,9 +639,9 @@ export const OnboardingFlow = ({ isOpen, onClose }) => {
                             if (errors.age) setErrors((prev) => ({ ...prev, age: null }));
                           }}
                           placeholder="Введите ваш возраст"
-                          className="w-44 bg-white/5 border border-white/10 rounded-lg px-2.5 py-1 text-right text-xs font-black text-white placeholder:text-neutral-500/80 placeholder:font-normal focus:outline-none focus:border-[#00FF85]"
+                          className="w-44 bg-gray-100 dark:bg-gray-900 border border-gray-300 dark:border-gray-700 rounded-lg px-2.5 py-1 text-right text-xs font-black text-gray-900 dark:text-white placeholder:text-gray-400 dark:placeholder:text-gray-500 placeholder:font-normal focus:outline-none focus:border-[#00FF85]"
                         />
-                        {metricsData.age && <span className="text-xs text-neutral-400 font-bold">лет</span>}
+                        {metricsData.age && <span className="text-xs text-gray-500 dark:text-gray-400 font-bold">лет</span>}
                       </div>
                     </div>
                     <input
@@ -668,11 +668,11 @@ export const OnboardingFlow = ({ isOpen, onClose }) => {
                   </div>
 
                   {/* Weight Input & Slider */}
-                  <div className={`p-3 rounded-2xl bg-[#1A1A24] transition-all ${
-                    errors.weight ? 'border-2 border-red-500/90 ring-2 ring-red-500/20' : 'border border-white/5'
+                  <div className={`p-3 rounded-2xl bg-gray-50 dark:bg-gray-900/60 transition-all ${
+                    errors.weight ? 'border-2 border-red-500/90 ring-2 ring-red-500/20' : 'border border-gray-200 dark:border-gray-700'
                   }`}>
                     <div className="flex justify-between items-center mb-1.5">
-                      <span className="text-xs font-bold text-neutral-300 uppercase">Текущий вес</span>
+                      <span className="text-xs font-bold text-gray-700 dark:text-gray-300 uppercase">Текущий вес</span>
                       <div className="flex items-center gap-1.5">
                         <input
                           type="number"
@@ -685,9 +685,9 @@ export const OnboardingFlow = ({ isOpen, onClose }) => {
                             if (errors.weight) setErrors((prev) => ({ ...prev, weight: null }));
                           }}
                           placeholder="Введите текущий вес"
-                          className="w-44 bg-white/5 border border-white/10 rounded-lg px-2.5 py-1 text-right text-xs font-black text-[#00FF85] placeholder:text-neutral-500/80 placeholder:font-normal focus:outline-none focus:border-[#00FF85]"
+                          className="w-44 bg-gray-100 dark:bg-gray-900 border border-gray-300 dark:border-gray-700 rounded-lg px-2.5 py-1 text-right text-xs font-black text-[#00FF85] placeholder:text-gray-400 dark:placeholder:text-gray-500 placeholder:font-normal focus:outline-none focus:border-[#00FF85]"
                         />
-                        {metricsData.weight && <span className="text-xs text-neutral-400 font-bold">кг</span>}
+                        {metricsData.weight && <span className="text-xs text-gray-500 dark:text-gray-400 font-bold">кг</span>}
                       </div>
                     </div>
                     <input
@@ -715,11 +715,11 @@ export const OnboardingFlow = ({ isOpen, onClose }) => {
                   </div>
 
                   {/* Target Weight Input & Slider */}
-                  <div className={`p-3 rounded-2xl bg-[#1A1A24] transition-all ${
-                    errors.targetWeight ? 'border-2 border-red-500/90 ring-2 ring-red-500/20' : 'border border-white/5'
+                  <div className={`p-3 rounded-2xl bg-gray-50 dark:bg-gray-900/60 transition-all ${
+                    errors.targetWeight ? 'border-2 border-red-500/90 ring-2 ring-red-500/20' : 'border border-gray-200 dark:border-gray-700'
                   }`}>
                     <div className="flex justify-between items-center mb-1.5">
-                      <span className="text-xs font-bold text-neutral-300 uppercase">Желаемый вес</span>
+                      <span className="text-xs font-bold text-gray-700 dark:text-gray-300 uppercase">Желаемый вес</span>
                       <div className="flex items-center gap-1.5">
                         <input
                           type="number"
@@ -732,9 +732,9 @@ export const OnboardingFlow = ({ isOpen, onClose }) => {
                             if (errors.targetWeight) setErrors((prev) => ({ ...prev, targetWeight: null }));
                           }}
                           placeholder="Введите целевой вес"
-                          className="w-44 bg-white/5 border border-white/10 rounded-lg px-2.5 py-1 text-right text-xs font-black text-[#FF5E00] placeholder:text-neutral-500/80 placeholder:font-normal focus:outline-none focus:border-[#FF5E00]"
+                          className="w-44 bg-gray-100 dark:bg-gray-900 border border-gray-300 dark:border-gray-700 rounded-lg px-2.5 py-1 text-right text-xs font-black text-[#FF5E00] placeholder:text-gray-400 dark:placeholder:text-gray-500 placeholder:font-normal focus:outline-none focus:border-[#FF5E00]"
                         />
-                        {metricsData.targetWeight && <span className="text-xs text-neutral-400 font-bold">кг</span>}
+                        {metricsData.targetWeight && <span className="text-xs text-gray-500 dark:text-gray-400 font-bold">кг</span>}
                       </div>
                     </div>
                     <input
@@ -762,11 +762,11 @@ export const OnboardingFlow = ({ isOpen, onClose }) => {
                   </div>
 
                   {/* Height Input & Slider */}
-                  <div className={`p-3 rounded-2xl bg-[#1A1A24] transition-all ${
-                    errors.height ? 'border-2 border-red-500/90 ring-2 ring-red-500/20' : 'border border-white/5'
+                  <div className={`p-3 rounded-2xl bg-gray-50 dark:bg-gray-900/60 transition-all ${
+                    errors.height ? 'border-2 border-red-500/90 ring-2 ring-red-500/20' : 'border border-gray-200 dark:border-gray-700'
                   }`}>
                     <div className="flex justify-between items-center mb-1.5">
-                      <span className="text-xs font-bold text-neutral-300 uppercase">Рост</span>
+                      <span className="text-xs font-bold text-gray-700 dark:text-gray-300 uppercase">Рост</span>
                       <div className="flex items-center gap-1.5">
                         <input
                           type="number"
@@ -778,9 +778,9 @@ export const OnboardingFlow = ({ isOpen, onClose }) => {
                             if (errors.height) setErrors((prev) => ({ ...prev, height: null }));
                           }}
                           placeholder="Введите ваш рост"
-                          className="w-44 bg-white/5 border border-white/10 rounded-lg px-2.5 py-1 text-right text-xs font-black text-sky-400 placeholder:text-neutral-500/80 placeholder:font-normal focus:outline-none focus:border-sky-400"
+                          className="w-44 bg-gray-100 dark:bg-gray-900 border border-gray-300 dark:border-gray-700 rounded-lg px-2.5 py-1 text-right text-xs font-black text-sky-500 dark:text-sky-400 placeholder:text-gray-400 dark:placeholder:text-gray-500 placeholder:font-normal focus:outline-none focus:border-sky-400"
                         />
-                        {metricsData.height && <span className="text-xs text-neutral-400 font-bold">см</span>}
+                        {metricsData.height && <span className="text-xs text-gray-500 dark:text-gray-400 font-bold">см</span>}
                       </div>
                     </div>
                     <input
@@ -822,12 +822,12 @@ export const OnboardingFlow = ({ isOpen, onClose }) => {
               >
                 <div>
                   <div className="flex items-center justify-between">
-                    <h2 className="text-lg sm:text-xl font-black text-white tracking-tight flex items-center gap-2">
+                    <h2 className="text-lg sm:text-xl font-black text-gray-900 dark:text-white tracking-tight flex items-center gap-2">
                       <Trophy className="w-5 h-5 text-[#00FF85]" />
                       <span>Шаг 3: Оценка физической подготовки</span>
                     </h2>
                   </div>
-                  <p className="text-xs text-neutral-400 mt-0.5">
+                  <p className="text-xs text-gray-600 dark:text-neutral-400 mt-0.5">
                     Укажите, сколько повторений вы делаете за один подход (если 0 — введите 0):
                   </p>
                 </div>
@@ -847,7 +847,7 @@ export const OnboardingFlow = ({ isOpen, onClose }) => {
                     />
                     <div>
                       <div className="flex items-center gap-2">
-                        <span className="text-[10px] font-bold text-neutral-400 uppercase tracking-wider">
+                        <span className="text-[10px] font-bold text-gray-600 dark:text-neutral-400 uppercase tracking-wider">
                           Расчет уровня:
                         </span>
                         <span 
@@ -861,7 +861,7 @@ export const OnboardingFlow = ({ isOpen, onClose }) => {
                           {fitnessLevelEvaluation.levelName}
                         </span>
                       </div>
-                      <p className="text-[11px] text-neutral-300 leading-tight mt-0.5">
+                      <p className="text-[11px] text-gray-700 dark:text-neutral-300 leading-tight mt-0.5">
                         {isAnyStrengthFilled
                           ? fitnessLevelEvaluation.description
                           : 'Заполните поля ниже для персонального подбора программ'}
@@ -878,16 +878,16 @@ export const OnboardingFlow = ({ isOpen, onClose }) => {
                     return (
                       <div 
                         key={q.key} 
-                        className={`p-2.5 rounded-xl bg-[#1A1A24] transition-all ${
-                          hasError ? 'border-2 border-red-500/90 ring-2 ring-red-500/20' : 'border border-white/5'
+                        className={`p-2.5 rounded-xl bg-gray-50 dark:bg-gray-900/60 transition-all ${
+                          hasError ? 'border-2 border-red-500/90 ring-2 ring-red-500/20' : 'border border-gray-200 dark:border-gray-700'
                         }`}
                       >
                         <div className="flex items-center justify-between mb-1">
                           <div>
-                            <span className="text-xs font-bold text-white block">
+                            <span className="text-xs font-bold text-gray-900 dark:text-white block">
                               {q.title} <span className="text-red-400">*</span>
                             </span>
-                            <span className="text-[10px] text-neutral-400">{q.subtitle}</span>
+                            <span className="text-[10px] text-gray-500 dark:text-gray-400">{q.subtitle}</span>
                           </div>
                           <div className="flex items-center gap-1.5 shrink-0 ml-2">
                             <input
@@ -903,10 +903,10 @@ export const OnboardingFlow = ({ isOpen, onClose }) => {
                                 if (errors[q.key]) setErrors((prev) => ({ ...prev, [q.key]: null }));
                               }}
                               placeholder="Введите количество"
-                              className="w-36 bg-white/5 border border-white/10 rounded-lg px-2.5 py-1 text-right text-xs font-black text-white placeholder:text-neutral-500/80 placeholder:font-normal focus:outline-none focus:border-[#00FF85]"
+                              className="w-36 bg-gray-100 dark:bg-gray-900 border border-gray-300 dark:border-gray-700 rounded-lg px-2.5 py-1 text-right text-xs font-black text-gray-900 dark:text-white placeholder:text-gray-400 dark:placeholder:text-gray-500 placeholder:font-normal focus:outline-none focus:border-[#00FF85]"
                             />
                             {strengthData[q.key] !== '' && (
-                              <span className="text-[11px] text-neutral-400 font-bold">раз</span>
+                              <span className="text-[11px] text-gray-500 dark:text-gray-400 font-bold">раз</span>
                             )}
                           </div>
                         </div>
@@ -957,10 +957,10 @@ export const OnboardingFlow = ({ isOpen, onClose }) => {
                 className="space-y-3"
               >
                 <div>
-                  <h2 className="text-xl sm:text-2xl font-black text-white tracking-tight">
+                  <h2 className="text-xl sm:text-2xl font-black text-gray-900 dark:text-white tracking-tight">
                     Шаг 4: Ваш спортивный инвентарь
                   </h2>
-                  <p className="text-xs text-neutral-400 mt-0.5">
+                  <p className="text-xs text-gray-600 dark:text-gray-400 mt-0.5">
                     Имеются ли у вас спортивные принадлежности дома или на улице? (Можно выбрать несколько)
                   </p>
                 </div>
@@ -976,21 +976,21 @@ export const OnboardingFlow = ({ isOpen, onClose }) => {
                         className={`p-3 rounded-2xl cursor-pointer border transition-all flex items-center justify-between gap-3 ${
                           isSelected
                             ? 'bg-[#00FF85]/10 border-[#00FF85] shadow-[0_0_15px_rgba(0,255,133,0.15)]'
-                            : 'bg-white/[0.02] border-white/5 hover:border-white/15'
+                            : 'bg-gray-50 dark:bg-gray-900/60 border-gray-200 dark:border-gray-700 hover:border-gray-300 dark:hover:border-gray-600'
                         }`}
                       >
                         <div className="flex items-center gap-3 min-w-0">
                           <span className="text-2xl">{item.icon}</span>
                           <div className="min-w-0">
                             <div className="flex items-center gap-2">
-                              <h4 className="font-bold text-white text-xs sm:text-sm">
+                              <h4 className="font-bold text-gray-900 dark:text-white text-xs sm:text-sm">
                                 {item.title}
                               </h4>
-                              <span className="text-[9px] font-bold px-1.5 py-0.2 rounded bg-white/5 text-neutral-300 border border-white/10 hidden sm:inline">
+                              <span className="text-[9px] font-bold px-1.5 py-0.2 rounded bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400 border border-gray-200 dark:border-gray-700 hidden sm:inline">
                                 {item.badge}
                               </span>
                             </div>
-                            <p className="text-[11px] text-neutral-400 mt-0.5 truncate">
+                            <p className="text-[11px] text-gray-500 dark:text-gray-400 mt-0.5 truncate">
                               {item.subtitle}
                             </p>
                           </div>
@@ -1000,7 +1000,7 @@ export const OnboardingFlow = ({ isOpen, onClose }) => {
                           className={`w-5 h-5 rounded-lg flex items-center justify-center border transition-all shrink-0 ${
                             isSelected
                               ? 'bg-[#00FF85] border-[#00FF85] text-black shadow-neon-green'
-                              : 'border-white/20 bg-white/5'
+                              : 'border-gray-300 dark:border-gray-600 bg-gray-100 dark:bg-gray-800'
                           }`}
                         >
                           {isSelected && <Check className="w-3.5 h-3.5 stroke-[3]" />}
@@ -1024,10 +1024,10 @@ export const OnboardingFlow = ({ isOpen, onClose }) => {
                 className="space-y-3"
               >
                 <div>
-                  <h2 className="text-xl sm:text-2xl font-black text-white tracking-tight">
+                  <h2 className="text-xl sm:text-2xl font-black text-gray-900 dark:text-white tracking-tight">
                     Шаг 5: Выбор главного фокуса
                   </h2>
-                  <p className="text-xs text-neutral-400 mt-0.5">
+                  <p className="text-xs text-gray-600 dark:text-gray-400 mt-0.5">
                     Программа и калории будут откалиброваны под твой фокус и уровень ({fitnessLevelEvaluation.levelName})
                   </p>
                 </div>
@@ -1043,8 +1043,8 @@ export const OnboardingFlow = ({ isOpen, onClose }) => {
                         onClick={() => setSelectedFocus(opt.id)}
                         className={`p-3 rounded-2xl cursor-pointer border transition-all flex items-start gap-3 ${
                           isSelected
-                            ? 'bg-gradient-to-r from-white/[0.08] to-transparent border-white/30 shadow-lg'
-                            : 'bg-white/[0.02] border-white/5 hover:border-white/15'
+                            ? 'bg-gradient-to-r from-emerald-500/10 to-transparent dark:from-white/[0.08] dark:to-transparent border-[#00FF85] dark:border-emerald-500 shadow-md'
+                            : 'bg-gray-50 dark:bg-gray-900/60 border-gray-200 dark:border-gray-700 hover:border-gray-300 dark:hover:border-gray-600'
                         }`}
                         style={{
                           borderColor: isSelected ? opt.accent : undefined
@@ -1062,7 +1062,7 @@ export const OnboardingFlow = ({ isOpen, onClose }) => {
 
                         <div className="flex-1 min-w-0">
                           <div className="flex items-center justify-between">
-                            <h4 className="font-bold text-white text-xs sm:text-sm">
+                            <h4 className="font-bold text-gray-900 dark:text-white text-xs sm:text-sm">
                               {opt.title}
                             </h4>
                             <span
@@ -1076,7 +1076,7 @@ export const OnboardingFlow = ({ isOpen, onClose }) => {
                             </span>
                           </div>
 
-                          <p className="text-[11px] text-neutral-400 mt-0.5 leading-tight">
+                          <p className="text-[11px] text-gray-500 dark:text-gray-400 mt-0.5 leading-tight">
                             {opt.subtitle}
                           </p>
                         </div>
@@ -1086,7 +1086,7 @@ export const OnboardingFlow = ({ isOpen, onClose }) => {
                             className={`w-4 h-4 rounded-full flex items-center justify-center border ${
                               isSelected
                                 ? 'bg-[#00FF85] border-[#00FF85] text-black'
-                                : 'border-neutral-600'
+                                : 'border-gray-300 dark:border-gray-600'
                             }`}
                           >
                             {isSelected && <Check className="w-3.5 h-3.5 stroke-[3]" />}
@@ -1098,12 +1098,12 @@ export const OnboardingFlow = ({ isOpen, onClose }) => {
                 </div>
 
                 {/* Instant Plan Preview Pill */}
-                <div className="p-3 rounded-2xl bg-white/[0.03] border border-white/5 flex items-center justify-between text-xs">
-                  <span className="text-neutral-400">
-                    Расчет калорий: <strong className="text-white">{liveTargets.calories} ккал</strong>
+                <div className="p-3 rounded-2xl bg-gray-50 dark:bg-gray-900/60 border border-gray-200 dark:border-gray-700 flex items-center justify-between text-xs">
+                  <span className="text-gray-600 dark:text-gray-400">
+                    Расчет калорий: <strong className="text-gray-900 dark:text-white">{liveTargets.calories} ккал</strong>
                   </span>
-                  <span className="text-neutral-400">
-                    Б: <strong className="text-sky-400">{liveTargets.protein}г</strong> • Ж: <strong className="text-[#FF5E00]">{liveTargets.fats}г</strong>
+                  <span className="text-gray-600 dark:text-gray-400">
+                    Б: <strong className="text-sky-500 dark:text-sky-400">{liveTargets.protein}г</strong> • Ж: <strong className="text-[#FF5E00]">{liveTargets.fats}г</strong>
                   </span>
                 </div>
               </motion.div>
@@ -1112,12 +1112,12 @@ export const OnboardingFlow = ({ isOpen, onClose }) => {
         </div>
 
         {/* Footer Navigation Buttons */}
-        <div className="flex items-center justify-between gap-3 mt-5 pt-3.5 border-t border-white/10 shrink-0">
+        <div className="flex items-center justify-between gap-3 mt-5 pt-3.5 border-t border-gray-200 dark:border-gray-700 shrink-0">
           {step > 1 ? (
             <button
               type="button"
               onClick={handleBack}
-              className="px-4 py-2.5 rounded-xl bg-white/5 hover:bg-white/10 text-neutral-300 font-bold text-xs flex items-center gap-1.5 transition-colors"
+              className="px-4 py-2.5 rounded-xl bg-gray-100 hover:bg-gray-200 dark:bg-gray-700 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-200 font-bold text-xs flex items-center gap-1.5 transition-colors border border-gray-200 dark:border-gray-600"
             >
               <ArrowLeft className="w-4 h-4" />
               <span>Назад</span>

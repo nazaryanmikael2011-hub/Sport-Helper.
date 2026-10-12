@@ -126,7 +126,7 @@ export const WorkoutsView = () => {
   return (
     <div className="space-y-6 sm:space-y-8 pb-10">
       {/* Goal & Fitness Level Adaptation Banner */}
-      <div className="glass-card rounded-3xl p-5 sm:p-7 border border-white/5 relative overflow-hidden">
+      <div className="bg-white dark:bg-gray-800 rounded-3xl p-5 sm:p-7 border border-gray-200 dark:border-gray-700 shadow-sm relative overflow-hidden">
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-5">
           <div className="space-y-1.5">
             <div className="flex flex-wrap items-center gap-2">
@@ -143,16 +143,16 @@ export const WorkoutsView = () => {
               >
                 Ваш уровень: {userLevelName}
               </span>
-              <span className="text-xs text-neutral-400">
+              <span className="text-xs text-gray-600 dark:text-gray-400">
                 • {profile.age} лет
               </span>
             </div>
 
-            <h2 className="text-xl sm:text-2xl font-black text-white">
+            <h2 className="text-xl sm:text-2xl font-black text-gray-900 dark:text-white">
               {goalTitle}
             </h2>
 
-            <p className="text-xs sm:text-sm text-neutral-400 max-w-xl leading-relaxed">
+            <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-400 max-w-xl leading-relaxed">
               {activeLocation === 'home'
                 ? 'Домашние тренировки: комплексы со своим весом, гантелями, фитнес-резинками и кардио для комфортных занятий в квартире.'
                 : activeLocation === 'street'
@@ -163,7 +163,7 @@ export const WorkoutsView = () => {
 
           <button
             onClick={toggleGoal}
-            className="px-4 py-2.5 rounded-xl bg-white/5 hover:bg-white/10 text-neutral-200 border border-white/10 text-xs font-bold transition-all shrink-0 flex items-center gap-2 self-start md:self-center cursor-pointer"
+            className="px-4 py-2.5 rounded-xl bg-gray-100 hover:bg-gray-200 dark:bg-white/5 dark:hover:bg-white/10 text-gray-800 dark:text-neutral-200 border border-gray-200 dark:border-white/10 text-xs font-bold transition-all shrink-0 flex items-center gap-2 self-start md:self-center cursor-pointer"
           >
             <Sparkles className="w-4 h-4 text-[#00FF85]" />
             <span>Сменить цель</span>
@@ -172,7 +172,7 @@ export const WorkoutsView = () => {
       </div>
 
       {/* 3 PRIMARY LOCATION TABS (Дома, На улице, В зале) */}
-      <div className="glass-panel p-2 rounded-3xl border border-white/10">
+      <div className="bg-gray-100/80 dark:bg-[#121217] p-2 rounded-3xl border border-gray-200 dark:border-white/10">
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
           {locationTabs.map((tab) => {
             const isActive = activeLocation === tab.id;
@@ -188,7 +188,7 @@ export const WorkoutsView = () => {
                 className={`py-3.5 px-4 rounded-2xl flex items-center justify-between transition-all cursor-pointer ${
                   isActive
                     ? 'bg-gradient-to-r from-[#00FF85] to-[#10B981] text-black shadow-neon-green font-black'
-                    : 'bg-white/[0.02] hover:bg-white/[0.06] text-neutral-300 border border-white/5'
+                    : 'bg-white dark:bg-white/[0.02] hover:bg-gray-50 dark:hover:bg-white/[0.06] text-gray-700 dark:text-neutral-300 border border-gray-200 dark:border-white/5 shadow-sm dark:shadow-none'
                 }`}
               >
                 <div className="flex items-center gap-2.5">
@@ -197,7 +197,7 @@ export const WorkoutsView = () => {
                     <span className="text-xs sm:text-sm font-black block">
                       {tab.label}
                     </span>
-                    <span className={`text-[10px] block ${isActive ? 'text-black/80 font-bold' : 'text-neutral-400'}`}>
+                    <span className={`text-[10px] block ${isActive ? 'text-black/80 font-bold' : 'text-gray-500 dark:text-neutral-400'}`}>
                       {tab.count} {tab.count === 1 ? 'программа' : tab.count < 5 ? 'программы' : 'программ'}
                     </span>
                   </div>
@@ -205,7 +205,7 @@ export const WorkoutsView = () => {
 
                 <div
                   className={`w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold ${
-                    isActive ? 'bg-black text-[#00FF85]' : 'bg-white/10 text-neutral-300'
+                    isActive ? 'bg-black text-[#00FF85]' : 'bg-gray-100 dark:bg-white/10 text-gray-600 dark:text-neutral-300'
                   }`}
                 >
                   {tab.count}
@@ -217,13 +217,13 @@ export const WorkoutsView = () => {
       </div>
 
       {/* INTELLIGENT EQUIPMENT FILTER TOGGLE & STATUS BAR */}
-      <div className="p-4 rounded-2xl bg-white/[0.02] border border-white/5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 text-xs">
+      <div className="p-4 rounded-2xl bg-white dark:bg-gray-800/60 border border-gray-200 dark:border-gray-700 shadow-sm flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 text-xs">
         <div className="flex items-center gap-2 flex-wrap">
-          <span className="text-neutral-400 font-semibold">Ваш инвентарь:</span>
+          <span className="text-gray-600 dark:text-gray-400 font-semibold">Ваш инвентарь:</span>
           {userEquipment.map((eq) => (
             <span
               key={eq}
-              className="px-2.5 py-0.5 rounded-lg bg-white/5 border border-white/10 text-neutral-200 text-[11px] font-bold"
+              className="px-2.5 py-0.5 rounded-lg bg-gray-100 dark:bg-white/5 border border-gray-200 dark:border-white/10 text-gray-800 dark:text-neutral-200 text-[11px] font-bold"
             >
               {EQUIPMENT_LABELS[eq] || eq}
             </span>
@@ -235,7 +235,7 @@ export const WorkoutsView = () => {
           className={`px-3 py-1.5 rounded-xl border text-xs font-bold flex items-center gap-1.5 transition-all cursor-pointer ${
             filterByEquipment
               ? 'bg-[#00FF85]/15 border-[#00FF85]/40 text-[#00FF85]'
-              : 'bg-white/5 border-white/10 text-neutral-400 hover:text-white'
+              : 'bg-gray-100 dark:bg-white/5 border-gray-200 dark:border-white/10 text-gray-600 dark:text-neutral-400 hover:text-gray-900 dark:hover:text-white'
           }`}
         >
           <SlidersHorizontal className="w-3.5 h-3.5" />
@@ -256,7 +256,7 @@ export const WorkoutsView = () => {
               className={`px-3.5 py-2 rounded-xl text-xs font-bold whitespace-nowrap transition-all cursor-pointer ${
                 isActive
                   ? 'bg-[#00FF85] text-black shadow-neon-green font-black'
-                  : 'bg-white/5 text-neutral-400 hover:text-white hover:bg-white/10'
+                  : 'bg-gray-100 dark:bg-white/5 text-gray-600 dark:text-neutral-400 hover:text-gray-900 dark:hover:text-white hover:bg-gray-200 dark:hover:bg-white/10 border border-gray-200 dark:border-transparent'
               }`}
             >
               {cat.label}
@@ -267,8 +267,8 @@ export const WorkoutsView = () => {
 
       {/* Workouts Grid */}
       {filteredWorkouts.length === 0 ? (
-        <div className="p-8 rounded-3xl glass-card border border-white/5 text-center space-y-3">
-          <p className="text-neutral-300 font-bold text-sm">
+        <div className="p-8 rounded-3xl bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 shadow-sm text-center space-y-3">
+          <p className="text-gray-700 dark:text-neutral-300 font-bold text-sm">
             В данной категории нет программ, подходящих под текущий фильтр инвентаря.
           </p>
           <button
@@ -289,8 +289,8 @@ export const WorkoutsView = () => {
               <motion.div
                 key={workout.id}
                 whileHover={{ y: -4 }}
-                className={`glass-card rounded-3xl overflow-hidden border transition-all flex flex-col group ${
-                  isUserLevelMatch ? 'border-[#00FF85]/30 shadow-[0_0_20px_-8px_rgba(0,255,133,0.2)]' : 'border-white/5 hover:border-white/20'
+                className={`bg-white dark:bg-gray-800 rounded-3xl overflow-hidden border transition-all flex flex-col group shadow-sm ${
+                  isUserLevelMatch ? 'border-[#00FF85]/30 shadow-[0_0_20px_-8px_rgba(0,255,133,0.2)]' : 'border-gray-200 dark:border-gray-700 hover:border-gray-300 dark:hover:border-white/20'
                 }`}
               >
                 {/* Image Banner */}
@@ -300,7 +300,7 @@ export const WorkoutsView = () => {
                     alt={workout.title}
                     className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-[#121217] via-[#121217]/50 to-transparent" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent" />
 
                   {/* Category & Matches pills */}
                   <div className="absolute top-3 left-3 flex items-center gap-1.5 flex-wrap">
@@ -347,7 +347,7 @@ export const WorkoutsView = () => {
                     <h3 className="text-base sm:text-lg font-black text-white line-clamp-1">
                       {workout.title}
                     </h3>
-                    <p className="text-xs text-neutral-300 line-clamp-1 mt-0.5">
+                    <p className="text-xs text-neutral-200 line-clamp-1 mt-0.5">
                       {workout.subtitle}
                     </p>
                   </div>
@@ -355,9 +355,9 @@ export const WorkoutsView = () => {
 
                 {/* Workout Details & Stats */}
                 <div className="p-4 sm:p-5 flex-1 flex flex-col justify-between">
-                  <div className="flex items-center justify-between text-xs text-neutral-400 py-2 border-b border-white/5">
+                  <div className="flex items-center justify-between text-xs text-gray-600 dark:text-gray-400 py-2 border-b border-gray-100 dark:border-white/5">
                     <span className="flex items-center gap-1.5 font-semibold">
-                      <Clock className="w-3.5 h-3.5 text-neutral-400" />
+                      <Clock className="w-3.5 h-3.5 text-gray-500 dark:text-neutral-400" />
                       {workout.durationMin} мин
                     </span>
                     <span className="flex items-center gap-1.5 font-semibold text-[#FF5E00]">
@@ -372,15 +372,15 @@ export const WorkoutsView = () => {
 
                   {/* Equipment Tag */}
                   <div className="mt-2.5 flex items-center gap-2">
-                    <span className="text-[11px] text-neutral-400">Требуемый инвентарь:</span>
-                    <span className="text-[11px] font-bold text-white px-2 py-0.5 rounded-md bg-white/5 border border-white/10">
+                    <span className="text-[11px] text-gray-600 dark:text-gray-400">Требуемый инвентарь:</span>
+                    <span className="text-[11px] font-bold text-gray-900 dark:text-white px-2 py-0.5 rounded-md bg-gray-100 dark:bg-white/5 border border-gray-200 dark:border-white/10">
                       {workout.requiredEquipment && workout.requiredEquipment.length > 0
                         ? workout.requiredEquipment.map((eq) => EQUIPMENT_LABELS[eq] || eq).join(', ')
                         : 'Свой вес тела (без инвентаря) 🤸'}
                     </span>
                   </div>
 
-                  <p className="text-xs text-neutral-400 mt-2 line-clamp-2 leading-relaxed">
+                  <p className="text-xs text-gray-600 dark:text-gray-400 mt-2 line-clamp-2 leading-relaxed">
                     {workout.description}
                   </p>
 
@@ -388,7 +388,7 @@ export const WorkoutsView = () => {
                   <div className="flex items-center gap-2 mt-4 pt-3">
                     <button
                       onClick={() => setSelectedWorkout(workout)}
-                      className="flex-1 py-2.5 px-3 rounded-xl bg-white/5 hover:bg-white/10 text-xs font-bold text-neutral-300 hover:text-white transition-all text-center cursor-pointer"
+                      className="flex-1 py-2.5 px-3 rounded-xl bg-gray-100 hover:bg-gray-200 dark:bg-white/5 dark:hover:bg-white/10 text-xs font-bold text-gray-700 hover:text-gray-900 dark:text-neutral-300 dark:hover:text-white transition-all text-center cursor-pointer border border-gray-200 dark:border-transparent"
                     >
                       Упражнения ({workout.exercises.length})
                     </button>
@@ -409,24 +409,24 @@ export const WorkoutsView = () => {
       )}
 
       {/* EXERCISE TECHNIQUE DATABASE SPOTLIGHT (3-PHASE PHOTO INSTRUCTIONS) */}
-      <div className="glass-card rounded-3xl p-5 sm:p-7 border border-white/5 space-y-4">
+      <div className="bg-white dark:bg-gray-800 rounded-3xl p-5 sm:p-7 border border-gray-200 dark:border-gray-700 shadow-sm space-y-4">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div className="flex items-center gap-3">
             <div className="p-2.5 rounded-xl bg-[#00FF85]/15 text-[#00FF85]">
               <ImageIcon className="w-5 h-5" />
             </div>
             <div>
-              <h3 className="text-base sm:text-lg font-black text-white">
+              <h3 className="text-base sm:text-lg font-black text-gray-900 dark:text-white">
                 База упражнений & Поэтапные фото-инструкции
               </h3>
-              <p className="text-xs text-neutral-400">
+              <p className="text-xs text-gray-600 dark:text-gray-400">
                 Визуальная пошаговая демонстрация: 3 ключевые фазы (Старт → Движение → Пик) без сбоев видео
               </p>
             </div>
           </div>
 
           {/* Sub-filter for exercises level */}
-          <div className="flex items-center gap-1.5 bg-black/40 p-1 rounded-xl border border-white/5 self-start sm:self-auto">
+          <div className="flex items-center gap-1.5 bg-gray-100 dark:bg-black/40 p-1 rounded-xl border border-gray-200 dark:border-white/5 self-start sm:self-auto">
             {[
               { id: 'all', label: 'Все' },
               { id: 'beginner', label: 'Новички' },
@@ -439,7 +439,7 @@ export const WorkoutsView = () => {
                 className={`px-2.5 py-1 rounded-lg text-[11px] font-bold transition-all cursor-pointer ${
                   exerciseLevelFilter === f.id
                     ? 'bg-[#00FF85] text-black font-black'
-                    : 'text-neutral-400 hover:text-white'
+                    : 'text-gray-600 dark:text-neutral-400 hover:text-gray-900 dark:hover:text-white'
                 }`}
               >
                 {f.label}
@@ -457,11 +457,11 @@ export const WorkoutsView = () => {
                 key={item.id}
                 whileHover={{ scale: 1.02 }}
                 onClick={() => setSelectedExerciseForDemo(item)}
-                className="p-3.5 rounded-2xl bg-white/[0.02] hover:bg-white/[0.06] border border-white/5 hover:border-[#00FF85]/40 transition-all cursor-pointer flex flex-col justify-between group overflow-hidden"
+                className="p-3.5 rounded-2xl bg-gray-50 dark:bg-white/[0.02] hover:bg-gray-100 dark:hover:bg-white/[0.06] border border-gray-200 dark:border-white/5 hover:border-[#00FF85]/40 transition-all cursor-pointer flex flex-col justify-between group overflow-hidden shadow-sm dark:shadow-none"
               >
                 <div>
                   {/* Photo Thumbnail */}
-                  <div className="relative aspect-video rounded-xl overflow-hidden mb-3 bg-neutral-900 border border-white/10 group-hover:border-[#00FF85]/30 transition-all">
+                  <div className="relative aspect-video rounded-xl overflow-hidden mb-3 bg-neutral-900 border border-gray-200 dark:border-white/10 group-hover:border-[#00FF85]/30 transition-all">
                     <img
                       src={item.image || item.phases?.[0]?.image}
                       alt={item.name}
@@ -499,29 +499,29 @@ export const WorkoutsView = () => {
                   </div>
 
                   <div className="flex items-center justify-between mb-1.5">
-                    <h4 className="text-sm font-bold text-white group-hover:text-[#00FF85] transition-colors truncate">
+                    <h4 className="text-sm font-bold text-gray-900 dark:text-white group-hover:text-[#00FF85] transition-colors truncate">
                       {item.name}
                     </h4>
-                    <span className="text-[11px] font-semibold text-neutral-400 shrink-0 ml-1">
+                    <span className="text-[11px] font-semibold text-gray-600 dark:text-neutral-400 shrink-0 ml-1">
                       {item.isStatic ? `⏱️ ${item.targetValue} сек` : `🎯 ${item.targetValue} раз`}
                     </span>
                   </div>
 
                   <div className="flex flex-wrap gap-1 mt-1.5">
                     {item.muscleTags.slice(0, 3).map((tag, i) => (
-                      <span key={i} className="text-[10px] text-neutral-400 bg-white/5 px-1.5 py-0.5 rounded">
+                      <span key={i} className="text-[10px] text-gray-600 dark:text-neutral-400 bg-gray-100 dark:bg-white/5 border border-gray-200 dark:border-transparent px-1.5 py-0.5 rounded">
                         {tag}
                       </span>
                     ))}
                   </div>
                 </div>
 
-                <div className="mt-3 pt-2.5 border-t border-white/5 flex items-center justify-between text-xs font-bold text-[#00FF85]">
+                <div className="mt-3 pt-2.5 border-t border-gray-200 dark:border-white/5 flex items-center justify-between text-xs font-bold text-[#00FF85]">
                   <span className="flex items-center gap-1.5">
                     <Layers className="w-3.5 h-3.5" />
                     <span>3 фазы выполнения</span>
                   </span>
-                  <ChevronRight className="w-4 h-4 text-neutral-400 group-hover:translate-x-1 group-hover:text-[#00FF85] transition-all" />
+                  <ChevronRight className="w-4 h-4 text-gray-400 dark:text-neutral-400 group-hover:translate-x-1 group-hover:text-[#00FF85] transition-all" />
                 </div>
               </motion.div>
             );

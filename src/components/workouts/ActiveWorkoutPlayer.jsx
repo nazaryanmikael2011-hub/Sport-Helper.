@@ -90,25 +90,25 @@ export const ActiveWorkoutPlayer = ({ workout, onClose }) => {
         initial={{ opacity: 0, scale: 0.96 }}
         animate={{ opacity: 1, scale: 1 }}
         exit={{ opacity: 0, scale: 0.96 }}
-        className="relative w-full max-w-2xl bg-[#121217] border border-white/10 rounded-3xl p-5 sm:p-8 shadow-2xl flex flex-col max-h-[95vh] overflow-hidden"
+        className="relative w-full max-w-2xl bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-3xl p-5 sm:p-8 shadow-2xl flex flex-col max-h-[95vh] overflow-hidden"
       >
         {/* Glow */}
         <div className="absolute -top-24 right-0 w-80 h-80 bg-[#00FF85]/15 rounded-full blur-3xl pointer-events-none" />
 
         {/* Top bar */}
-        <div className="flex items-center justify-between pb-4 border-b border-white/10">
+        <div className="flex items-center justify-between pb-4 border-b border-gray-200 dark:border-gray-700">
           <div>
-            <span className="text-[10px] font-bold uppercase tracking-wider text-[#00FF85] px-2 py-0.5 rounded-full bg-[#00FF85]/10 border border-[#00FF85]/30">
+            <span className="text-[10px] font-bold uppercase tracking-wider text-emerald-600 dark:text-[#00FF85] px-2 py-0.5 rounded-full bg-emerald-500/10 dark:bg-[#00FF85]/10 border border-emerald-500/30 dark:border-[#00FF85]/30">
               {workout.category || 'Тренировка'}
             </span>
-            <h3 className="text-base sm:text-lg font-black text-white mt-1 truncate">
+            <h3 className="text-base sm:text-lg font-black text-gray-900 dark:text-white mt-1 truncate">
               {workout.title}
             </h3>
           </div>
 
           <button
             onClick={onClose}
-            className="p-2 rounded-xl text-neutral-400 hover:text-white bg-white/5 border border-white/10 transition-colors"
+            className="p-2 rounded-xl text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white bg-gray-100 hover:bg-gray-200 dark:bg-gray-700 dark:hover:bg-gray-600 border border-gray-200 dark:border-gray-600 transition-colors cursor-pointer"
             title="Закрыть"
           >
             <X className="w-5 h-5" />
@@ -116,18 +116,18 @@ export const ActiveWorkoutPlayer = ({ workout, onClose }) => {
         </div>
 
         {/* Workout Timer Display */}
-        <div className="my-6 p-6 rounded-3xl bg-gradient-to-b from-white/[0.04] to-transparent border border-white/5 flex flex-col items-center justify-center relative">
-          <div className="text-5xl sm:text-6xl font-black text-white tracking-widest font-mono">
+        <div className="my-6 p-6 rounded-3xl bg-gray-50 dark:bg-gray-900/60 border border-gray-200 dark:border-gray-700 flex flex-col items-center justify-center relative">
+          <div className="text-5xl sm:text-6xl font-black text-gray-900 dark:text-white tracking-widest font-mono">
             {formatTime(secondsElapsed)}
           </div>
-          <div className="flex items-center gap-4 mt-3 text-xs text-neutral-400 font-semibold">
+          <div className="flex items-center gap-4 mt-3 text-xs text-gray-600 dark:text-gray-400 font-semibold">
             <span className="flex items-center gap-1">
               <Flame className="w-4 h-4 text-[#FF5E00]" />
               ~{Math.round(((secondsElapsed / 60) * (workout.caloriesBurned / (workout.durationMin || 30))))} ккал
             </span>
             <span>•</span>
             <span className="flex items-center gap-1">
-              <Zap className="w-4 h-4 text-[#00FF85]" />
+              <Zap className="w-4 h-4 text-emerald-600 dark:text-[#00FF85]" />
               +{workout.xpReward} XP
             </span>
           </div>
@@ -136,17 +136,17 @@ export const ActiveWorkoutPlayer = ({ workout, onClose }) => {
           <div className="flex items-center gap-3 mt-4">
             <button
               onClick={() => setIsActive(!isActive)}
-              className={`p-3 rounded-2xl flex items-center justify-center transition-all ${
+              className={`p-3 rounded-2xl flex items-center justify-center transition-all cursor-pointer ${
                 isActive
-                  ? 'bg-white/10 hover:bg-white/20 text-white'
-                  : 'bg-[#00FF85] text-black shadow-neon-green font-bold'
+                  ? 'bg-gray-200 hover:bg-gray-300 dark:bg-gray-700 dark:hover:bg-gray-600 text-gray-900 dark:text-white border border-gray-300 dark:border-gray-600'
+                  : 'bg-[#00FF85] text-black shadow-neon-green font-bold hover:brightness-105'
               }`}
             >
               {isActive ? <Pause className="w-5 h-5" /> : <Play className="w-5 h-5 fill-black" />}
             </button>
             <button
               onClick={() => setSecondsElapsed(0)}
-              className="p-3 rounded-2xl bg-white/5 hover:bg-white/10 text-neutral-400 hover:text-white transition-all"
+              className="p-3 rounded-2xl bg-gray-100 hover:bg-gray-200 dark:bg-gray-700 dark:hover:bg-gray-600 text-gray-600 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white border border-gray-300 dark:border-gray-600 transition-all cursor-pointer"
               title="Сбросить время"
             >
               <RotateCcw className="w-5 h-5" />
@@ -159,16 +159,16 @@ export const ActiveWorkoutPlayer = ({ workout, onClose }) => {
           <motion.div
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
-            className="mb-4 p-4 rounded-2xl bg-[#FF5E00]/15 border border-[#FF5E00]/40 flex items-center justify-between"
+            className="mb-4 p-4 rounded-2xl bg-orange-500/15 border border-orange-500/40 flex items-center justify-between"
           >
             <div className="flex items-center gap-2.5">
               <Timer className="w-5 h-5 text-[#FF5E00] animate-spin" style={{ animationDuration: '4s' }} />
               <div>
                 <span className="text-xs font-bold text-[#FF5E00] uppercase">Отдых между подходами</span>
-                <p className="text-xs text-neutral-300">Восстанови дыхание и пульс</p>
+                <p className="text-xs text-gray-700 dark:text-gray-300">Восстанови дыхание и пульс</p>
               </div>
             </div>
-            <div className="text-2xl font-mono font-black text-white">
+            <div className="text-2xl font-mono font-black text-gray-900 dark:text-white">
               {restSecondsLeft}с
             </div>
           </motion.div>
@@ -176,23 +176,23 @@ export const ActiveWorkoutPlayer = ({ workout, onClose }) => {
 
         {/* Current Exercise Card */}
         {currentExercise && (
-          <div className="flex-1 overflow-y-auto space-y-3 p-4 rounded-2xl bg-[#1A1A24] border border-white/5">
+          <div className="flex-1 overflow-y-auto space-y-3 p-4 rounded-2xl bg-gray-50 dark:bg-gray-900/60 border border-gray-200 dark:border-gray-700">
             <div className="flex items-center justify-between">
-              <span className="text-xs font-bold text-neutral-400">
+              <span className="text-xs font-bold text-gray-600 dark:text-gray-400">
                 Упражнение {currentExIndex + 1} из {exercises.length}
               </span>
-              <span className="text-xs font-semibold px-2.5 py-0.5 rounded-full bg-sky-500/10 text-sky-400 border border-sky-500/20">
+              <span className="text-xs font-semibold px-2.5 py-0.5 rounded-full bg-sky-500/10 text-sky-600 dark:text-sky-400 border border-sky-500/20">
                 {currentExercise.muscle}
               </span>
             </div>
 
             <div className="flex items-center justify-between">
-              <h4 className="text-lg sm:text-xl font-black text-white">
+              <h4 className="text-lg sm:text-xl font-black text-gray-900 dark:text-white">
                 {currentExercise.name}
               </h4>
               <button
                 onClick={() => setShowDemoModal(true)}
-                className="px-2.5 py-1 rounded-xl bg-[#00FF85]/15 hover:bg-[#00FF85]/25 text-[#00FF85] border border-[#00FF85]/30 text-xs font-bold transition-all flex items-center gap-1.5"
+                className="px-2.5 py-1 rounded-xl bg-emerald-500/15 hover:bg-emerald-500/25 text-emerald-700 dark:text-[#00FF85] border border-emerald-500/30 dark:border-[#00FF85]/30 text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer"
                 title="Посмотреть пошаговые фото фаз техники"
               >
                 <ImageIcon className="w-3.5 h-3.5" />
@@ -201,25 +201,25 @@ export const ActiveWorkoutPlayer = ({ workout, onClose }) => {
             </div>
 
             <div className="grid grid-cols-3 gap-2 py-2">
-              <div className="p-2.5 rounded-xl bg-white/5 text-center">
-                <span className="text-[10px] text-neutral-400 uppercase font-bold block">Подходы</span>
-                <span className="text-base font-black text-[#00FF85]">{currentExercise.sets}</span>
+              <div className="p-2.5 rounded-xl bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 text-center shadow-sm">
+                <span className="text-[10px] text-gray-600 dark:text-gray-400 uppercase font-bold block">Подходы</span>
+                <span className="text-base font-black text-emerald-600 dark:text-[#00FF85]">{currentExercise.sets}</span>
               </div>
-              <div className="p-2.5 rounded-xl bg-white/5 text-center">
-                <span className="text-[10px] text-neutral-400 uppercase font-bold block">Повторы / Время</span>
-                <span className="text-xs sm:text-sm font-bold text-white truncate block">{currentExercise.reps}</span>
+              <div className="p-2.5 rounded-xl bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 text-center shadow-sm">
+                <span className="text-[10px] text-gray-600 dark:text-gray-400 uppercase font-bold block">Повторы / Время</span>
+                <span className="text-xs sm:text-sm font-bold text-gray-900 dark:text-white truncate block">{currentExercise.reps}</span>
               </div>
-              <div className="p-2.5 rounded-xl bg-white/5 text-center cursor-pointer hover:bg-white/10 transition-colors"
+              <div className="p-2.5 rounded-xl bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 text-center cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700/60 transition-colors shadow-sm"
                 onClick={() => startRest(currentExercise.restSeconds || 60)}
               >
-                <span className="text-[10px] text-neutral-400 uppercase font-bold block">Отдых</span>
+                <span className="text-[10px] text-gray-600 dark:text-gray-400 uppercase font-bold block">Отдых</span>
                 <span className="text-xs sm:text-sm font-bold text-[#FF5E00]">{currentExercise.restSeconds || 60}с (старт)</span>
               </div>
             </div>
 
             {currentExercise.tip && (
-              <div className="p-3 rounded-xl bg-white/[0.03] border border-white/5 text-xs text-neutral-300 flex items-start gap-2">
-                <Info className="w-4 h-4 text-[#00FF85] shrink-0 mt-0.5" />
+              <div className="p-3 rounded-xl bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 text-xs text-gray-700 dark:text-gray-300 flex items-start gap-2">
+                <Info className="w-4 h-4 text-emerald-600 dark:text-[#00FF85] shrink-0 mt-0.5" />
                 <span><strong>Совет по технике:</strong> {currentExercise.tip}</span>
               </div>
             )}
@@ -227,12 +227,12 @@ export const ActiveWorkoutPlayer = ({ workout, onClose }) => {
         )}
 
         {/* Bottom controls: Previous, Next, and FINISH WORKOUT */}
-        <div className="mt-5 pt-4 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between gap-3">
+        <div className="mt-5 pt-4 border-t border-gray-200 dark:border-gray-700 flex flex-col sm:flex-row items-center justify-between gap-3">
           <div className="flex items-center gap-2 w-full sm:w-auto">
             <button
               onClick={() => setCurrentExIndex((prev) => Math.max(0, prev - 1))}
               disabled={currentExIndex === 0}
-              className="flex-1 sm:flex-none p-2.5 rounded-xl bg-white/5 hover:bg-white/10 disabled:opacity-30 text-neutral-300 font-bold text-xs flex items-center justify-center gap-1 transition-all"
+              className="flex-1 sm:flex-none p-2.5 rounded-xl bg-gray-100 hover:bg-gray-200 dark:bg-gray-700 dark:hover:bg-gray-600 disabled:opacity-30 text-gray-700 dark:text-gray-300 border border-gray-300 dark:border-gray-600 font-bold text-xs flex items-center justify-center gap-1 transition-all cursor-pointer"
             >
               <ChevronLeft className="w-4 h-4" />
               <span>Назад</span>
@@ -240,7 +240,7 @@ export const ActiveWorkoutPlayer = ({ workout, onClose }) => {
             <button
               onClick={() => setCurrentExIndex((prev) => Math.min(exercises.length - 1, prev + 1))}
               disabled={currentExIndex === exercises.length - 1}
-              className="flex-1 sm:flex-none p-2.5 rounded-xl bg-white/5 hover:bg-white/10 disabled:opacity-30 text-neutral-300 font-bold text-xs flex items-center justify-center gap-1 transition-all"
+              className="flex-1 sm:flex-none p-2.5 rounded-xl bg-gray-100 hover:bg-gray-200 dark:bg-gray-700 dark:hover:bg-gray-600 disabled:opacity-30 text-gray-700 dark:text-gray-300 border border-gray-300 dark:border-gray-600 font-bold text-xs flex items-center justify-center gap-1 transition-all cursor-pointer"
             >
               <span>Вперед</span>
               <ChevronRight className="w-4 h-4" />
@@ -250,7 +250,7 @@ export const ActiveWorkoutPlayer = ({ workout, onClose }) => {
           {/* Big Finish Button */}
           <button
             onClick={handleFinish}
-            className="w-full sm:w-auto px-6 py-3 rounded-xl bg-gradient-to-r from-[#00FF85] to-[#10B981] hover:brightness-110 text-black font-black text-sm flex items-center justify-center gap-2 shadow-neon-green transition-all"
+            className="w-full sm:w-auto px-6 py-3 rounded-xl bg-gradient-to-r from-[#00FF85] to-[#10B981] hover:brightness-105 active:scale-95 text-black font-black text-sm flex items-center justify-center gap-2 shadow-neon-green transition-all cursor-pointer"
           >
             <CheckCircle className="w-5 h-5 stroke-[2.5]" />
             <span>ЗАВЕРШИТЬ ТРЕНИРОВКУ</span>

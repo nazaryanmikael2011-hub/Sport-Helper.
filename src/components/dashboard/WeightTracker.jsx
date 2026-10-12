@@ -54,16 +54,16 @@ export const WeightTracker = () => {
   const targetY = chartHeight - paddingY - ((targetWeight - minW) / range) * (chartHeight - paddingY * 2);
 
   return (
-    <div className="glass-card rounded-3xl p-4 sm:p-6 border border-white/5 relative overflow-hidden h-auto w-full">
+    <div className="bg-white dark:bg-gray-800 rounded-3xl p-4 sm:p-6 border border-gray-200 dark:border-gray-700 shadow-sm relative overflow-hidden h-auto w-full">
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6 flex-wrap h-auto">
         <div>
-          <div className="flex items-center gap-2 text-xs font-bold text-neutral-400 uppercase tracking-wider mb-1">
+          <div className="flex items-center gap-2 text-xs font-bold text-gray-600 dark:text-gray-400 uppercase tracking-wider mb-1">
             <Scale className="w-4 h-4 text-[#00FF85]" />
             <span>Трекер веса и динамика</span>
           </div>
           <div className="flex flex-wrap items-baseline gap-2 sm:gap-3">
-            <span className="text-3xl sm:text-4xl font-black text-white">
-              {currentWeight} <span className="text-sm font-bold text-neutral-400">кг</span>
+            <span className="text-3xl sm:text-4xl font-black text-gray-900 dark:text-white">
+              {currentWeight} <span className="text-sm font-bold text-gray-600 dark:text-gray-400">кг</span>
             </span>
             <div className={`flex items-center gap-1 text-xs font-bold px-2.5 py-1 rounded-full ${
               totalDiff <= 0 ? 'bg-emerald-500/10 text-[#00FF85]' : 'bg-orange-500/10 text-[#FF5E00]'
@@ -83,9 +83,9 @@ export const WeightTracker = () => {
               placeholder="78.0"
               value={newWeight}
               onChange={(e) => setNewWeight(e.target.value)}
-              className="w-28 sm:w-32 bg-[#1A1A24] border border-white/10 rounded-xl px-3 py-2 text-sm text-white placeholder-neutral-500 focus:outline-none focus:border-[#00FF85]"
+              className="w-28 sm:w-32 bg-gray-100 dark:bg-gray-900 border border-gray-300 dark:border-gray-700 rounded-xl px-3 py-2 text-sm text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:border-[#00FF85]"
             />
-            <span className="absolute right-3 top-1/2 -translate-y-1/2 text-xs font-semibold text-neutral-400">
+            <span className="absolute right-3 top-1/2 -translate-y-1/2 text-xs font-semibold text-gray-600 dark:text-gray-400">
               кг
             </span>
           </div>
@@ -101,22 +101,22 @@ export const WeightTracker = () => {
       </div>
 
       {/* Target summary bar with responsive wrap and gap */}
-      <div className="flex flex-col md:flex-row flex-wrap items-start md:items-center justify-between gap-3 md:gap-4 p-3.5 sm:p-4 rounded-2xl bg-white/[0.03] border border-white/5 mb-4 text-xs h-auto w-full">
+      <div className="flex flex-col md:flex-row flex-wrap items-start md:items-center justify-between gap-3 md:gap-4 p-3.5 sm:p-4 rounded-2xl bg-gray-50 dark:bg-gray-900/60 border border-gray-200 dark:border-gray-700 mb-4 text-xs h-auto w-full">
         <div className="flex flex-wrap items-center gap-2 sm:gap-3">
           <div className="flex items-center gap-1.5">
             <Target className="w-4 h-4 text-[#FF5E00] shrink-0" />
-            <span className="text-neutral-300 font-medium">
-              Цель веса: <strong className="text-white font-bold">{targetWeight} кг</strong>
+            <span className="text-gray-600 dark:text-gray-400 font-medium">
+              Цель веса: <strong className="text-gray-900 dark:text-white font-bold">{targetWeight} кг</strong>
             </span>
           </div>
-          <span className="text-neutral-600 hidden sm:inline">•</span>
-          <div className="flex items-center gap-1.5 text-neutral-400">
+          <span className="text-gray-300 dark:text-gray-600 hidden sm:inline">•</span>
+          <div className="flex items-center gap-1.5 text-gray-600 dark:text-gray-400">
             <Scale className="w-3.5 h-3.5 text-[#00FF85] shrink-0" />
-            <span>Текущий вес: <strong className="text-white font-bold">{currentWeight} кг</strong></span>
+            <span>Текущий вес: <strong className="text-gray-900 dark:text-white font-bold">{currentWeight} кг</strong></span>
           </div>
         </div>
 
-        <div className="flex flex-wrap items-center gap-1.5 text-xs text-neutral-400 pt-1 md:pt-0 border-t md:border-t-0 border-white/5 w-full md:w-auto justify-between md:justify-end">
+        <div className="flex flex-wrap items-center gap-1.5 text-xs text-gray-600 dark:text-gray-400 pt-1 md:pt-0 border-t md:border-t-0 border-gray-200 dark:border-gray-700 w-full md:w-auto justify-between md:justify-end">
           <span>Осталось до цели:</span>
           <span className="text-[#00FF85] font-black px-2 py-0.5 rounded-md bg-[#00FF85]/10 border border-[#00FF85]/20">
             {remainingToGoal} кг
@@ -181,10 +181,8 @@ export const WeightTracker = () => {
                 cx={p.x}
                 cy={p.y}
                 r="5"
-                fill="#0A0A0C"
-                stroke="#00FF85"
+                className="fill-white dark:fill-[#0A0A0C] stroke-[#00FF85] transition-transform group-hover:scale-150"
                 strokeWidth="2.5"
-                className="transition-transform group-hover:scale-150"
               />
               <circle
                 cx={p.x}
@@ -199,10 +197,7 @@ export const WeightTracker = () => {
                 x={p.x}
                 y={p.y - 12}
                 textAnchor="middle"
-                fill="#ffffff"
-                fontSize="11"
-                fontWeight="bold"
-                className="opacity-90 group-hover:opacity-100 drop-shadow"
+                className="fill-gray-900 dark:fill-white font-bold opacity-90 group-hover:opacity-100 drop-shadow-sm text-[11px]"
               >
                 {p.weight}
               </text>
@@ -211,8 +206,7 @@ export const WeightTracker = () => {
                 x={p.x}
                 y={chartHeight - 2}
                 textAnchor="middle"
-                fill="#8E8EA0"
-                fontSize="10"
+                className="fill-gray-500 dark:fill-[#8E8EA0] text-[10px]"
               >
                 {p.date}
               </text>
